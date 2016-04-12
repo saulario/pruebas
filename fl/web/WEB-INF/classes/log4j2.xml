@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="fl" packages="">
+    <Appenders>
+        <File name="FILE" fileName="logs/fl.log">
+            <PatternLayout>
+                <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
+                <Pattern>%d %p %c [%t] %m%n</Pattern>
+            </PatternLayout>
+        </File>
+        <Async name="ASYNC">
+            <AppenderRef ref="FILE"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="ASYNC"/>
+        </Root>
+    </Loggers>
+</Configuration>
