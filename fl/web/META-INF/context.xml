@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/fl"/>
+<Context path="/fl">
+
+    <ResourceLink name="jdbc/flDS"    
+        global="jdbc/flDS"
+        type="javax.sql.DataSource"/>
+    
+</Context>
