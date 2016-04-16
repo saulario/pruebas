@@ -28,19 +28,21 @@ public class StartupServlet extends HttpServlet {
     public void init() throws ServletException {
         log.info("-----> Inicio");
 
+        log.info("************************************************");
+        log.info("* Iniciando Freightliner/cargo");
+        log.info("************************************************");
+
+        
         Connection c = null;
         try {
             Context ic = new InitialContext();
             DataSource ds = (DataSource) ic.lookup("java:/comp/env/jdbc/flDS");
             c = ds.getConnection();
 
-            PreparedStatement ps = c.prepareStatement("select * from pepito");
-            ps.executeQuery();
-            ps.close();
 
-            c.close();
         } catch (NamingException | SQLException e) {
             log.error(this, e);
+            throw new ServletException(e);
         }
 
         log.info("<----- Fin");
