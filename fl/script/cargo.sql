@@ -62,6 +62,8 @@ create table usu (
     primary key (usucod)
 ) comment 'Usuarios';
 
+insert into usu values(0, 'root', 'root@flcargo.org', 'passwd');
+
 create table tc0 (
     tc0cod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
     tc0loc      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Localizador',
@@ -71,13 +73,11 @@ create table tc0 (
     tc0cypidf   varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
     tc0cyptkr   varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
 
-    tc0teocod   varchar(5) not null default ''                                  comment 'Código estado operativo',
-    tc0teacod   varchar(5) not null default ''                                  comment 'Código estado administrativo',
+    tc0teocod   varchar(5) not null default ''                                  comment 'Estado operativo',
 
     primary key(tc0cod),
     foreign key (tc0cypcod) references cyp(cypcod),
-    foreign key (tc0teocod) references teo(teocod),
-    foreign key (tc0teacod) references tea(teacod)
+    foreign key (tc0teocod) references teo(teocod)
 ) comment 'Órdenes de carga';
 
 create table tt0 (
@@ -90,12 +90,10 @@ create table tt0 (
     tt0cyptkr   varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
 
     tt0teocod   varchar(5) not null default ''                                  comment 'Código estado operativo',
-    tt0teacod   varchar(5) not null default ''                                  comment 'Código estado administrativo',
 
     primary key(tt0cod),
     foreign key (tt0cypcod) references cyp(cypcod),
-    foreign key (tt0teocod) references teo(teocod),
-    foreign key (tt0teacod) references tea(teacod)
+    foreign key (tt0teocod) references teo(teocod)
 ) comment 'Órdenes de trabajo';
 
 

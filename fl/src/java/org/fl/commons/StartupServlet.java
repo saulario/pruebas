@@ -1,7 +1,6 @@
 package org.fl.commons;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -26,11 +25,9 @@ public class StartupServlet extends HttpServlet {
      */
     @Override
     public void init() throws ServletException {
-        log.info("-----> Inicio");
-
         log.info("************************************************");
         log.info("* Iniciando Freightliner/cargo");
-        log.info("************************************************");
+        log.info("*");
 
         
         Connection c = null;
@@ -45,7 +42,8 @@ public class StartupServlet extends HttpServlet {
             throw new ServletException(e);
         }
 
-        log.info("<----- Fin");
+        log.info("*");
+        log.info("************************************************");
     }
 
 }
