@@ -4,7 +4,7 @@
         <File name="FILE" fileName="logs/fl.log">
             <PatternLayout>
                 <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
-                <Pattern>%d %p %c [%t] %m%n</Pattern>
+                <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>

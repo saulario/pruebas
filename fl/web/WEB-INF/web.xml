@@ -10,18 +10,9 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>StartupServlet</servlet-name>
-        <servlet-class>org.fl.commons.StartupServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>StartupServlet</servlet-name>
-        <url-pattern>/StartupServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -32,7 +23,7 @@
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
     <resource-ref>
-        <res-ref-name>jdbc/flDS</res-ref-name>
+        <res-ref-name>jdbc/cargoDS</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
