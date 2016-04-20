@@ -1,7 +1,9 @@
 package org.fl.commons;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -10,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
+import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fl.jpa.Usu;
@@ -31,22 +34,42 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         log.info("* Desplegando Freightliner/Cargo");
         log.info("*");
 
+        
+        log.info("+-----> Esperando la carga de recursos");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+        }
+        
+        log.info("+-----> Comprobando JNDI");
         try {
             Context ic = new InitialContext();
-
-        } catch (NamingException ex) {
-            java.util.logging.Logger.getLogger(ServletContextListener.class.getName())
-                    .log(Level.SEVERE, null, ex);
+            DataSource ds = (DataSource)ic.lookup("java:/comp/env/jdbc/cargoDS");
+            Connection c = ds.getConnection();
+            ResultSet rs = c.prepareStatement("select now()").executeQuery();
+            while (rs.next()) {
+                log.info("\t(now): " + rs.getObject(1).toString());
+            }
+            rs.close();
+            c.close();
+        } catch (NamingException | SQLException ex) {
+            log.error(this, ex);
         }
 
+        
         log.info("+-----> Creando EntityManagerFactory");
-        emf = Persistence.createEntityManagerFactory(CARGO_PU);
+        try {
+            
+            emf = Persistence.createEntityManagerFactory(CARGO_PU);
 
-        log.info("+-----> Testeando la conexión con la base de datos");
-        EntityManager em = emf.createEntityManager();
-        List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
-                .getResultList();
-        em.close();
+            log.info("+-----> Testeando la conexión con la base de datos");
+            EntityManager em = emf.createEntityManager();
+            List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
+                    .getResultList();
+            em.close();
+        } catch (Throwable e) {
+            log.error(this, e);
+        }
 
         log.info("*");
         log.info("************************************************");
