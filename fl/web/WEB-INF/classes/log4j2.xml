@@ -7,10 +7,17 @@
                 <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
             </PatternLayout>
         </File>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
+            </PatternLayout>
+
+        </Console>        
     </Appenders>
     <Loggers>
-        <Root level="TRACE">
+        <Root level="INFO">
             <AppenderRef ref="FILE"/>
         </Root>
+        <Logger name="org.hibernate" level="ERROR"/>
     </Loggers>
 </Configuration>

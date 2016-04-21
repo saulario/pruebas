@@ -33,22 +33,15 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         log.info("************************************************");
         log.info("* Desplegando Freightliner/Cargo");
         log.info("*");
-
-        
-        log.info("+-----> Esperando la carga de recursos");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-        }
         
         log.info("+-----> Comprobando JNDI");
         try {
             Context ic = new InitialContext();
-            DataSource ds = (DataSource)ic.lookup("java:/comp/env/jdbc/cargoDS");
+            DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/cargoDS");
             Connection c = ds.getConnection();
             ResultSet rs = c.prepareStatement("select now()").executeQuery();
             while (rs.next()) {
-                log.info("\t(now): " + rs.getObject(1).toString());
+                log.info("\t\t(now): " + rs.getObject(1).toString());
             }
             rs.close();
             c.close();
@@ -66,6 +59,9 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
             EntityManager em = emf.createEntityManager();
             List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
                     .getResultList();
+            for (Usu usu : usus) {
+                log.info("\t\t(usuusr): " + usu.getUsuusr());
+            }
             em.close();
         } catch (Throwable e) {
             log.error(this, e);
