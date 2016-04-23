@@ -1,5 +1,5 @@
 package org.cargo.bl.jpa;
-// Generated 23-abr-2016 18:56:39 by Hibernate Tools 4.3.1
+// Generated 23-abr-2016 20:32:26 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -23,24 +23,24 @@ public class Tta  implements java.io.Serializable {
 
      private long ttacod;
      private long version;
-     private Cyp cyp;
+     private Pro pro;
      private Teo teo;
      private String ttaloc;
-     private String ttacypraz;
-     private String ttacypidf;
-     private String ttacyptkr;
+     private String ttaproraz;
+     private String ttaproidf;
+     private String ttaprotkr;
 
     public Tta() {
     }
 
-    public Tta(long ttacod, Cyp cyp, Teo teo, String ttaloc, String ttacypraz, String ttacypidf, String ttacyptkr) {
+    public Tta(long ttacod, Pro pro, Teo teo, String ttaloc, String ttaproraz, String ttaproidf, String ttaprotkr) {
        this.ttacod = ttacod;
-       this.cyp = cyp;
+       this.pro = pro;
        this.teo = teo;
        this.ttaloc = ttaloc;
-       this.ttacypraz = ttacypraz;
-       this.ttacypidf = ttacypidf;
-       this.ttacyptkr = ttacyptkr;
+       this.ttaproraz = ttaproraz;
+       this.ttaproidf = ttaproidf;
+       this.ttaprotkr = ttaprotkr;
     }
    
      @Id 
@@ -66,13 +66,13 @@ public class Tta  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="ttacypcod", nullable=false)
-    public Cyp getCyp() {
-        return this.cyp;
+    @JoinColumn(name="ttaprocod", nullable=false)
+    public Pro getPro() {
+        return this.pro;
     }
     
-    public void setCyp(Cyp cyp) {
-        this.cyp = cyp;
+    public void setPro(Pro pro) {
+        this.pro = pro;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -96,33 +96,33 @@ public class Tta  implements java.io.Serializable {
     }
 
     
-    @Column(name="ttacypraz", nullable=false, length=80)
-    public String getTtacypraz() {
-        return this.ttacypraz;
+    @Column(name="ttaproraz", nullable=false, length=80)
+    public String getTtaproraz() {
+        return this.ttaproraz;
     }
     
-    public void setTtacypraz(String ttacypraz) {
-        this.ttacypraz = ttacypraz;
-    }
-
-    
-    @Column(name="ttacypidf", nullable=false, length=20)
-    public String getTtacypidf() {
-        return this.ttacypidf;
-    }
-    
-    public void setTtacypidf(String ttacypidf) {
-        this.ttacypidf = ttacypidf;
+    public void setTtaproraz(String ttaproraz) {
+        this.ttaproraz = ttaproraz;
     }
 
     
-    @Column(name="ttacyptkr", nullable=false, length=5)
-    public String getTtacyptkr() {
-        return this.ttacyptkr;
+    @Column(name="ttaproidf", nullable=false, length=20)
+    public String getTtaproidf() {
+        return this.ttaproidf;
     }
     
-    public void setTtacyptkr(String ttacyptkr) {
-        this.ttacyptkr = ttacyptkr;
+    public void setTtaproidf(String ttaproidf) {
+        this.ttaproidf = ttaproidf;
+    }
+
+    
+    @Column(name="ttaprotkr", nullable=false, length=5)
+    public String getTtaprotkr() {
+        return this.ttaprotkr;
+    }
+    
+    public void setTtaprotkr(String ttaprotkr) {
+        this.ttaprotkr = ttaprotkr;
     }
 
 

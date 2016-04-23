@@ -1,5 +1,5 @@
 package org.cargo.bl.jpa;
-// Generated 23-abr-2016 18:56:39 by Hibernate Tools 4.3.1
+// Generated 23-abr-2016 20:32:26 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;

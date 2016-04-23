@@ -13,8 +13,9 @@
     <mapping class="org.cargo.bl.jpa.Tea"/>
     <mapping class="org.cargo.bl.jpa.Emp"/>
     <mapping class="org.cargo.bl.jpa.Tca"/>
+    <mapping class="org.cargo.bl.jpa.Cli"/>
     <mapping class="org.cargo.bl.jpa.Tta"/>
+    <mapping class="org.cargo.bl.jpa.Pro"/>
     <mapping class="org.cargo.bl.jpa.Seq"/>
-    <mapping class="org.cargo.bl.jpa.Cyp"/>
   </session-factory>
 </hibernate-configuration>

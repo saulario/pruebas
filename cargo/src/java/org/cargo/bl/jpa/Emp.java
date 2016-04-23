@@ -1,5 +1,5 @@
 package org.cargo.bl.jpa;
-// Generated 23-abr-2016 18:56:39 by Hibernate Tools 4.3.1
+// Generated 23-abr-2016 20:32:26 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -22,14 +22,16 @@ public class Emp  implements java.io.Serializable {
      private long version;
      private String empraz;
      private String empidf;
+     private String emptkr;
 
     public Emp() {
     }
 
-    public Emp(long empcod, String empraz, String empidf) {
+    public Emp(long empcod, String empraz, String empidf, String emptkr) {
        this.empcod = empcod;
        this.empraz = empraz;
        this.empidf = empidf;
+       this.emptkr = emptkr;
     }
    
      @Id 
@@ -72,6 +74,16 @@ public class Emp  implements java.io.Serializable {
     
     public void setEmpidf(String empidf) {
         this.empidf = empidf;
+    }
+
+    
+    @Column(name="emptkr", nullable=false, length=5)
+    public String getEmptkr() {
+        return this.emptkr;
+    }
+    
+    public void setEmptkr(String emptkr) {
+        this.emptkr = emptkr;
     }
 
 

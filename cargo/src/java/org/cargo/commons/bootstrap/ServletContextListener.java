@@ -1,3 +1,22 @@
+/*
+ * Freightliner/cargo
+ *
+ * Copyright (C) 2015..  Saul Correas Subias 
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.cargo.commons.bootstrap;
 
 import java.sql.Connection;
@@ -56,22 +75,10 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
 
             log.info("+-----> Testeando la conexión con la base de datos");
             EntityManager em = emf.createEntityManager();
-//            List usus = em.createQuery("select usu from Usu as usu").setMaxResults(1)
-//                    .getResultList();
-//            for (Object usu : usus) {
-//                log.info("\t\t(usuusr): " + ((Usu)usu).getUsuusr());
-//            }
 
-            Usu usu = em.find(Usu.class, 0L);
+            Usu usu = em.find(Usu.class, 1L);
             if (usu != null) {
                 log.info("\t\t(usuusr): " + ((Usu) usu).getUsuusr());
-            }
-            usu = em.find(Usu.class, 1L);
-            if (usu != null) {
-                em.getTransaction().begin();
-                log.info("\t\t(usuusr): " + ((Usu) usu).getUsuusr());
-                usu.setUsupwd(UUID.randomUUID().toString());
-                em.getTransaction().commit();
             }
 
             em.close();

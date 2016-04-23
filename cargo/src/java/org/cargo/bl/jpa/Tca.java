@@ -1,5 +1,5 @@
 package org.cargo.bl.jpa;
-// Generated 23-abr-2016 18:56:39 by Hibernate Tools 4.3.1
+// Generated 23-abr-2016 20:32:26 by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -23,24 +23,24 @@ public class Tca  implements java.io.Serializable {
 
      private long tcacod;
      private long version;
-     private Cyp cyp;
+     private Cli cli;
      private Teo teo;
      private String tcaloc;
-     private String tcacypraz;
-     private String tcacypidf;
-     private String tcacyptkr;
+     private String tcacliraz;
+     private String tcacliidf;
+     private String tcaclitkr;
 
     public Tca() {
     }
 
-    public Tca(long tcacod, Cyp cyp, Teo teo, String tcaloc, String tcacypraz, String tcacypidf, String tcacyptkr) {
+    public Tca(long tcacod, Cli cli, Teo teo, String tcaloc, String tcacliraz, String tcacliidf, String tcaclitkr) {
        this.tcacod = tcacod;
-       this.cyp = cyp;
+       this.cli = cli;
        this.teo = teo;
        this.tcaloc = tcaloc;
-       this.tcacypraz = tcacypraz;
-       this.tcacypidf = tcacypidf;
-       this.tcacyptkr = tcacyptkr;
+       this.tcacliraz = tcacliraz;
+       this.tcacliidf = tcacliidf;
+       this.tcaclitkr = tcaclitkr;
     }
    
      @Id 
@@ -66,13 +66,13 @@ public class Tca  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="tcacypcod", nullable=false)
-    public Cyp getCyp() {
-        return this.cyp;
+    @JoinColumn(name="tcaclicod", nullable=false)
+    public Cli getCli() {
+        return this.cli;
     }
     
-    public void setCyp(Cyp cyp) {
-        this.cyp = cyp;
+    public void setCli(Cli cli) {
+        this.cli = cli;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -96,33 +96,33 @@ public class Tca  implements java.io.Serializable {
     }
 
     
-    @Column(name="tcacypraz", nullable=false, length=80)
-    public String getTcacypraz() {
-        return this.tcacypraz;
+    @Column(name="tcacliraz", nullable=false, length=80)
+    public String getTcacliraz() {
+        return this.tcacliraz;
     }
     
-    public void setTcacypraz(String tcacypraz) {
-        this.tcacypraz = tcacypraz;
-    }
-
-    
-    @Column(name="tcacypidf", nullable=false, length=20)
-    public String getTcacypidf() {
-        return this.tcacypidf;
-    }
-    
-    public void setTcacypidf(String tcacypidf) {
-        this.tcacypidf = tcacypidf;
+    public void setTcacliraz(String tcacliraz) {
+        this.tcacliraz = tcacliraz;
     }
 
     
-    @Column(name="tcacyptkr", nullable=false, length=5)
-    public String getTcacyptkr() {
-        return this.tcacyptkr;
+    @Column(name="tcacliidf", nullable=false, length=20)
+    public String getTcacliidf() {
+        return this.tcacliidf;
     }
     
-    public void setTcacyptkr(String tcacyptkr) {
-        this.tcacyptkr = tcacyptkr;
+    public void setTcacliidf(String tcacliidf) {
+        this.tcacliidf = tcacliidf;
+    }
+
+    
+    @Column(name="tcaclitkr", nullable=false, length=5)
+    public String getTcaclitkr() {
+        return this.tcaclitkr;
+    }
+    
+    public void setTcaclitkr(String tcaclitkr) {
+        this.tcaclitkr = tcaclitkr;
     }
 
 
