@@ -7,10 +7,12 @@ package org.fl.jpa;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -18,21 +20,29 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author saulario
  */
 @Entity
+@Table(name = "emp")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Emp.findAll", query = "SELECT e FROM Emp e"),
+    @NamedQuery(name = "Emp.findByVersion", query = "SELECT e FROM Emp e WHERE e.version = :version"),
     @NamedQuery(name = "Emp.findByEmpcod", query = "SELECT e FROM Emp e WHERE e.empcod = :empcod"),
     @NamedQuery(name = "Emp.findByEmpraz", query = "SELECT e FROM Emp e WHERE e.empraz = :empraz"),
     @NamedQuery(name = "Emp.findByEmpidf", query = "SELECT e FROM Emp e WHERE e.empidf = :empidf")})
 public class Emp implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "version")
+    private long version;
     @Id
     @Basic(optional = false)
+    @Column(name = "empcod")
     private Long empcod;
     @Basic(optional = false)
+    @Column(name = "empraz")
     private String empraz;
     @Basic(optional = false)
+    @Column(name = "empidf")
     private String empidf;
 
     public Emp() {
@@ -42,10 +52,19 @@ public class Emp implements Serializable {
         this.empcod = empcod;
     }
 
-    public Emp(Long empcod, String empraz, String empidf) {
+    public Emp(Long empcod, long version, String empraz, String empidf) {
         this.empcod = empcod;
+        this.version = version;
         this.empraz = empraz;
         this.empidf = empidf;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
     public Long getEmpcod() {

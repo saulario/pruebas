@@ -6,39 +6,44 @@
 package org.fl.jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author saulario
  */
 @Entity
+@Table(name = "tea")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tea.findAll", query = "SELECT t FROM Tea t"),
+    @NamedQuery(name = "Tea.findByVersion", query = "SELECT t FROM Tea t WHERE t.version = :version"),
     @NamedQuery(name = "Tea.findByTeacod", query = "SELECT t FROM Tea t WHERE t.teacod = :teacod"),
-    @NamedQuery(name = "Tea.findByTeades", query = "SELECT t FROM Tea t WHERE t.teades = :teades")})
+    @NamedQuery(name = "Tea.findByTeades", query = "SELECT t FROM Tea t WHERE t.teades = :teades"),
+    @NamedQuery(name = "Tea.findByTeadef", query = "SELECT t FROM Tea t WHERE t.teadef = :teadef")})
 public class Tea implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "version")
+    private long version;
     @Id
     @Basic(optional = false)
+    @Column(name = "teacod")
     private String teacod;
     @Basic(optional = false)
+    @Column(name = "teades")
     private String teades;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tc0teacod")
-    private Collection<Tc0> tc0Collection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tt0teacod")
-    private Collection<Tt0> tt0Collection;
+    @Basic(optional = false)
+    @Column(name = "teadef")
+    private short teadef;
 
     public Tea() {
     }
@@ -47,9 +52,19 @@ public class Tea implements Serializable {
         this.teacod = teacod;
     }
 
-    public Tea(String teacod, String teades) {
+    public Tea(String teacod, long version, String teades, short teadef) {
         this.teacod = teacod;
+        this.version = version;
         this.teades = teades;
+        this.teadef = teadef;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
     public String getTeacod() {
@@ -68,22 +83,12 @@ public class Tea implements Serializable {
         this.teades = teades;
     }
 
-    @XmlTransient
-    public Collection<Tc0> getTc0Collection() {
-        return tc0Collection;
+    public short getTeadef() {
+        return teadef;
     }
 
-    public void setTc0Collection(Collection<Tc0> tc0Collection) {
-        this.tc0Collection = tc0Collection;
-    }
-
-    @XmlTransient
-    public Collection<Tt0> getTt0Collection() {
-        return tt0Collection;
-    }
-
-    public void setTt0Collection(Collection<Tt0> tt0Collection) {
-        this.tt0Collection = tt0Collection;
+    public void setTeadef(short teadef) {
+        this.teadef = teadef;
     }
 
     @Override

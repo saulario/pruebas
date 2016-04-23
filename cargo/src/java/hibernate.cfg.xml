@@ -7,14 +7,14 @@
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cargo</property>
     <property name="hibernate.connection.username">cargouser</property>
     <property name="hibernate.connection.password">cargopasswd</property>
-    <mapping class="org.fl.jpa.Seq"/>
-    <mapping class="org.fl.jpa.Cto"/>
-    <mapping class="org.fl.jpa.Cyp"/>
-    <mapping class="org.fl.jpa.Tca"/>
-    <mapping class="org.fl.jpa.Usu"/>
-    <mapping class="org.fl.jpa.Emp"/>
-    <mapping class="org.fl.jpa.Tea"/>
-    <mapping class="org.fl.jpa.Teo"/>
-    <mapping class="org.fl.jpa.Tta"/>
+    <mapping class="org.cargo.bl.jpa.Usu"/>
+    <mapping class="org.cargo.bl.jpa.Teo"/>
+    <mapping class="org.cargo.bl.jpa.Cto"/>
+    <mapping class="org.cargo.bl.jpa.Tea"/>
+    <mapping class="org.cargo.bl.jpa.Emp"/>
+    <mapping class="org.cargo.bl.jpa.Tca"/>
+    <mapping class="org.cargo.bl.jpa.Tta"/>
+    <mapping class="org.cargo.bl.jpa.Seq"/>
+    <mapping class="org.cargo.bl.jpa.Cyp"/>
   </session-factory>
 </hibernate-configuration>

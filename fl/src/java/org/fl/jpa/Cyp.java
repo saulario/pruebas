@@ -9,11 +9,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -22,9 +24,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author saulario
  */
 @Entity
+@Table(name = "cyp")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cyp.findAll", query = "SELECT c FROM Cyp c"),
+    @NamedQuery(name = "Cyp.findByVersion", query = "SELECT c FROM Cyp c WHERE c.version = :version"),
     @NamedQuery(name = "Cyp.findByCypcod", query = "SELECT c FROM Cyp c WHERE c.cypcod = :cypcod"),
     @NamedQuery(name = "Cyp.findByCypraz", query = "SELECT c FROM Cyp c WHERE c.cypraz = :cypraz"),
     @NamedQuery(name = "Cyp.findByCypidf", query = "SELECT c FROM Cyp c WHERE c.cypidf = :cypidf"),
@@ -32,19 +36,26 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Cyp implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "version")
+    private long version;
     @Id
     @Basic(optional = false)
+    @Column(name = "cypcod")
     private Long cypcod;
     @Basic(optional = false)
+    @Column(name = "cypraz")
     private String cypraz;
     @Basic(optional = false)
+    @Column(name = "cypidf")
     private String cypidf;
     @Basic(optional = false)
+    @Column(name = "cyptkr")
     private String cyptkr;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tc0cypcod")
-    private Collection<Tc0> tc0Collection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tt0cypcod")
-    private Collection<Tt0> tt0Collection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ttacypcod")
+    private Collection<Tta> ttaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tcacypcod")
+    private Collection<Tca> tcaCollection;
 
     public Cyp() {
     }
@@ -53,11 +64,20 @@ public class Cyp implements Serializable {
         this.cypcod = cypcod;
     }
 
-    public Cyp(Long cypcod, String cypraz, String cypidf, String cyptkr) {
+    public Cyp(Long cypcod, long version, String cypraz, String cypidf, String cyptkr) {
         this.cypcod = cypcod;
+        this.version = version;
         this.cypraz = cypraz;
         this.cypidf = cypidf;
         this.cyptkr = cyptkr;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
     public Long getCypcod() {
@@ -93,21 +113,21 @@ public class Cyp implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Tc0> getTc0Collection() {
-        return tc0Collection;
+    public Collection<Tta> getTtaCollection() {
+        return ttaCollection;
     }
 
-    public void setTc0Collection(Collection<Tc0> tc0Collection) {
-        this.tc0Collection = tc0Collection;
+    public void setTtaCollection(Collection<Tta> ttaCollection) {
+        this.ttaCollection = ttaCollection;
     }
 
     @XmlTransient
-    public Collection<Tt0> getTt0Collection() {
-        return tt0Collection;
+    public Collection<Tca> getTcaCollection() {
+        return tcaCollection;
     }
 
-    public void setTt0Collection(Collection<Tt0> tt0Collection) {
-        this.tt0Collection = tt0Collection;
+    public void setTcaCollection(Collection<Tca> tcaCollection) {
+        this.tcaCollection = tcaCollection;
     }
 
     @Override

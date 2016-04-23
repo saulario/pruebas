@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="TRACE" name="fl" packages="">
+    <Appenders>
+        <RandomAccessFile name="FILE" fileName="logs/cargo.log">
+            <PatternLayout>
+                <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
+                <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
+            </PatternLayout>
+        </RandomAccessFile>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
+            </PatternLayout>
+
+        </Console>        
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="FILE"/>
+        </Root>
+        <Logger name="org.hibernate" level="ERROR"/>
+    </Loggers>
+</Configuration>

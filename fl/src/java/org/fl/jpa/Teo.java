@@ -9,11 +9,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -22,23 +24,34 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author saulario
  */
 @Entity
+@Table(name = "teo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Teo.findAll", query = "SELECT t FROM Teo t"),
+    @NamedQuery(name = "Teo.findByVersion", query = "SELECT t FROM Teo t WHERE t.version = :version"),
     @NamedQuery(name = "Teo.findByTeocod", query = "SELECT t FROM Teo t WHERE t.teocod = :teocod"),
-    @NamedQuery(name = "Teo.findByTeodes", query = "SELECT t FROM Teo t WHERE t.teodes = :teodes")})
+    @NamedQuery(name = "Teo.findByTeodes", query = "SELECT t FROM Teo t WHERE t.teodes = :teodes"),
+    @NamedQuery(name = "Teo.findByTeodef", query = "SELECT t FROM Teo t WHERE t.teodef = :teodef")})
 public class Teo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "version")
+    private long version;
     @Id
     @Basic(optional = false)
+    @Column(name = "teocod")
     private String teocod;
     @Basic(optional = false)
+    @Column(name = "teodes")
     private String teodes;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tc0teocod")
-    private Collection<Tc0> tc0Collection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tt0teocod")
-    private Collection<Tt0> tt0Collection;
+    @Basic(optional = false)
+    @Column(name = "teodef")
+    private short teodef;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ttateocod")
+    private Collection<Tta> ttaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tcateocod")
+    private Collection<Tca> tcaCollection;
 
     public Teo() {
     }
@@ -47,9 +60,19 @@ public class Teo implements Serializable {
         this.teocod = teocod;
     }
 
-    public Teo(String teocod, String teodes) {
+    public Teo(String teocod, long version, String teodes, short teodef) {
         this.teocod = teocod;
+        this.version = version;
         this.teodes = teodes;
+        this.teodef = teodef;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
     public String getTeocod() {
@@ -68,22 +91,30 @@ public class Teo implements Serializable {
         this.teodes = teodes;
     }
 
+    public short getTeodef() {
+        return teodef;
+    }
+
+    public void setTeodef(short teodef) {
+        this.teodef = teodef;
+    }
+
     @XmlTransient
-    public Collection<Tc0> getTc0Collection() {
-        return tc0Collection;
+    public Collection<Tta> getTtaCollection() {
+        return ttaCollection;
     }
 
-    public void setTc0Collection(Collection<Tc0> tc0Collection) {
-        this.tc0Collection = tc0Collection;
+    public void setTtaCollection(Collection<Tta> ttaCollection) {
+        this.ttaCollection = ttaCollection;
     }
 
     @XmlTransient
-    public Collection<Tt0> getTt0Collection() {
-        return tt0Collection;
+    public Collection<Tca> getTcaCollection() {
+        return tcaCollection;
     }
 
-    public void setTt0Collection(Collection<Tt0> tt0Collection) {
-        this.tt0Collection = tt0Collection;
+    public void setTcaCollection(Collection<Tca> tcaCollection) {
+        this.tcaCollection = tcaCollection;
     }
 
     @Override

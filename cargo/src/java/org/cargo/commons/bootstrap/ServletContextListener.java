@@ -1,9 +1,9 @@
-package org.fl.commons;
+package org.cargo.commons.bootstrap;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.UUID;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -15,7 +15,7 @@ import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fl.jpa.Usu;
+import org.cargo.bl.jpa.Usu;
 
 @WebListener
 public class ServletContextListener implements javax.servlet.ServletContextListener {
@@ -33,11 +33,11 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         log.info("************************************************");
         log.info("* Desplegando Freightliner/Cargo");
         log.info("*");
-        
+
         log.info("+-----> Comprobando JNDI");
         try {
             Context ic = new InitialContext();
-            DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/cargoDS");
+            DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/cargoDS");
             Connection c = ds.getConnection();
             ResultSet rs = c.prepareStatement("select now()").executeQuery();
             while (rs.next()) {
@@ -49,19 +49,31 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
             log.error(this, ex);
         }
 
-        
         log.info("+-----> Creando EntityManagerFactory");
         try {
-            
+
             emf = Persistence.createEntityManagerFactory(CARGO_PU);
 
             log.info("+-----> Testeando la conexión con la base de datos");
             EntityManager em = emf.createEntityManager();
-            List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
-                    .getResultList();
-            for (Usu usu : usus) {
-                log.info("\t\t(usuusr): " + usu.getUsuusr());
+//            List usus = em.createQuery("select usu from Usu as usu").setMaxResults(1)
+//                    .getResultList();
+//            for (Object usu : usus) {
+//                log.info("\t\t(usuusr): " + ((Usu)usu).getUsuusr());
+//            }
+
+            Usu usu = em.find(Usu.class, 0L);
+            if (usu != null) {
+                log.info("\t\t(usuusr): " + ((Usu) usu).getUsuusr());
             }
+            usu = em.find(Usu.class, 1L);
+            if (usu != null) {
+                em.getTransaction().begin();
+                log.info("\t\t(usuusr): " + ((Usu) usu).getUsuusr());
+                usu.setUsupwd(UUID.randomUUID().toString());
+                em.getTransaction().commit();
+            }
+
             em.close();
         } catch (Throwable e) {
             log.error(this, e);

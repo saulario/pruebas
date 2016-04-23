@@ -7,10 +7,12 @@ package org.fl.jpa;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -18,54 +20,59 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author saulario
  */
 @Entity
+@Table(name = "cto")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cto.findAll", query = "SELECT c FROM Cto c"),
+    @NamedQuery(name = "Cto.findByVersion", query = "SELECT c FROM Cto c WHERE c.version = :version"),
     @NamedQuery(name = "Cto.findByCtocod", query = "SELECT c FROM Cto c WHERE c.ctocod = :ctocod"),
-    @NamedQuery(name = "Cto.findByCtotkr", query = "SELECT c FROM Cto c WHERE c.ctotkr = :ctotkr"),
     @NamedQuery(name = "Cto.findByCtodes", query = "SELECT c FROM Cto c WHERE c.ctodes = :ctodes"),
     @NamedQuery(name = "Cto.findByCtoest", query = "SELECT c FROM Cto c WHERE c.ctoest = :ctoest")})
 public class Cto implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "version")
+    private long version;
     @Id
     @Basic(optional = false)
-    private Long ctocod;
+    @Column(name = "ctocod")
+    private String ctocod;
     @Basic(optional = false)
-    private String ctotkr;
-    @Basic(optional = false)
+    @Column(name = "ctodes")
     private String ctodes;
     @Basic(optional = false)
+    @Column(name = "ctoest")
     private short ctoest;
 
     public Cto() {
     }
 
-    public Cto(Long ctocod) {
+    public Cto(String ctocod) {
         this.ctocod = ctocod;
     }
 
-    public Cto(Long ctocod, String ctotkr, String ctodes, short ctoest) {
+    public Cto(String ctocod, long version, String ctodes, short ctoest) {
         this.ctocod = ctocod;
-        this.ctotkr = ctotkr;
+        this.version = version;
         this.ctodes = ctodes;
         this.ctoest = ctoest;
     }
 
-    public Long getCtocod() {
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
+    public String getCtocod() {
         return ctocod;
     }
 
-    public void setCtocod(Long ctocod) {
+    public void setCtocod(String ctocod) {
         this.ctocod = ctocod;
-    }
-
-    public String getCtotkr() {
-        return ctotkr;
-    }
-
-    public void setCtotkr(String ctotkr) {
-        this.ctotkr = ctotkr;
     }
 
     public String getCtodes() {
