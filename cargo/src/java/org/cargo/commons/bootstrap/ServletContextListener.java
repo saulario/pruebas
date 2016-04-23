@@ -69,21 +69,25 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         }
 
         log.info("+-----> Creando EntityManagerFactory");
+        EntityManager em = null;
         try {
 
             emf = Persistence.createEntityManagerFactory(CARGO_PU);
 
             log.info("+-----> Testeando la conexión con la base de datos");
-            EntityManager em = emf.createEntityManager();
+            em = emf.createEntityManager();
 
             Usu usu = em.find(Usu.class, 1L);
             if (usu != null) {
                 log.info("\t\t(usuusr): " + ((Usu) usu).getUsuusr());
             }
 
-            em.close();
         } catch (Throwable e) {
             log.error(this, e);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
 
         log.info("*");

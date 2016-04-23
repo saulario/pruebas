@@ -55,17 +55,27 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
             
             emf = Persistence.createEntityManagerFactory(CARGO_PU);
 
-            log.info("+-----> Testeando la conexión con la base de datos");
-            EntityManager em = emf.createEntityManager();
-            List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
-                    .getResultList();
-            for (Usu usu : usus) {
-                log.info("\t\t(usuusr): " + usu.getUsuusr());
-            }
-            em.close();
+//            log.info("+-----> Testeando la conexión con la base de datos");
+//            EntityManager em = emf.createEntityManager();
+//            List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
+//                    .getResultList();
+//            for (Usu usu : usus) {
+//                log.info("\t\t(usuusr): " + usu.getUsuusr());
+//            }
+//            em.close();
         } catch (Throwable e) {
             log.error(this, e);
         }
+        
+        try {
+            InterceptedClass ic = new InterceptedClass();
+            ic.interceptedMethod();
+
+            
+        } catch (Throwable e) {
+            log.error(this, e);
+        }
+            
 
         log.info("*");
         log.info("************************************************");

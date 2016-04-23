@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="TRACE" name="fl" packages="">
     <Appenders>
-        <File name="FILE" fileName="logs/fl.log">
+        <RandomAccessFile name="FILE" fileName="logs/fl.log">
             <PatternLayout>
                 <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
                 <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
             </PatternLayout>
-        </File>
+        </RandomAccessFile>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout>
                 <Pattern>%d %p %c{1.}.%M %m%n</Pattern>

@@ -1,20 +1,30 @@
 package org.fl.commons;
 
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+@Loggable
+@Interceptor
 public class LoggerInterceptor {
 
+    private static final Logger log = LogManager.getLogger();
+
     /**
-     * 
+     *
      * @param ic
-     * @return 
+     * @return
      */
     @AroundInvoke
-    public Object doIt(final InvocationContext ic) throws Throwable {
+    public Object doIt(final InvocationContext ic) throws Exception {
+        log.info("-----> Inicio");
         Object o = null;
+
         
+        log.info("<----- Fin");
         return o;
     }
-    
+
 }
