@@ -1,9 +1,28 @@
-package org.fl.commons;
+/*
+ * Freightliner/cargo
+ *
+ * Copyright (C) 2015..  Saul Correas Subias 
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+package org.cargo.commons.bootstrap;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.UUID;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -15,7 +34,7 @@ import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fl.jpa.Usu;
+import org.cargo.bl.jpa.Usu;
 
 @WebListener
 public class ServletContextListener implements javax.servlet.ServletContextListener {
@@ -33,11 +52,11 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         log.info("************************************************");
         log.info("* Desplegando Freightliner/Cargo");
         log.info("*");
-        
+
         log.info("+-----> Comprobando JNDI");
         try {
             Context ic = new InitialContext();
-            DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/cargoDS");
+            DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/cargoDS");
             Connection c = ds.getConnection();
             ResultSet rs = c.prepareStatement("select now()").executeQuery();
             while (rs.next()) {
@@ -49,33 +68,27 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
             log.error(this, ex);
         }
 
-        
         log.info("+-----> Creando EntityManagerFactory");
+        EntityManager em = null;
         try {
-            
+
             emf = Persistence.createEntityManagerFactory(CARGO_PU);
 
-//            log.info("+-----> Testeando la conexión con la base de datos");
-//            EntityManager em = emf.createEntityManager();
-//            List<Usu> usus = em.createQuery("select usu from Usu as usu", Usu.class).setMaxResults(1)
-//                    .getResultList();
-//            for (Usu usu : usus) {
-//                log.info("\t\t(usuusr): " + usu.getUsuusr());
-//            }
-//            em.close();
-        } catch (Throwable e) {
-            log.error(this, e);
-        }
-        
-        try {
-            InterceptedClass ic = new InterceptedClass();
-            ic.interceptedMethod();
+            log.info("+-----> Testeando la conexión con la base de datos");
+            em = emf.createEntityManager();
 
-            
+            Usu usu = em.find(Usu.class, 1L);
+            if (usu != null) {
+                log.info("\t\t(usuusr): " + ((Usu) usu).getUsuusr());
+            }
+
         } catch (Throwable e) {
             log.error(this, e);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
-            
 
         log.info("*");
         log.info("************************************************");

@@ -4,7 +4,7 @@ drop table if exists tca;
 drop table if exists tta;
 
 drop table if exists cto;
-DROP TABLE IF EXISTS cyp;
+DROP TABLE IF EXISTS cli;
 DROP TABLE IF EXISTS emp;
 DROP TABLE IF EXISTS seq;
 drop table if exists tea;
@@ -19,20 +19,30 @@ create table cto (
     primary key (ctocod)
 ) comment 'Conceptos a cobrar/pagar';
 
-CREATE TABLE cyp (
+CREATE TABLE cli (
     version     bigint unsigned not null default '0'                            comment 'Version',
-    cypcod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
-    cypraz      varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
-    cypidf      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
-    cyptkr      varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
-    PRIMARY KEY (cypcod)
-) comment 'Clientes y proveedores';
+    clicod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
+    cliraz      varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
+    cliidf      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
+    clitkr      varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
+    PRIMARY KEY (clicod)
+) comment 'Clientes';
+
+CREATE TABLE pro (
+    version     bigint unsigned not null default '0'                            comment 'Version',
+    procod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
+    proraz      varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
+    proidf      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
+    protkr      varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
+    PRIMARY KEY (procod)
+) comment 'Proveedores';
 
 CREATE TABLE emp (
     version     bigint unsigned not null default '0'                            comment 'Version',
     empcod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
     empraz      varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
     empidf      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
+    emptkr      varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
     PRIMARY KEY (empcod)
 ) comment 'Empresas';
 
@@ -70,22 +80,22 @@ create table usu (
     primary key (usucod)
 ) comment 'Usuarios';
 
-insert into usu values(1, 0, 'root', 'root@flcargo.org', 'Usuario administrador', 'passwd');
+insert into usu values(1, 1, 'root', 'root@flcargo.org', 'Usuario administrador', 'passwd');
 
 create table tca (
     version     bigint unsigned not null default '0'                            comment 'Version',
     tcacod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
     tcaloc      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Localizador',
 
-    tcacypcod   bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo cliente',
-    tcacypraz   varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
-    tcacypidf   varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
-    tcacyptkr   varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
+    tcaclicod   bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo cliente',
+    tcacliraz   varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
+    tcacliidf   varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
+    tcaclitkr   varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
 
     tcateocod   varchar(5) not null default ''                                  comment 'Estado operativo',
 
     primary key(tcacod),
-    foreign key (tcacypcod) references cyp(cypcod),
+    foreign key (tcaclicod) references cli(clicod),
     foreign key (tcateocod) references teo(teocod)
 ) comment 'Órdenes de carga';
 
@@ -94,15 +104,15 @@ create table tta (
     ttacod bigint unsigned NOT NULL DEFAULT '0'                                 COMMENT 'Codigo interno',
     ttaloc varchar(20) NOT NULL DEFAULT ''                                      COMMENT 'Localizador',
 
-    ttacypcod   bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo proveedor',
-    ttacypraz   varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
-    ttacypidf   varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
-    ttacyptkr   varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
+    ttaprocod   bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo proveedor',
+    ttaproraz   varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
+    ttaproidf   varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
+    ttaprotkr   varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
 
     ttateocod   varchar(5) not null default ''                                  comment 'Código estado operativo',
 
     primary key(ttacod),
-    foreign key (ttacypcod) references cyp(cypcod),
+    foreign key (ttaprocod) references pro(procod),
     foreign key (ttateocod) references teo(teocod)
 ) comment 'Órdenes de trabajo';
 

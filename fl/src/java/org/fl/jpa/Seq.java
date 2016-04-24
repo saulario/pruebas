@@ -7,10 +7,12 @@ package org.fl.jpa;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -18,21 +20,29 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author saulario
  */
 @Entity
+@Table(name = "seq")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Seq.findAll", query = "SELECT s FROM Seq s"),
+    @NamedQuery(name = "Seq.findByVersion", query = "SELECT s FROM Seq s WHERE s.version = :version"),
     @NamedQuery(name = "Seq.findBySeqcod", query = "SELECT s FROM Seq s WHERE s.seqcod = :seqcod"),
     @NamedQuery(name = "Seq.findBySeqdes", query = "SELECT s FROM Seq s WHERE s.seqdes = :seqdes"),
     @NamedQuery(name = "Seq.findBySegnxt", query = "SELECT s FROM Seq s WHERE s.segnxt = :segnxt")})
 public class Seq implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @Column(name = "version")
+    private long version;
     @Id
     @Basic(optional = false)
+    @Column(name = "seqcod")
     private String seqcod;
     @Basic(optional = false)
+    @Column(name = "seqdes")
     private String seqdes;
     @Basic(optional = false)
+    @Column(name = "segnxt")
     private long segnxt;
 
     public Seq() {
@@ -42,10 +52,19 @@ public class Seq implements Serializable {
         this.seqcod = seqcod;
     }
 
-    public Seq(String seqcod, String seqdes, long segnxt) {
+    public Seq(String seqcod, long version, String seqdes, long segnxt) {
         this.seqcod = seqcod;
+        this.version = version;
         this.seqdes = seqdes;
         this.segnxt = segnxt;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
     public String getSeqcod() {

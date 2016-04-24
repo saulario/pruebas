@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="TRACE" name="fl" packages="">
     <Appenders>
-        <RandomAccessFile name="FILE" fileName="logs/fl.log">
+        <RandomAccessFile name="FILE" fileName="logs/cargo.log">
             <PatternLayout>
                 <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
                 <Pattern>%d %p %c{1.}.%M %m%n</Pattern>
