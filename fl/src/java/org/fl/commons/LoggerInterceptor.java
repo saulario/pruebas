@@ -21,10 +21,13 @@ public class LoggerInterceptor {
     public Object doIt(final InvocationContext ic) throws Exception {
         log.info("-----> Inicio");
         Object o = null;
-
+        
+        if (true | false) {
+            throw new Exception("Se ha producido un error controlado");
+        }
         
         log.info("<----- Fin");
-        return o;
+        return ic.proceed();
     }
 
 }
