@@ -90,8 +90,8 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
 
         log.info("+-----> Comprobando Interceptores");
         
-        ClaseAuditada c = new ClaseAuditada();
-        c.metodoAuditado();
+//        ClaseAuditada c = new ClaseAuditada();
+//        c.metodoAuditado();
 
         log.info("*");
         log.info("************************************************");
