@@ -23,6 +23,7 @@ CREATE TABLE cli (
     version     bigint unsigned not null default '0'                            comment 'Version',
     clicod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
     cliraz      varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
+    clieid      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación externo',
     cliidf      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
     clitkr      varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
     PRIMARY KEY (clicod)
@@ -32,6 +33,7 @@ CREATE TABLE pro (
     version     bigint unsigned not null default '0'                            comment 'Version',
     procod      bigint unsigned NOT NULL DEFAULT '0'                            COMMENT 'Codigo interno',
     proraz      varchar(80) NOT NULL DEFAULT ''                                 COMMENT 'Razón social',
+    proeid      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación externo',
     proidf      varchar(20) NOT NULL DEFAULT ''                                 COMMENT 'Identificación fiscal',
     protkr      varchar(5) NOT NULL DEFAULT ''                                  COMMENT 'Ticker',
     PRIMARY KEY (procod)
