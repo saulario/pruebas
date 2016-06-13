@@ -4,6 +4,8 @@
 #include <tntdb/connection.h>
 #include <tntdb/date.h>
 
+#include "vwze_entity.h"
+
 class Aviso {
 public:
     std::string relevancia;
@@ -48,7 +50,9 @@ public:
 private:
     static log4cxx::LoggerPtr logger;
     tntdb::Connection con;
-
+    
+    std::map<std::string, vwze::entity::Pro *> proMap;
+    
     void borrarDatos(void);
     Aviso * parsearLinea(const std::string &);
     tntdb::Date parsearDate(const std::string &);

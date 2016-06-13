@@ -18,11 +18,18 @@ Loader::Loader(const Loader& orig) {
 }
 
 Loader::~Loader() {
+    for (auto p : proMap) {
+        if (p.second) {
+            delete p.second;
+        }
+    }
 }
 
 int Loader::run(int argc, char ** argv) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
+    borrarDatos();
+    
     std::ifstream infile("vwze.csv");
 
     std::string line = "";
@@ -50,9 +57,7 @@ void Loader::borrarDatos(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
     
     con.prepare("delete from doc").execute();
-    
     con.prepare("delete from pro").execute();
-    
 
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
@@ -73,7 +78,7 @@ tntdb::Date Loader::parsearDate(const std::string & p) {
 
 Aviso * Loader::parsearLinea(const std::string & linea) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    Aviso * a = NULL;
+    Aviso * a = new Aviso;
 
     std::vector<std::string> fields;
     boost::algorithm::split(fields, linea, boost::algorithm::is_any_of(";"));
