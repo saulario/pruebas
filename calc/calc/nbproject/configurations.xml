@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Loader.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,6 +13,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Loader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -25,6 +27,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>log4cxx.properties</itemPath>
     <itemPath>script.sql</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
@@ -36,7 +39,21 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <standard>8</standard>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>log4cxx</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
+      <item path="Loader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Loader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="log4cxx.properties" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="script.sql" ex="false" tool="3" flavor2="0">
@@ -62,6 +79,12 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Loader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Loader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="log4cxx.properties" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="script.sql" ex="false" tool="3" flavor2="0">
