@@ -19,16 +19,23 @@ create table zoo (
 );
 
 create table pro (
-    procod bigint not null default '0',
     produn varchar(20) not null default '',
     proraz varchar(80) not null default '',
-    primary key(procod)
+    primary key(produn)
 );
 
 create table doc (
     doccod      bigint not null default '0',
-
-
-
+    docrel      varchar(20) not null default '',
+    docexp      varchar(20) not null default '',
+    docfec      date not null default '0001-01-01',
+    docorgzon   varchar(10) not null default '',
+    docorgpob   varchar(80) not null default '',
+    docdeszon   varchar(10) not null default '',
+    docdespob   varchar(80) not null default '',
+    docflu      varchar(5) not null default '',
+    docfab      varchar(5) not null default '',
+    docdun      varchar(20) not null default '',
+    docpro      varchar(80) not null default '',
     primary key (doccod)
 );

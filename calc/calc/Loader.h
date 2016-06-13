@@ -1,13 +1,14 @@
 #ifndef LOADER_H
 #define LOADER_H
 
-#include <boost/date_time/gregorian/gregorian.hpp>
+#include <tntdb/connection.h>
+#include <tntdb/date.h>
 
 class Aviso {
 public:
     std::string relevancia;
     std::string expedicion;
-    boost::gregorian::date fecha;
+    tntdb::Date fecha;
     std::string org_zona;
     std::string org_poblacion;
     std::string des_zona;
@@ -22,7 +23,7 @@ public:
     Aviso() {
         relevancia = "";
         expedicion = "";
-        fecha = boost::gregorian::date(1, 1, 1);
+        fecha = tntdb::Date(1, 1, 1);
         org_zona = "";
         org_poblacion = "";
         des_zona = "";
@@ -38,7 +39,7 @@ public:
 
 class Loader {
 public:
-    Loader();
+    Loader(tntdb::Connection &);
     Loader(const Loader& orig);
     virtual ~Loader();
 
@@ -46,6 +47,12 @@ public:
 
 private:
     static log4cxx::LoggerPtr logger;
+    tntdb::Connection con;
+
+    void borrarDatos(void);
+    Aviso * parsearLinea(const std::string &);
+    tntdb::Date parsearDate(const std::string &);
+
 };
 
 #endif /* LOADER_H */

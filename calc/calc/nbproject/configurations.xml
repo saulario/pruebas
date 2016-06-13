@@ -5,6 +5,8 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Loader.h</itemPath>
+      <itemPath>vwze_dao.h</itemPath>
+      <itemPath>vwze_entity.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -15,6 +17,8 @@
                    projectFiles="true">
       <itemPath>Loader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>vwze_dao.cpp</itemPath>
+      <itemPath>vwze_entity.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -45,6 +49,9 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>log4cxx</linkerLibLibItem>
+            <linkerLibLibItem>tntdb</linkerLibLibItem>
+            <linkerLibLibItem>cxxtools</linkerLibLibItem>
+            <linkerLibLibItem>boost_system</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -57,6 +64,14 @@
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="script.sql" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="vwze_dao.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="vwze_dao.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="vwze_entity.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="vwze_entity.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -88,6 +103,14 @@
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="script.sql" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="vwze_dao.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="vwze_dao.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="vwze_entity.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="vwze_entity.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -36,7 +36,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Loader.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/vwze_dao.o \
+	${OBJECTDIR}/vwze_entity.o
 
 
 # C Compiler Flags
@@ -53,7 +55,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-llog4cxx
+LDLIBSOPTIONS=-llog4cxx -ltntdb -lcxxtools -lboost_system
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -72,6 +74,16 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/vwze_dao.o: vwze_dao.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vwze_dao.o vwze_dao.cpp
+
+${OBJECTDIR}/vwze_entity.o: vwze_entity.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vwze_entity.o vwze_entity.cpp
 
 # Subprojects
 .build-subprojects:
