@@ -19,8 +19,16 @@ private:
     tntdb::Connection con;
     
     std::map<std::string, vwze::entity::Pro *> proMap;
+    std::map<std::string, std::string> zonMap;
+    
+    unsigned long doccod;
+    unsigned long dodcod;
     
     void borrarDatos(void);
+    void cargarDatos(void);
+    void insertarDocumento(vwze::entity::Doc *);
+    void insertarDocumentosWA(vwze::entity::Doc *);
+    void insertarDocumentosWE(vwze::entity::Doc *);
     vwze::entity::Doc * parsearLinea(const std::string &);
     tntdb::Date parsearDate(const std::string &);
     double parsearDouble(const std::string &);

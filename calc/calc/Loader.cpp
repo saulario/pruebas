@@ -9,6 +9,7 @@
 #include <log4cxx/logger.h>
 #include <iostream>
 #include <stdlib.h>
+#include <tntdb/result.h>
 
 #include "Loader.h"
 #include "vwze_dao.h"
@@ -33,33 +34,28 @@ int Loader::run(int argc, char ** argv) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     borrarDatos();
+    cargarDatos();
 
     std::ifstream infile("vwze.csv");
 
     std::string line = "";
-    int count = 0;
 
     std::getline(infile, line); // descarta textos
     std::getline(infile, line);
     while (!infile.eof()) {
-        //++count;
 
         vwze::entity::Doc * doc = parsearLinea(line);
-        doc->doccod = count;
-        if (boost::starts_with(doc->docrel, "Pflicht")) {
-            ++count;
-            vwze::dao::DocDAO::getInstance()->insert(con, doc);
-        }
+        insertarDocumento(doc);
         if (doc) delete doc;
         
-        if (count > 100) {
+        if (doccod > 10) {
             break;
         }
 
         std::getline(infile, line);
     }
 
-    std::cerr << count << std::endl;
+    std::cerr << doccod << std::endl;
     infile.close();
 
     LOG4CXX_INFO(logger, "<----- Fin");
@@ -68,9 +64,70 @@ int Loader::run(int argc, char ** argv) {
 void Loader::borrarDatos(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
+    con.prepare("delete from dod").execute();
     con.prepare("delete from doc").execute();
     con.prepare("delete from pro").execute();
 
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+void Loader::cargarDatos(void) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    // inicializando códigos
+    doccod = 0;
+    dodcod = 0;
+    
+    tntdb::Statement stmt = con.prepare("select zoopcp, zoncod from zon join zoo on zoozoncod = zoncod");
+    for (tntdb::Row row : stmt.select()) {
+        std::string zoopcp = row.getString(0);
+        std::string zoncod = row.getString(1);
+        zonMap.insert(std::pair<std::string, std::string>(zoopcp, zoncod));
+    }
+
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+void Loader::insertarDocumento(vwze::entity::Doc * doc) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    if (!boost::starts_with(doc->docrel, "Pflicht")) {
+        LOG4CXX_TRACE(logger, "<----- Return 1");
+    }
+    
+    
+    
+    
+
+    doc->doccod = ++doccod;
+    vwze::dao::DocDAO::getInstance()->insert(con, doc);
+    
+    if (boost::starts_with(doc->docflu, "WE")) {
+        insertarDocumentosWE(doc);
+    } else if (boost::starts_with(doc->docflu, "WA")) {
+        insertarDocumentosWA(doc);
+    } else {
+        LOG4CXX_WARN(logger, "\tIgnorando documento " + doc->docexp + " flujo desconocido");
+    }
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+void Loader::insertarDocumentosWA(vwze::entity::Doc * doc) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+void Loader::insertarDocumentosWE(vwze::entity::Doc * doc) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+
+    if (zonMap.find(doc->docorgzon) == zonMap.end()) {
+        LOG4CXX_WARN(logger, "\tZona origen no encontrada " + doc->docorgzon + " descartando...");
+        LOG4CXX_TRACE(logger, "<----- Return 1");
+    }
+    
+    
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
@@ -139,7 +196,7 @@ vwze::entity::Doc * Loader::parsearLinea(const std::string & linea) {
     doc->docorgpob = fields[10];
     doc->docdeszon = fields[13];
     doc->docdespob = fields[14];
-    doc->docflu = fields[17];
+    doc->docflu = boost::trim_copy(fields[17]);
     doc->docfab = fields[19];
     doc->docdun = fields[18];
     doc->docpro = boost::trim_copy(fields[28]);
