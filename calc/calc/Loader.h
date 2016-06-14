@@ -23,6 +23,7 @@ private:
     void borrarDatos(void);
     vwze::entity::Doc * parsearLinea(const std::string &);
     tntdb::Date parsearDate(const std::string &);
+    double parsearDouble(const std::string &);
 
 };
 

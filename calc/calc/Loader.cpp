@@ -1,6 +1,8 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <fstream>
 #include <iostream>
@@ -40,12 +42,19 @@ int Loader::run(int argc, char ** argv) {
     std::getline(infile, line); // descarta textos
     std::getline(infile, line);
     while (!infile.eof()) {
-        ++count;
+        //++count;
 
         vwze::entity::Doc * doc = parsearLinea(line);
         doc->doccod = count;
-        vwze::dao::DocDAO::getInstance()->insert(con, doc);
+        if (boost::starts_with(doc->docrel, "Pflicht")) {
+            ++count;
+            vwze::dao::DocDAO::getInstance()->insert(con, doc);
+        }
         if (doc) delete doc;
+        
+        if (count > 100) {
+            break;
+        }
 
         std::getline(infile, line);
     }
@@ -87,6 +96,16 @@ tntdb::Date Loader::parsearDate(const std::string & p) {
     return d;
 }
 
+double Loader::parsearDouble(const std::string & p) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    LOG4CXX_TRACE(logger, "\t(p): " + p);
+
+    double d = boost::lexical_cast<double, std::string>(boost::replace_all_copy(p, ",", "."));
+
+    LOG4CXX_TRACE(logger, "<----- Fin");
+    return d;
+}
+
 /**
  * 0 - Urgencia
  * 1 - Expedición
@@ -123,11 +142,11 @@ vwze::entity::Doc * Loader::parsearLinea(const std::string & linea) {
     doc->docflu = fields[17];
     doc->docfab = fields[19];
     doc->docdun = fields[18];
-    doc->docpro = fields[20];
+    doc->docpro = boost::trim_copy(fields[28]);
 
-    doc->docpes = boost::lexical_cast<double, std::string>(fields[20]);
-    doc->docvol = boost::lexical_cast<double, std::string>(fields[21]);
-    doc->docpef = doc->docvol * 250;
+    doc->docpes = parsearDouble(fields[20]);
+    doc->docvol = parsearDouble(fields[21]);
+    doc->docpef = parsearDouble(fields[22]);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
     return doc;

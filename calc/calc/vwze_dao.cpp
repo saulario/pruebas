@@ -194,6 +194,113 @@ void DocDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doc * e) {
 }
 
 
+DodDAO * DodDAO::dao = NULL;
+boost::mutex DodDAO::mtx;
+
+DodDAO::~DodDAO() {
+    if (dao != NULL) {
+        delete dao;
+    }
+}
+
+DodDAO * DodDAO::getInstance(void) {
+    boost::mutex::scoped_lock lock(mtx);
+    if (dao == NULL) {
+        dao = new DodDAO();
+        dao->table = "dod";
+        dao->keyColumns = "dodcod";
+        dao->columns = "dodcod,dodrel,dodexp,dodfec"
+                ",dodorgzon,dodorgpob,doddeszon,doddespob,dodflu"
+                ",dodfab,doddun,dodpro,dodpes,dodvol"
+                ",dodpef";
+        dao->createQueries();
+    }
+    return dao;
+}
+
+vwze::entity::Dod * DodDAO::insert(tntdb::Connection & con, vwze::entity::Dod * e) {
+    tntdb::Statement stmt = con.prepare(getInsertQuery());
+    setColumns(stmt, e);
+    stmt.execute();
+    return e;
+}
+
+std::list<vwze::entity::Dod *> DodDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
+    std::list<vwze::entity::Dod *> es;
+    for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
+        vwze::entity::Dod * e = new vwze::entity::Dod;
+        tntdb::Row row = *it;
+        loadColumns(row, e);
+        es.push_back(e);
+    }
+    return es;
+}
+
+vwze::entity::Dod * DodDAO::read(tntdb::Connection & con, const long & dodcod) {
+    tntdb::Statement stmt = con.prepare(getReadQuery());
+    vwze::entity::Dod * e = NULL;
+    try {
+        stmt.set("dodcodPK", dodcod);
+        tntdb::Row row = stmt.selectRow();
+        e = new vwze::entity::Dod;
+        loadColumns(row, e);
+    } catch (tntdb::NotFound) {
+    }
+    return e;
+}
+
+tntdb::Statement::size_type DodDAO::remove(tntdb::Connection & con, const long & dodcod) {
+    tntdb::Statement stmt = con.prepare(getRemoveQuery());
+    stmt.set("dodcodPK", dodcod);
+    return stmt.execute();
+}
+
+vwze::entity::Dod * DodDAO::update(tntdb::Connection & con, vwze::entity::Dod * e) {
+    tntdb::Statement stmt = con.prepare(getUpdateQuery());
+    setColumns(stmt, e);
+    stmt.set("dodcodPK", e->dodcod);
+    stmt.execute();
+    return e;
+}
+
+void DodDAO::loadColumns(tntdb::Row & row, vwze::entity::Dod * e) {
+    int index = 0;
+    e->dodcod = row.getInt64(index++);
+    e->dodrel = row.getString(index++);
+    e->dodexp = row.getString(index++);
+    e->dodfec = row.getDate(index++);
+    e->dodorgzon = row.getString(index++);
+    e->dodorgpob = row.getString(index++);
+    e->doddeszon = row.getString(index++);
+    e->doddespob = row.getString(index++);
+    e->dodflu = row.getString(index++);
+    e->dodfab = row.getString(index++);
+    e->doddun = row.getString(index++);
+    e->dodpro = row.getString(index++);
+    e->dodpes = row.getDecimal(index++).getDouble();
+    e->dodvol = row.getDecimal(index++).getDouble();
+    e->dodpef = row.getDecimal(index++).getDouble();
+}
+
+void DodDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Dod * e) {
+    stmt.setInt64("dodcod", e->dodcod);
+    stmt.setString("dodrel", e->dodrel);
+    stmt.setString("dodexp", e->dodexp);
+    stmt.setDate("dodfec", e->dodfec);
+    stmt.setString("dodorgzon", e->dodorgzon);
+    stmt.setString("dodorgpob", e->dodorgpob);
+    stmt.setString("doddeszon", e->doddeszon);
+    stmt.setString("doddespob", e->doddespob);
+    stmt.setString("dodflu", e->dodflu);
+    stmt.setString("dodfab", e->dodfab);
+    stmt.setString("doddun", e->doddun);
+    stmt.setString("dodpro", e->dodpro);
+    stmt.setDouble("dodpes", e->dodpes);
+    stmt.setDouble("dodvol", e->dodvol);
+    stmt.setDouble("dodpef", e->dodpef);
+}
+
+
 ProDAO * ProDAO::dao = NULL;
 boost::mutex ProDAO::mtx;
 
@@ -287,7 +394,7 @@ ZonDAO * ZonDAO::getInstance(void) {
         dao = new ZonDAO();
         dao->table = "zon";
         dao->keyColumns = "zoncod";
-        dao->columns = "zoncod,zondes";
+        dao->columns = "zoncod,zondes,zonman";
         dao->createQueries();
     }
     return dao;
@@ -342,11 +449,13 @@ void ZonDAO::loadColumns(tntdb::Row & row, vwze::entity::Zon * e) {
     int index = 0;
     e->zoncod = row.getString(index++);
     e->zondes = row.getString(index++);
+    e->zonman = row.getDecimal(index++).getDouble();
 }
 
 void ZonDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Zon * e) {
     stmt.setString("zoncod", e->zoncod);
     stmt.setString("zondes", e->zondes);
+    stmt.setDouble("zonman", e->zonman);
 }
 
 

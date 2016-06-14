@@ -41,6 +41,46 @@ bool Doc::operator==(const Doc & other) {
     return true;
 }
 
+Dod::Dod() {
+    dodcod = 0L;
+    dodrel = "";
+    dodexp = "";
+    dodfec = tntdb::Date();
+    dodorgzon = "";
+    dodorgpob = "";
+    doddeszon = "";
+    doddespob = "";
+    dodflu = "";
+    dodfab = "";
+    doddun = "";
+    dodpro = "";
+    dodpes = 0.0;
+    dodvol = 0.0;
+    dodpef = 0.0;
+}
+
+Dod::~Dod() {
+}
+
+bool Dod::operator==(const Dod & other) {
+    if (this->dodcod != other.dodcod) return false;
+    if (this->dodrel != other.dodrel) return false;
+    if (this->dodexp != other.dodexp) return false;
+    if (this->dodfec != other.dodfec) return false;
+    if (this->dodorgzon != other.dodorgzon) return false;
+    if (this->dodorgpob != other.dodorgpob) return false;
+    if (this->doddeszon != other.doddeszon) return false;
+    if (this->doddespob != other.doddespob) return false;
+    if (this->dodflu != other.dodflu) return false;
+    if (this->dodfab != other.dodfab) return false;
+    if (this->doddun != other.doddun) return false;
+    if (this->dodpro != other.dodpro) return false;
+    if (this->dodpes != other.dodpes) return false;
+    if (this->dodvol != other.dodvol) return false;
+    if (this->dodpef != other.dodpef) return false;
+    return true;
+}
+
 Pro::Pro() {
     produn = "";
     proraz = "";
@@ -58,6 +98,7 @@ bool Pro::operator==(const Pro & other) {
 Zon::Zon() {
     zoncod = "";
     zondes = "";
+    zonman = 0.0;
 }
 
 Zon::~Zon() {
@@ -66,6 +107,7 @@ Zon::~Zon() {
 bool Zon::operator==(const Zon & other) {
     if (this->zoncod != other.zoncod) return false;
     if (this->zondes != other.zondes) return false;
+    if (this->zonman != other.zonman) return false;
     return true;
 }
 
