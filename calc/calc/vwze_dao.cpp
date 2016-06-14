@@ -104,7 +104,8 @@ DocDAO * DocDAO::getInstance(void) {
         dao->keyColumns = "doccod";
         dao->columns = "doccod,docrel,docexp,docfec"
                 ",docorgzon,docorgpob,docdeszon,docdespob,docflu"
-                ",docfab,docdun,docpro";
+                ",docfab,docdun,docpro,docpes,docvol"
+                ",docpef";
         dao->createQueries();
     }
     return dao;
@@ -169,6 +170,9 @@ void DocDAO::loadColumns(tntdb::Row & row, vwze::entity::Doc * e) {
     e->docfab = row.getString(index++);
     e->docdun = row.getString(index++);
     e->docpro = row.getString(index++);
+    e->docpes = row.getDecimal(index++).getDouble();
+    e->docvol = row.getDecimal(index++).getDouble();
+    e->docpef = row.getDecimal(index++).getDouble();
 }
 
 void DocDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doc * e) {
@@ -184,6 +188,9 @@ void DocDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doc * e) {
     stmt.setString("docfab", e->docfab);
     stmt.setString("docdun", e->docdun);
     stmt.setString("docpro", e->docpro);
+    stmt.setDouble("docpes", e->docpes);
+    stmt.setDouble("docvol", e->docvol);
+    stmt.setDouble("docpef", e->docpef);
 }
 
 

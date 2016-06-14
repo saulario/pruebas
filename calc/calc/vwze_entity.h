@@ -21,6 +21,9 @@ namespace vwze {
             std::string docfab; /*  */
             std::string docdun; /*  */
             std::string docpro; /*  */
+            double docpes; /*  */
+            double docvol; /*  */
+            double docpef; /*  */
             Doc();
             ~Doc();
             bool operator==(const Doc &);

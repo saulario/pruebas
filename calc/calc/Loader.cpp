@@ -1,6 +1,7 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/lexical_cast.hpp>
 #include <fstream>
 #include <iostream>
 #include <log4cxx/logger.h>
@@ -8,6 +9,7 @@
 #include <stdlib.h>
 
 #include "Loader.h"
+#include "vwze_dao.h"
 
 log4cxx::LoggerPtr Loader::logger = log4cxx::Logger::getLogger("Loader");
 
@@ -29,7 +31,7 @@ int Loader::run(int argc, char ** argv) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     borrarDatos();
-    
+
     std::ifstream infile("vwze.csv");
 
     std::string line = "";
@@ -39,12 +41,13 @@ int Loader::run(int argc, char ** argv) {
     std::getline(infile, line);
     while (!infile.eof()) {
         ++count;
-        Aviso * a = parsearLinea(line);
 
-        if (a) delete a;
+        vwze::entity::Doc * doc = parsearLinea(line);
+        doc->doccod = count;
+        vwze::dao::DocDAO::getInstance()->insert(con, doc);
+        if (doc) delete doc;
 
         std::getline(infile, line);
-        break;
     }
 
     std::cerr << count << std::endl;
@@ -55,7 +58,7 @@ int Loader::run(int argc, char ** argv) {
 
 void Loader::borrarDatos(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    
+
     con.prepare("delete from doc").execute();
     con.prepare("delete from pro").execute();
 
@@ -70,24 +73,62 @@ tntdb::Date Loader::parsearDate(const std::string & p) {
     std::vector<std::string> fields;
     boost::algorithm::split(fields, p, boost::algorithm::is_any_of("."));
 
+    if (fields.size() < 3) {
+        LOG4CXX_DEBUG(logger, "\t(p): " + p + " error");
+    }
 
+    unsigned short dd = boost::lexical_cast<unsigned short, std::string>(fields[0]);
+    unsigned short mm = boost::lexical_cast<unsigned short, std::string>(fields[1]);
+    unsigned short aa = boost::lexical_cast<unsigned short, std::string>(fields[2]);
+
+    d = tntdb::Date(aa, mm, dd);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
     return d;
 }
 
-Aviso * Loader::parsearLinea(const std::string & linea) {
+/**
+ * 0 - Urgencia
+ * 1 - Expedición
+ * 2 - Fecha
+ * 7 - Zona origen
+ * 10 - Población origen
+ * 13 - Zona destino
+ * 14 - Población destino
+ * 17 - Tipo de flujo
+ * 18 - DUNS
+ * 19 - Fábrica
+ * 20 - Peso bruto
+ * 21 - Volumen
+ * 22 - Peso facturable
+ * 28 - Nombre proveedor
+ * 
+ * @param linea
+ * @return 
+ */
+vwze::entity::Doc * Loader::parsearLinea(const std::string & linea) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    Aviso * a = new Aviso;
+    vwze::entity::Doc * doc = new vwze::entity::Doc;
 
     std::vector<std::string> fields;
     boost::algorithm::split(fields, linea, boost::algorithm::is_any_of(";"));
 
-    a->relevancia = fields[0];
-    a->expedicion = fields[1];
+    doc->docrel = fields[0];
+    doc->docexp = fields[1];
+    doc->docfec = parsearDate(fields[2]);
+    doc->docorgzon = fields[7];
+    doc->docorgpob = fields[10];
+    doc->docdeszon = fields[13];
+    doc->docdespob = fields[14];
+    doc->docflu = fields[17];
+    doc->docfab = fields[19];
+    doc->docdun = fields[18];
+    doc->docpro = fields[20];
 
-
+    doc->docpes = boost::lexical_cast<double, std::string>(fields[20]);
+    doc->docvol = boost::lexical_cast<double, std::string>(fields[21]);
+    doc->docpef = doc->docvol * 250;
 
     LOG4CXX_TRACE(logger, "<----- Fin");
-    return a;
+    return doc;
 }
