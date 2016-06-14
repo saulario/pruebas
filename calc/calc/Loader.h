@@ -19,7 +19,7 @@ private:
     tntdb::Connection con;
     
     std::map<std::string, vwze::entity::Pro *> proMap;
-    std::map<std::string, std::string> zonMap;
+    std::map<std::string, vwze::entity::Zon *> zonMap;
     
     unsigned long doccod;
     unsigned long dodcod;

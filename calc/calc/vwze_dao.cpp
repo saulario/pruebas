@@ -209,10 +209,10 @@ DodDAO * DodDAO::getInstance(void) {
         dao = new DodDAO();
         dao->table = "dod";
         dao->keyColumns = "dodcod";
-        dao->columns = "dodcod,dodrel,dodexp,dodfec"
-                ",dodorgzon,dodorgpob,doddeszon,doddespob,dodflu"
-                ",dodfab,doddun,dodpro,dodpes,dodvol"
-                ",dodpef";
+        dao->columns = "dodcod,dodrel,dodexp,dodtip"
+                ",dodfec,dodorgzon,dodorgpob,doddeszon,doddespob"
+                ",dodflu,dodfab,doddun,dodpro,dodpes"
+                ",dodvol,dodpef";
         dao->createQueries();
     }
     return dao;
@@ -268,6 +268,7 @@ void DodDAO::loadColumns(tntdb::Row & row, vwze::entity::Dod * e) {
     e->dodcod = row.getInt64(index++);
     e->dodrel = row.getString(index++);
     e->dodexp = row.getString(index++);
+    e->dodtip = row.getInt(index++);
     e->dodfec = row.getDate(index++);
     e->dodorgzon = row.getString(index++);
     e->dodorgpob = row.getString(index++);
@@ -286,6 +287,7 @@ void DodDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Dod * e) {
     stmt.setInt64("dodcod", e->dodcod);
     stmt.setString("dodrel", e->dodrel);
     stmt.setString("dodexp", e->dodexp);
+    stmt.setInt("dodtip", e->dodtip);
     stmt.setDate("dodfec", e->dodfec);
     stmt.setString("dodorgzon", e->dodorgzon);
     stmt.setString("dodorgpob", e->dodorgpob);
@@ -394,7 +396,7 @@ ZonDAO * ZonDAO::getInstance(void) {
         dao = new ZonDAO();
         dao->table = "zon";
         dao->keyColumns = "zoncod";
-        dao->columns = "zoncod,zondes,zonman";
+        dao->columns = "zoncod,zondes,zonman,zontte";
         dao->createQueries();
     }
     return dao;
@@ -450,12 +452,14 @@ void ZonDAO::loadColumns(tntdb::Row & row, vwze::entity::Zon * e) {
     e->zoncod = row.getString(index++);
     e->zondes = row.getString(index++);
     e->zonman = row.getDecimal(index++).getDouble();
+    e->zontte = row.getDecimal(index++).getDouble();
 }
 
 void ZonDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Zon * e) {
     stmt.setString("zoncod", e->zoncod);
     stmt.setString("zondes", e->zondes);
     stmt.setDouble("zonman", e->zonman);
+    stmt.setDouble("zontte", e->zontte);
 }
 
 

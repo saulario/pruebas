@@ -45,6 +45,7 @@ Dod::Dod() {
     dodcod = 0L;
     dodrel = "";
     dodexp = "";
+    dodtip = 0;
     dodfec = tntdb::Date();
     dodorgzon = "";
     dodorgpob = "";
@@ -66,6 +67,7 @@ bool Dod::operator==(const Dod & other) {
     if (this->dodcod != other.dodcod) return false;
     if (this->dodrel != other.dodrel) return false;
     if (this->dodexp != other.dodexp) return false;
+    if (this->dodtip != other.dodtip) return false;
     if (this->dodfec != other.dodfec) return false;
     if (this->dodorgzon != other.dodorgzon) return false;
     if (this->dodorgpob != other.dodorgpob) return false;
@@ -99,6 +101,7 @@ Zon::Zon() {
     zoncod = "";
     zondes = "";
     zonman = 0.0;
+    zontte = 0.0;
 }
 
 Zon::~Zon() {
@@ -108,6 +111,7 @@ bool Zon::operator==(const Zon & other) {
     if (this->zoncod != other.zoncod) return false;
     if (this->zondes != other.zondes) return false;
     if (this->zonman != other.zonman) return false;
+    if (this->zontte != other.zontte) return false;
     return true;
 }
 

@@ -35,6 +35,7 @@ namespace vwze {
             long dodcod; /*  */
             std::string dodrel; /*  */
             std::string dodexp; /*  */
+            int dodtip; /*  */
             tntdb::Date dodfec; /*  */
             std::string dodorgzon; /*  */
             std::string dodorgpob; /*  */
@@ -68,6 +69,7 @@ namespace vwze {
             std::string zoncod; /*  */
             std::string zondes; /*  */
             double zonman; /*  */
+            double zontte; /*  */
             Zon();
             ~Zon();
             bool operator==(const Zon &);

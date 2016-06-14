@@ -1,4 +1,5 @@
 
+drop table if exists dod;
 drop table if exists doc;
 drop table if exists pro;
 drop table if exists zoo;
@@ -8,12 +9,13 @@ create table zon (
     zoncod      varchar(10) not null default '',
     zondes      varchar(40) not null default '',
     zonman      decimal(13,4) not null default '0.0000',
+    zontte      decimal(13,4) not null default '0.0000',
     primary key (zoncod)
 );
 
-insert into zon values ('DE38','ZONA 1 Hannover',0);
-insert into zon values ('DE74','ZONA 2 Ilsfeld',0);
-insert into zon values ('DE59','ZONA 3 Bonnen',0);
+insert into zon values ('DE38','ZONA 1 Hannover', 0, 0);
+insert into zon values ('DE74','ZONA 2 Ilsfeld' , 0, 0);
+insert into zon values ('DE59','ZONA 3 Bonnen'  , 0, 0);
 
 create table zoo (
     zoocod      bigint not null default '0',
@@ -118,6 +120,7 @@ create table dod (
     dodcod      bigint not null default '0',
     dodrel      varchar(20) not null default '',
     dodexp      varchar(20) not null default '',
+    dodtip      integer not null default '0',
     dodfec      date not null default '0001-01-01',
     dodorgzon   varchar(10) not null default '',
     dodorgpob   varchar(80) not null default '',

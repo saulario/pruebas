@@ -28,6 +28,11 @@ Loader::~Loader() {
             delete p.second;
         }
     }
+    for (auto p : zonMap) {
+        if (p.second) {
+            delete p.second;
+        }
+    }
 }
 
 int Loader::run(int argc, char ** argv) {
@@ -36,7 +41,8 @@ int Loader::run(int argc, char ** argv) {
     borrarDatos();
     cargarDatos();
 
-    std::ifstream infile("vwze.csv");
+    //std::ifstream infile("vwze.csv");
+    std::ifstream infile("vwzewe.csv");
 
     std::string line = "";
 
@@ -47,8 +53,8 @@ int Loader::run(int argc, char ** argv) {
         vwze::entity::Doc * doc = parsearLinea(line);
         insertarDocumento(doc);
         if (doc) delete doc;
-        
-        if (doccod > 10) {
+
+        if (doccod > 1000000) {
             break;
         }
 
@@ -73,16 +79,17 @@ void Loader::borrarDatos(void) {
 
 void Loader::cargarDatos(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    
+
     // inicializando códigos
     doccod = 0;
     dodcod = 0;
-    
+
     tntdb::Statement stmt = con.prepare("select zoopcp, zoncod from zon join zoo on zoozoncod = zoncod");
     for (tntdb::Row row : stmt.select()) {
         std::string zoopcp = row.getString(0);
         std::string zoncod = row.getString(1);
-        zonMap.insert(std::pair<std::string, std::string>(zoopcp, zoncod));
+        zonMap.insert(std::pair<std::string, vwze::entity::Zon *>(zoopcp,
+                vwze::dao::ZonDAO::getInstance()->read(con, zoncod)));
     }
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -90,18 +97,28 @@ void Loader::cargarDatos(void) {
 
 void Loader::insertarDocumento(vwze::entity::Doc * doc) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    
+
+    // sólo comprometidos
     if (!boost::starts_with(doc->docrel, "Pflicht")) {
         LOG4CXX_TRACE(logger, "<----- Return 1");
+        return;
     }
-    
-    
-    
-    
+
+    // sólo zonas tarificadas
+    std::string zoopcp = "";
+    if (boost::starts_with(doc->docflu, "WE")) {
+        zoopcp = doc->docorgzon;
+    } else if (boost::starts_with(doc->docflu, "WA")) {
+        zoopcp = doc->docdeszon;
+    }
+    if (zonMap.find(zoopcp) == zonMap.end()) {
+        LOG4CXX_TRACE(logger, "<----- Return 2");
+        return;
+    }
 
     doc->doccod = ++doccod;
     vwze::dao::DocDAO::getInstance()->insert(con, doc);
-    
+
     if (boost::starts_with(doc->docflu, "WE")) {
         insertarDocumentosWE(doc);
     } else if (boost::starts_with(doc->docflu, "WA")) {
@@ -109,25 +126,107 @@ void Loader::insertarDocumento(vwze::entity::Doc * doc) {
     } else {
         LOG4CXX_WARN(logger, "\tIgnorando documento " + doc->docexp + " flujo desconocido");
     }
-    
+
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
+/**
+ * Estos siempre se dividen entre dos tramos
+ * 
+ *  1. planta y cc
+ *  2. cc y proveedor
+ * 
+ * @param doc
+ */
 void Loader::insertarDocumentosWA(vwze::entity::Doc * doc) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
+
+    vwze::entity::Zon * zon = zonMap.find(doc->docdeszon)->second;
     
+    vwze::entity::Dod * dod = new vwze::entity::Dod;
+    
+    dod->dodrel = doc->docrel;
+    dod->dodexp = doc->docexp;
+    dod->dodfec = doc->docfec;
+    
+    dod->dodflu = doc->docflu;
+    dod->dodfab = doc->docfab;
+    dod->doddun = doc->docdun;
+    dod->dodpro = doc->docpro;
+    dod->dodpes = doc->docpes;
+    dod->dodvol = doc->docvol;
+    dod->dodpef = doc->docpef;
+    
+    dod->dodorgzon = doc->docorgzon;
+    dod->dodorgpob = doc->docorgpob;
+    dod->doddeszon = zon->zoncod;
+    dod->doddespob = zon->zondes;
+    
+    dod->dodcod = ++dodcod;
+    dod->dodtip = -2;
+    vwze::dao::DodDAO::getInstance()->insert(con, dod);
+    
+    dod->dodorgzon = zon->zoncod;
+    dod->dodorgpob = zon->zondes;
+    dod->doddeszon = doc->docdeszon;
+    dod->doddespob = doc->docdespob;
+    
+    dod->dodcod = ++dodcod;
+    dod->dodtip = -1;
+    vwze::dao::DodDAO::getInstance()->insert(con, dod);
+
+    delete dod;    
+
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
+/**
+ * Estos siempre se dividen entre dos tramos
+ * 
+ *  1. proveedor y cc
+ *  2. cc y planta
+ * 
+ * @param doc
+ */
 void Loader::insertarDocumentosWE(vwze::entity::Doc * doc) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-    if (zonMap.find(doc->docorgzon) == zonMap.end()) {
-        LOG4CXX_WARN(logger, "\tZona origen no encontrada " + doc->docorgzon + " descartando...");
-        LOG4CXX_TRACE(logger, "<----- Return 1");
-    }
+    vwze::entity::Zon * zon = zonMap.find(doc->docorgzon)->second;
     
+    vwze::entity::Dod * dod = new vwze::entity::Dod;
     
+    dod->dodrel = doc->docrel;
+    dod->dodexp = doc->docexp;
+    dod->dodfec = doc->docfec;
+    
+    dod->dodflu = doc->docflu;
+    dod->dodfab = doc->docfab;
+    dod->doddun = doc->docdun;
+    dod->dodpro = doc->docpro;
+    dod->dodpes = doc->docpes;
+    dod->dodvol = doc->docvol;
+    dod->dodpef = doc->docpef;
+    
+    dod->dodorgzon = doc->docorgzon;
+    dod->dodorgpob = doc->docorgpob;
+    dod->doddeszon = zon->zoncod;
+    dod->doddespob = zon->zondes;
+    
+    dod->dodcod = ++dodcod;
+    dod->dodtip = 1;
+    vwze::dao::DodDAO::getInstance()->insert(con, dod);
+    
+    dod->dodorgzon = zon->zoncod;
+    dod->dodorgpob = zon->zondes;
+    dod->doddeszon = doc->docdeszon;
+    dod->doddespob = doc->docdespob;
+    
+    dod->dodcod = ++dodcod;
+    dod->dodtip = 2;
+    vwze::dao::DodDAO::getInstance()->insert(con, dod);
+
+    delete dod;
+
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
