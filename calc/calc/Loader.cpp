@@ -42,7 +42,7 @@ int Loader::run(int argc, char ** argv) {
     cargarDatos();
 
     //std::ifstream infile("vwze.csv");
-    std::ifstream infile("vwzewe.csv");
+    std::ifstream infile("vwze.csv");
 
     std::string line = "";
 
@@ -142,13 +142,13 @@ void Loader::insertarDocumentosWA(vwze::entity::Doc * doc) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
     vwze::entity::Zon * zon = zonMap.find(doc->docdeszon)->second;
-    
+
     vwze::entity::Dod * dod = new vwze::entity::Dod;
-    
+
     dod->dodrel = doc->docrel;
     dod->dodexp = doc->docexp;
     dod->dodfec = doc->docfec;
-    
+
     dod->dodflu = doc->docflu;
     dod->dodfab = doc->docfab;
     dod->doddun = doc->docdun;
@@ -156,26 +156,31 @@ void Loader::insertarDocumentosWA(vwze::entity::Doc * doc) {
     dod->dodpes = doc->docpes;
     dod->dodvol = doc->docvol;
     dod->dodpef = doc->docpef;
-    
+
     dod->dodorgzon = doc->docorgzon;
     dod->dodorgpob = doc->docorgpob;
+    if (!doc->dockcc.empty()) {
+        dod->dodorgzon = doc->dockcc;
+        dod->dodorgpob = getKccDescripcion(doc->dockcc);
+    }
+    
     dod->doddeszon = zon->zoncod;
     dod->doddespob = zon->zondes;
-    
+
     dod->dodcod = ++dodcod;
     dod->dodtip = -2;
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
-    
+
     dod->dodorgzon = zon->zoncod;
     dod->dodorgpob = zon->zondes;
     dod->doddeszon = doc->docdeszon;
     dod->doddespob = doc->docdespob;
-    
+
     dod->dodcod = ++dodcod;
     dod->dodtip = -1;
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
 
-    delete dod;    
+    delete dod;
 
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
@@ -192,13 +197,13 @@ void Loader::insertarDocumentosWE(vwze::entity::Doc * doc) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
     vwze::entity::Zon * zon = zonMap.find(doc->docorgzon)->second;
-    
+
     vwze::entity::Dod * dod = new vwze::entity::Dod;
-    
+
     dod->dodrel = doc->docrel;
     dod->dodexp = doc->docexp;
     dod->dodfec = doc->docfec;
-    
+
     dod->dodflu = doc->docflu;
     dod->dodfab = doc->docfab;
     dod->doddun = doc->docdun;
@@ -206,21 +211,25 @@ void Loader::insertarDocumentosWE(vwze::entity::Doc * doc) {
     dod->dodpes = doc->docpes;
     dod->dodvol = doc->docvol;
     dod->dodpef = doc->docpef;
-    
+
     dod->dodorgzon = doc->docorgzon;
     dod->dodorgpob = doc->docorgpob;
     dod->doddeszon = zon->zoncod;
     dod->doddespob = zon->zondes;
-    
+
     dod->dodcod = ++dodcod;
     dod->dodtip = 1;
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
-    
+
     dod->dodorgzon = zon->zoncod;
     dod->dodorgpob = zon->zondes;
     dod->doddeszon = doc->docdeszon;
     dod->doddespob = doc->docdespob;
-    
+    if (!doc->dockcc.empty()) {
+        dod->doddeszon = doc->dockcc;
+        dod->doddespob = getKccDescripcion(doc->dockcc);
+    }
+
     dod->dodcod = ++dodcod;
     dod->dodtip = 2;
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
@@ -299,6 +308,7 @@ vwze::entity::Doc * Loader::parsearLinea(const std::string & linea) {
     doc->docfab = fields[19];
     doc->docdun = fields[18];
     doc->docpro = boost::trim_copy(fields[28]);
+    doc->dockcc = getKccCodigo(boost::trim_copy(fields[26]));
 
     doc->docpes = parsearDouble(fields[20]);
     doc->docvol = parsearDouble(fields[21]);
@@ -306,4 +316,46 @@ vwze::entity::Doc * Loader::parsearLinea(const std::string & linea) {
 
     LOG4CXX_TRACE(logger, "<----- Fin");
     return doc;
+}
+
+/**
+ * Direkt.............
+ * Heilbronn.......... DE74
+ * Ingolstadt......... DE85
+ * Kassel............. DE34
+ * nicht im Netzwerk . N/A, queda en blanco 
+ *  
+ * @param p
+ * @return 
+ */
+std::string Loader::getKccCodigo(const std::string & p) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+
+    std::string result = "";
+    if (boost::starts_with(p, "Heilbronn")) {
+        result = "DE74";
+    } else if (boost::starts_with(p, "Ingolstadt")) {
+        result = "DE85";
+    } else if (boost::starts_with(p, "Kassel")) {
+        result = "DE34";
+    }
+
+    LOG4CXX_TRACE(logger, "<----- Fin");
+    return result;
+}
+
+std::string Loader::getKccDescripcion(const std::string & p) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+
+    std::string result = "";
+    if (boost::starts_with(p, "DE74")) {
+        result = "Heilbronn";
+    } else if (boost::starts_with(p, "DE85")) {
+        result = "Ingolstadt";
+    } else if (boost::starts_with(p, "DE34")) {
+        result = "Kassel";
+    }    
+
+    LOG4CXX_TRACE(logger, "<----- Fin");
+    return result;
 }

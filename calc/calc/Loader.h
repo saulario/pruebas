@@ -32,6 +32,9 @@ private:
     vwze::entity::Doc * parsearLinea(const std::string &);
     tntdb::Date parsearDate(const std::string &);
     double parsearDouble(const std::string &);
+    
+    std::string getKccCodigo(const std::string &);
+    std::string getKccDescripcion(const std::string &);
 
 };
 

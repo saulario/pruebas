@@ -1,4 +1,5 @@
 
+drop table if exists doe;
 drop table if exists dod;
 drop table if exists doc;
 drop table if exists pro;
@@ -59,7 +60,7 @@ insert into zoo values(33,'DE74','DE76');
 insert into zoo values(34,'DE74','DE77');
 insert into zoo values(35,'DE74','DE97');
 insert into zoo values(36,'DE74','FR57');
-insert into zoo values(37,'DE74','DE67');
+insert into zoo values(37,'DE74','FR67');
 
 insert into zoo values(41,'DE59','DE34');
 insert into zoo values(42,'DE59','DE35');
@@ -110,6 +111,7 @@ create table doc (
     docfab      varchar(5) not null default '',
     docdun      varchar(20) not null default '',
     docpro      varchar(80) not null default '',
+    dockcc      varchar(10) not null default '',
     docpes      decimal(13,4) not null default '0.0000',
     docvol      decimal(13,4) not null default '0.0000',
     docpef      decimal(13,4) not null default '0.0000',
@@ -135,3 +137,62 @@ create table dod (
     dodpef      decimal(13,4) not null default '0.0000',
     primary key (dodcod)
 );
+
+create table doe (
+    doecod      bigint not null default '0',
+    doetip      integer not null default '0',
+    doefec      date not null default '0001-01-01',
+
+    dodorgzon   varchar(10) not null default '',
+    dodorgpob   varchar(80) not null default '',
+    doddeszon   varchar(10) not null default '',
+    doddespob   varchar(80) not null default '',
+    dodflu      varchar(5) not null default '',
+    dodfab      varchar(5) not null default '',
+    doddun      varchar(20) not null default '',
+    dodpro      varchar(80) not null default '',
+
+    doepes      decimal(13,4) not null default '0.0000',
+    doevol      decimal(13,4) not null default '0.0000',
+    doepef      decimal(13,4) not null default '0.0000',
+    doepun      decimal(13,4) not null default '0.0000',
+    doetot      decimal(13,2) not null default '0.0000',
+
+    primary key (doecod)
+);
+
+
+
+/* 
+ * Consultas para agregación
+ *
+ */
+
+select dodfec, dodorgzon, doddun, dodpro, doddespob, sum(dodpes) p, sum(dodvol) v, count(dodcod) c
+from dod
+where 
+    dodtip = 1
+group by dodfec, dodorgzon, doddun, dodpro, doddespob
+order by dodfec, dodorgzon, doddun, dodpro, doddespob;
+
+select dodfec, dodorgpob, dodfab, doddeszon, sum(dodpes) p, sum(dodvol) v, count(dodcod) c
+from dod
+where 
+    dodtip = 2
+group by dodfec, dodorgpob, dodfab, doddeszon
+order by dodfec, dodorgpob, dodfab, doddeszon;
+
+
+select dodorgzon, dodorgpob, dodfab, doddeszon, doddespob, sum(dodpes) p, sum(dodvol) v, count(dodcod) c from dod
+where
+        dodfec = '2015-04-07' and dodtip = -2
+group by dodorgzon, dodorgpob, dodfab, doddeszon, doddespob
+
+select dodorgzon, dodorgpob, doddeszon, doddespob, doddun, sum(dodpes) p, sum(dodvol) v, count(dodcod) c from dod
+where
+        dodfec = '2015-04-07' and dodtip = -1
+group by dodorgzon, dodorgpob, doddeszon, doddespob, doddun
+
+
+
+

@@ -21,6 +21,7 @@ namespace vwze {
             std::string docfab; /*  */
             std::string docdun; /*  */
             std::string docpro; /*  */
+            std::string dockcc; /*  */
             double docpes; /*  */
             double docvol; /*  */
             double docpef; /*  */

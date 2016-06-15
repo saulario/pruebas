@@ -14,6 +14,7 @@ Doc::Doc() {
     docfab = "";
     docdun = "";
     docpro = "";
+    dockcc = "";
     docpes = 0.0;
     docvol = 0.0;
     docpef = 0.0;
@@ -35,6 +36,7 @@ bool Doc::operator==(const Doc & other) {
     if (this->docfab != other.docfab) return false;
     if (this->docdun != other.docdun) return false;
     if (this->docpro != other.docpro) return false;
+    if (this->dockcc != other.dockcc) return false;
     if (this->docpes != other.docpes) return false;
     if (this->docvol != other.docvol) return false;
     if (this->docpef != other.docpef) return false;
