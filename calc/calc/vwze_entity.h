@@ -65,7 +65,7 @@ namespace vwze {
             std::string doedeszon; /*  */
             std::string doedespob; /*  */
             std::string doeflu; /*  */
-            std::string doefab; /*  */
+            std::string doeexp; /*  */
             std::string doedun; /*  */
             std::string doepro; /*  */
             double doepes; /*  */

@@ -94,7 +94,7 @@ Doe::Doe() {
     doedeszon = "";
     doedespob = "";
     doeflu = "";
-    doefab = "";
+    doeexp = "";
     doedun = "";
     doepro = "";
     doepes = 0.0;
@@ -117,7 +117,7 @@ bool Doe::operator==(const Doe & other) {
     if (this->doedeszon != other.doedeszon) return false;
     if (this->doedespob != other.doedespob) return false;
     if (this->doeflu != other.doeflu) return false;
-    if (this->doefab != other.doefab) return false;
+    if (this->doeexp != other.doeexp) return false;
     if (this->doedun != other.doedun) return false;
     if (this->doepro != other.doepro) return false;
     if (this->doepes != other.doepes) return false;

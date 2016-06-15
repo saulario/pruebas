@@ -321,7 +321,7 @@ DoeDAO * DoeDAO::getInstance(void) {
         dao->table = "doe";
         dao->keyColumns = "doecod";
         dao->columns = "doecod,doetip,doefec,doeorgzon"
-                ",doeorgpob,doedeszon,doedespob,doeflu,doefab"
+                ",doeorgpob,doedeszon,doedespob,doeflu,doeexp"
                 ",doedun,doepro,doepes,doevol,doepef"
                 ",doecnt,doepun,doetot";
         dao->createQueries();
@@ -384,7 +384,7 @@ void DoeDAO::loadColumns(tntdb::Row & row, vwze::entity::Doe * e) {
     e->doedeszon = row.getString(index++);
     e->doedespob = row.getString(index++);
     e->doeflu = row.getString(index++);
-    e->doefab = row.getString(index++);
+    e->doeexp = row.getString(index++);
     e->doedun = row.getString(index++);
     e->doepro = row.getString(index++);
     e->doepes = row.getDecimal(index++).getDouble();
@@ -404,7 +404,7 @@ void DoeDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doe * e) {
     stmt.setString("doedeszon", e->doedeszon);
     stmt.setString("doedespob", e->doedespob);
     stmt.setString("doeflu", e->doeflu);
-    stmt.setString("doefab", e->doefab);
+    stmt.setString("doeexp", e->doeexp);
     stmt.setString("doedun", e->doedun);
     stmt.setString("doepro", e->doepro);
     stmt.setDouble("doepes", e->doepes);

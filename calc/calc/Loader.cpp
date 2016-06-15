@@ -247,21 +247,40 @@ void Loader::calcularManipulaciones(void) {
 
     con.prepare("delete from doe where doetip = 0").execute();
     
-    std::string sql = "select docexp, docflu, docdeszon, docpef, zon.* from doc "
+    std::string sql = "select docexp, docdun, docpro, docfec, docflu, docdeszon, docpes, docvol, docpef"
+            " , zon.* from doc "
             "   join zoo on zoopcp = docdeszon "
             "   join zon on zoncod = zoozoncod "
             " where docflu = 'WA' and docpef < 6000 "
             " union"
-            " select docexp, docflu, docorgzon, docpef, zon.* from doc "
+            " select docexp, docdun, docpro, docfec, docflu, docorgzon, docpes, docvol, docpef"
+            " , zon.* from doc "
             "   join zoo on zoopcp = docorgzon"
             "   join zon on zoncod = zoozoncod "
             " where docflu = 'WE' and docpef < 6000";
-    tntdb::Result r = con.prepare(sql).select();
-    
-    
-    
-    
-
+    tntdb::Result result = con.prepare(sql).select();
+    for (tntdb::Row row : result) {
+        vwze::entity::Doe * doe = new vwze::entity::Doe;
+        doe->doecod = ++doecod;
+        doe->doetip = 0;
+        doe->doefec = row.getDate("docfec");
+        doe->doeflu = row.getString("docflu");
+        doe->doeexp = row.getString("docexp");
+        doe->doedun = row.getString("docdun");
+        doe->doepro = row.getString("docpro");
+        doe->doeorgzon = row.getString("zoncod");
+        doe->doeorgpob = row.getString("zondes");
+        doe->doedeszon = doe->doeorgzon;
+        doe->doedespob = doe->doeorgpob;
+        
+        doe->doepes = row.getDouble("docpes");
+        doe->doevol = row.getDouble("docvol");
+        doe->doepef = row.getDouble("docpef");
+        doe->doecnt = 1;
+        
+        vwze::dao::DoeDAO::getInstance()->insert(con, doe);
+        delete doe;        
+    }
     
     LOG4CXX_TRACE(logger, "<----- Fin");    
 }

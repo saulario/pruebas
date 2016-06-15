@@ -194,11 +194,13 @@ group by dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob, doddun, dod
 // eso es para los conceptos
 
 
-select docexp, docflu, docdeszon, docpef, zon.* from doc    
+select docexp, docdun, docpro, docfec, docflu, docdeszon, docpes, docvol, docpef
+    , zon.* from doc    
     join zoo on zoopcp = docdeszon  
     join zon on zoncod = zoozoncod where docflu = 'WA' and docpef < 6000  
 union  
-select docexp, docflu, docorgzon, docpef, zon.* from doc    
+select docexp, docdun, docpro, docfec, docflu, docorgzon, docpes, docvol, docpef
+    , zon.* from doc    
     join zoo on zoopcp = docorgzon  
     join zon on zoncod = zoozoncod where docflu = 'WE' and docpef < 6000
 
