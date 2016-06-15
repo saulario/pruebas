@@ -55,6 +55,31 @@ namespace vwze {
         private:
         };
 
+        struct Doe {
+        public:
+            long doecod; /*  */
+            int doetip; /*  */
+            tntdb::Date doefec; /*  */
+            std::string doeorgzon; /*  */
+            std::string doeorgpob; /*  */
+            std::string doedeszon; /*  */
+            std::string doedespob; /*  */
+            std::string doeflu; /*  */
+            std::string doefab; /*  */
+            std::string doedun; /*  */
+            std::string doepro; /*  */
+            double doepes; /*  */
+            double doevol; /*  */
+            double doepef; /*  */
+            int doecnt; /*  */
+            double doepun; /*  */
+            double doetot; /*  */
+            Doe();
+            ~Doe();
+            bool operator==(const Doe &);
+        private:
+        };
+
         struct Pro {
         public:
             std::string produn; /*  */

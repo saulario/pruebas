@@ -35,7 +35,7 @@ Loader::~Loader() {
     }
 }
 
-int Loader::run(int argc, char ** argv) {
+void Loader::cargarExpediciones(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     borrarDatos();
@@ -49,15 +49,9 @@ int Loader::run(int argc, char ** argv) {
     std::getline(infile, line); // descarta textos
     std::getline(infile, line);
     while (!infile.eof()) {
-
         vwze::entity::Doc * doc = parsearLinea(line);
         insertarDocumento(doc);
         if (doc) delete doc;
-
-        if (doccod > 1000000) {
-            break;
-        }
-
         std::getline(infile, line);
     }
 
@@ -65,6 +59,211 @@ int Loader::run(int argc, char ** argv) {
     infile.close();
 
     LOG4CXX_INFO(logger, "<----- Fin");
+}
+
+void Loader::calcularAgregados(void) {
+    LOG4CXX_INFO(logger, "-----> Inicio");
+      
+    doecod = 0;
+    tntdb::Result result = con.prepare("select max(doecod) doecod from doe").select();
+    for (auto row : result) {
+        doecod = row.getInt64("doecod");
+        break;
+    }
+    
+
+//    calcularAgregadosWA1();
+//    calcularAgregadosWA2();
+//    calcularAgregadosWE1();
+//    calcularAgregadosWE2();
+    calcularManipulaciones();
+
+    
+    LOG4CXX_INFO(logger, "<----- Fin");
+}
+
+void Loader::calcularAgregadosWA1(void) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    con.prepare("delete from doe where doetip = -1").execute();    
+    
+    std::string sql = "select dodfec, dodflu, dodorgzon, dodorgpob, doddun, dodpro, doddeszon, doddespob"
+            ", sum(dodpes) p, sum(dodvol) v, count(dodcod) c "
+            " from dod "
+            " where "
+            "    dodtip = -1"
+            " group by dodfec, dodflu, dodorgzon, dodorgpob, doddun, dodpro, doddeszon, doddespob ";
+        tntdb::Result r = con.prepare(sql).select();
+    for (auto row : r) {
+        vwze::entity::Doe * doe = new vwze::entity::Doe;
+        doe->doecod = ++doecod;
+        doe->doetip = -1;
+        doe->doefec = row.getDate("dodfec");
+        doe->doeflu = row.getString("dodflu");
+        doe->doeorgzon = row.getString("dodorgzon");
+        doe->doeorgpob = row.getString("dodorgpob");
+        doe->doedeszon = row.getString("doddeszon");
+        doe->doedespob = row.getString("doddespob");
+        doe->doepro = row.getString("dodpro");
+        doe->doedun = row.getString("doddun");
+        
+        doe->doepes = row.getDouble("p");
+        doe->doevol = row.getDouble("v");
+        doe->doecnt = row.getInt64("c");
+        
+        double pef = doe->doevol * 250;
+        doe->doepef = doe->doepes > pef ? doe->doepes : pef;
+        
+        vwze::dao::DoeDAO::getInstance()->insert(con, doe);
+        delete doe;
+    }    
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+void Loader::calcularAgregadosWA2(void) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    con.prepare("delete from doe where doetip = -2").execute();
+    
+    std::string sql = "select dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob"
+            ", sum(dodpes) p, sum(dodvol) v, count(dodcod) c "
+            " from dod "
+            " where "
+            "   dodtip = -2 "
+            " group by dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob";
+    
+    tntdb::Result r = con.prepare(sql).select();
+    for (auto row : r) {
+        vwze::entity::Doe * doe = new vwze::entity::Doe;
+        doe->doecod = ++doecod;
+        doe->doetip = -2;
+        doe->doefec = row.getDate("dodfec");
+        doe->doeflu = row.getString("dodflu");
+        doe->doeorgzon = row.getString("dodorgzon");
+        doe->doeorgpob = row.getString("dodorgpob");
+        doe->doedeszon = row.getString("doddeszon");
+        doe->doedespob = row.getString("doddespob");
+        
+        doe->doepes = row.getDouble("p");
+        doe->doevol = row.getDouble("v");
+        doe->doecnt = row.getInt64("c");
+        
+        double pef = doe->doevol * 250;
+        doe->doepef = doe->doepes > pef ? doe->doepes : pef;
+        
+        vwze::dao::DoeDAO::getInstance()->insert(con, doe);
+        delete doe;
+    }    
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+/**
+ * Recogidas de proveedor a CC
+ */
+void Loader::calcularAgregadosWE1(void) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    con.prepare("delete from doe where doetip = 1").execute();
+    
+    std::string sql = "select dodfec, dodflu, dodorgzon, dodorgpob, doddun, dodpro, doddeszon, doddespob"
+            ", sum(dodpes) p, sum(dodvol) v, count(dodcod) c "
+            " from dod "
+            " where "
+            "    dodtip = 1"
+            " group by dodfec, dodflu, dodorgzon, dodorgpob, doddun, dodpro, doddeszon, doddespob ";
+    tntdb::Result r = con.prepare(sql).select();
+    for (auto row : r) {
+        vwze::entity::Doe * doe = new vwze::entity::Doe;
+        doe->doecod = ++doecod;
+        doe->doetip = 1;
+        doe->doefec = row.getDate("dodfec");
+        doe->doeflu = row.getString("dodflu");
+        doe->doeorgzon = row.getString("dodorgzon");
+        doe->doeorgpob = row.getString("dodorgpob");
+        doe->doedeszon = row.getString("doddeszon");
+        doe->doedespob = row.getString("doddespob");
+        doe->doepro = row.getString("dodpro");
+        doe->doedun = row.getString("doddun");
+        
+        doe->doepes = row.getDouble("p");
+        doe->doevol = row.getDouble("v");
+        doe->doecnt = row.getInt64("c");
+        
+        double pef = doe->doevol * 250;
+        doe->doepef = doe->doepes > pef ? doe->doepes : pef;
+        
+        vwze::dao::DoeDAO::getInstance()->insert(con, doe);
+        delete doe;
+    }
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+/**
+ * Entregas de CC a planta
+ */
+void Loader::calcularAgregadosWE2(void) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    con.prepare("delete from doe where doetip = 2").execute();
+    
+    std::string sql = "select dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob"
+            ", sum(dodpes) p, sum(dodvol) v, count(dodcod) c "
+            " from dod "
+            " where "
+            "   dodtip = 2 "
+            " group by dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob";
+    
+    tntdb::Result r = con.prepare(sql).select();
+    for (auto row : r) {
+        vwze::entity::Doe * doe = new vwze::entity::Doe;
+        doe->doecod = ++doecod;
+        doe->doetip = 2;
+        doe->doefec = row.getDate("dodfec");
+        doe->doeflu = row.getString("dodflu");
+        doe->doeorgzon = row.getString("dodorgzon");
+        doe->doeorgpob = row.getString("dodorgpob");
+        doe->doedeszon = row.getString("doddeszon");
+        doe->doedespob = row.getString("doddespob");
+        
+        doe->doepes = row.getDouble("p");
+        doe->doevol = row.getDouble("v");
+        doe->doecnt = row.getInt64("c");
+        
+        double pef = doe->doevol * 250;
+        doe->doepef = doe->doepes > pef ? doe->doepes : pef;
+        
+        vwze::dao::DoeDAO::getInstance()->insert(con, doe);
+        delete doe;
+    }    
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");
+}
+
+void Loader::calcularManipulaciones(void) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+
+    con.prepare("delete from doe where doetip = 0").execute();
+    
+    std::string sql = "select docexp, docflu, docdeszon, docpef, zon.* from doc "
+            "   join zoo on zoopcp = docdeszon "
+            "   join zon on zoncod = zoozoncod "
+            " where docflu = 'WA' and docpef < 6000 "
+            " union"
+            " select docexp, docflu, docorgzon, docpef, zon.* from doc "
+            "   join zoo on zoopcp = docorgzon"
+            "   join zon on zoncod = zoozoncod "
+            " where docflu = 'WE' and docpef < 6000";
+    tntdb::Result r = con.prepare(sql).select();
+    
+    
+    
+    
+
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");    
 }
 
 void Loader::borrarDatos(void) {

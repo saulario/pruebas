@@ -60,6 +60,22 @@ namespace vwze {
             vwze::entity::Dod * update(tntdb::Connection &, vwze::entity::Dod *);
         };
 
+        class DoeDAO : public CommonDAO {
+        private:
+            static DoeDAO * dao;
+            static boost::mutex mtx;
+            void loadColumns(tntdb::Row &, vwze::entity::Doe *);
+            void setColumns(tntdb::Statement &, const vwze::entity::Doe *);
+        public:
+            ~DoeDAO();
+            static DoeDAO * getInstance(void);
+            vwze::entity::Doe * insert(tntdb::Connection &, vwze::entity::Doe *);
+            std::list<vwze::entity::Doe *> query(tntdb::Connection &, tntdb::Statement &);
+            vwze::entity::Doe * read(tntdb::Connection &, const long &);
+            tntdb::Statement::size_type remove(tntdb::Connection &, const long &);
+            vwze::entity::Doe * update(tntdb::Connection &, vwze::entity::Doe *);
+        };
+
         class ProDAO : public CommonDAO {
         private:
             static ProDAO * dao;

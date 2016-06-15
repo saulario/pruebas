@@ -23,7 +23,8 @@ int main(int argc, char** argv) {
 
     try {
         Loader l(con);
-        rv = l.run(argc, argv);
+        //l.cargarExpediciones();
+        l.calcularAgregados();
     } catch (std::exception &e) {
         LOG4CXX_ERROR(logger, std::string(e.what()));
         rv = 1;

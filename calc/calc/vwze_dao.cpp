@@ -305,6 +305,117 @@ void DodDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Dod * e) {
 }
 
 
+DoeDAO * DoeDAO::dao = NULL;
+boost::mutex DoeDAO::mtx;
+
+DoeDAO::~DoeDAO() {
+    if (dao != NULL) {
+        delete dao;
+    }
+}
+
+DoeDAO * DoeDAO::getInstance(void) {
+    boost::mutex::scoped_lock lock(mtx);
+    if (dao == NULL) {
+        dao = new DoeDAO();
+        dao->table = "doe";
+        dao->keyColumns = "doecod";
+        dao->columns = "doecod,doetip,doefec,doeorgzon"
+                ",doeorgpob,doedeszon,doedespob,doeflu,doefab"
+                ",doedun,doepro,doepes,doevol,doepef"
+                ",doecnt,doepun,doetot";
+        dao->createQueries();
+    }
+    return dao;
+}
+
+vwze::entity::Doe * DoeDAO::insert(tntdb::Connection & con, vwze::entity::Doe * e) {
+    tntdb::Statement stmt = con.prepare(getInsertQuery());
+    setColumns(stmt, e);
+    stmt.execute();
+    return e;
+}
+
+std::list<vwze::entity::Doe *> DoeDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
+    std::list<vwze::entity::Doe *> es;
+    for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
+        vwze::entity::Doe * e = new vwze::entity::Doe;
+        tntdb::Row row = *it;
+        loadColumns(row, e);
+        es.push_back(e);
+    }
+    return es;
+}
+
+vwze::entity::Doe * DoeDAO::read(tntdb::Connection & con, const long & doecod) {
+    tntdb::Statement stmt = con.prepare(getReadQuery());
+    vwze::entity::Doe * e = NULL;
+    try {
+        stmt.set("doecodPK", doecod);
+        tntdb::Row row = stmt.selectRow();
+        e = new vwze::entity::Doe;
+        loadColumns(row, e);
+    } catch (tntdb::NotFound) {
+    }
+    return e;
+}
+
+tntdb::Statement::size_type DoeDAO::remove(tntdb::Connection & con, const long & doecod) {
+    tntdb::Statement stmt = con.prepare(getRemoveQuery());
+    stmt.set("doecodPK", doecod);
+    return stmt.execute();
+}
+
+vwze::entity::Doe * DoeDAO::update(tntdb::Connection & con, vwze::entity::Doe * e) {
+    tntdb::Statement stmt = con.prepare(getUpdateQuery());
+    setColumns(stmt, e);
+    stmt.set("doecodPK", e->doecod);
+    stmt.execute();
+    return e;
+}
+
+void DoeDAO::loadColumns(tntdb::Row & row, vwze::entity::Doe * e) {
+    int index = 0;
+    e->doecod = row.getInt64(index++);
+    e->doetip = row.getInt(index++);
+    e->doefec = row.getDate(index++);
+    e->doeorgzon = row.getString(index++);
+    e->doeorgpob = row.getString(index++);
+    e->doedeszon = row.getString(index++);
+    e->doedespob = row.getString(index++);
+    e->doeflu = row.getString(index++);
+    e->doefab = row.getString(index++);
+    e->doedun = row.getString(index++);
+    e->doepro = row.getString(index++);
+    e->doepes = row.getDecimal(index++).getDouble();
+    e->doevol = row.getDecimal(index++).getDouble();
+    e->doepef = row.getDecimal(index++).getDouble();
+    e->doecnt = row.getInt(index++);
+    e->doepun = row.getDecimal(index++).getDouble();
+    e->doetot = row.getDecimal(index++).getDouble();
+}
+
+void DoeDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doe * e) {
+    stmt.setInt64("doecod", e->doecod);
+    stmt.setInt("doetip", e->doetip);
+    stmt.setDate("doefec", e->doefec);
+    stmt.setString("doeorgzon", e->doeorgzon);
+    stmt.setString("doeorgpob", e->doeorgpob);
+    stmt.setString("doedeszon", e->doedeszon);
+    stmt.setString("doedespob", e->doedespob);
+    stmt.setString("doeflu", e->doeflu);
+    stmt.setString("doefab", e->doefab);
+    stmt.setString("doedun", e->doedun);
+    stmt.setString("doepro", e->doepro);
+    stmt.setDouble("doepes", e->doepes);
+    stmt.setDouble("doevol", e->doevol);
+    stmt.setDouble("doepef", e->doepef);
+    stmt.setInt("doecnt", e->doecnt);
+    stmt.setDouble("doepun", e->doepun);
+    stmt.setDouble("doetot", e->doetot);
+}
+
+
 ProDAO * ProDAO::dao = NULL;
 boost::mutex ProDAO::mtx;
 

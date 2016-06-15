@@ -12,7 +12,8 @@ public:
     Loader(const Loader& orig);
     virtual ~Loader();
 
-    int run(int, char **);
+    void cargarExpediciones(void);
+    void calcularAgregados(void);
 
 private:
     static log4cxx::LoggerPtr logger;
@@ -23,8 +24,15 @@ private:
     
     unsigned long doccod;
     unsigned long dodcod;
+    unsigned long doecod;
     
     void borrarDatos(void);
+    void calcularAgregadosWA1(void);
+    void calcularAgregadosWA2(void);
+    void calcularAgregadosWE1(void);
+    void calcularAgregadosWE2(void);
+    void calcularManipulaciones(void);
+    
     void cargarDatos(void);
     void insertarDocumento(vwze::entity::Doc *);
     void insertarDocumentosWA(vwze::entity::Doc *);

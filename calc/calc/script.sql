@@ -142,45 +142,41 @@ create table doe (
     doecod      bigint not null default '0',
     doetip      integer not null default '0',
     doefec      date not null default '0001-01-01',
-
-    dodorgzon   varchar(10) not null default '',
-    dodorgpob   varchar(80) not null default '',
-    doddeszon   varchar(10) not null default '',
-    doddespob   varchar(80) not null default '',
-    dodflu      varchar(5) not null default '',
-    dodfab      varchar(5) not null default '',
-    doddun      varchar(20) not null default '',
-    dodpro      varchar(80) not null default '',
-
+    doeorgzon   varchar(10) not null default '',
+    doeorgpob   varchar(80) not null default '',
+    doedeszon   varchar(10) not null default '',
+    doedespob   varchar(80) not null default '',
+    doeflu      varchar(5) not null default '',
+    doeexp      varchar(20) not null default '',
+    doedun      varchar(20) not null default '',
+    doepro      varchar(80) not null default '',
     doepes      decimal(13,4) not null default '0.0000',
     doevol      decimal(13,4) not null default '0.0000',
     doepef      decimal(13,4) not null default '0.0000',
+    doecnt      integer not null default '0',
     doepun      decimal(13,4) not null default '0.0000',
-    doetot      decimal(13,2) not null default '0.0000',
-
+    doetot      decimal(13,2) not null default '0.00',
     primary key (doecod)
 );
-
-
 
 /* 
  * Consultas para agregación
  *
  */
 
-select dodfec, dodorgzon, doddun, dodpro, doddespob, sum(dodpes) p, sum(dodvol) v, count(dodcod) c
+select dodfec, dodflu, dodorgzon, dodorgpob, doddun, dodpro, doddeszon, doddespob, sum(dodpes) p, sum(dodvol) v, count(dodcod) c
 from dod
 where 
     dodtip = 1
-group by dodfec, dodorgzon, doddun, dodpro, doddespob
-order by dodfec, dodorgzon, doddun, dodpro, doddespob;
+group by dodfec, dodflu, dodorgzon, dodorgpob, doddun, dodpro, doddeszon, doddespob
+order by dodfec, dodorgzon, dodorgpob, doddun, dodpro, doddespob;
 
-select dodfec, dodorgpob, dodfab, doddeszon, sum(dodpes) p, sum(dodvol) v, count(dodcod) c
+select dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob, sum(dodpes) p, sum(dodvol) v, count(dodcod) c
 from dod
 where 
     dodtip = 2
-group by dodfec, dodorgpob, dodfab, doddeszon
-order by dodfec, dodorgpob, dodfab, doddeszon;
+group by dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob
+
 
 
 select dodorgzon, dodorgpob, dodfab, doddeszon, doddespob, sum(dodpes) p, sum(dodvol) v, count(dodcod) c from dod
@@ -188,11 +184,23 @@ where
         dodfec = '2015-04-07' and dodtip = -2
 group by dodorgzon, dodorgpob, dodfab, doddeszon, doddespob
 
-select dodorgzon, dodorgpob, doddeszon, doddespob, doddun, sum(dodpes) p, sum(dodvol) v, count(dodcod) c from dod
+select dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob, doddun, dodpro, sum(dodpes) p, sum(dodvol) v, count(dodcod) c from dod
 where
-        dodfec = '2015-04-07' and dodtip = -1
-group by dodorgzon, dodorgpob, doddeszon, doddespob, doddun
+    dodtip = -1
+group by dodfec, dodflu, dodorgzon, dodorgpob, doddeszon, doddespob, doddun, dodpro
 
+
+
+// eso es para los conceptos
+
+
+select docexp, docflu, docdeszon, docpef, zon.* from doc    
+    join zoo on zoopcp = docdeszon  
+    join zon on zoncod = zoozoncod where docflu = 'WA' and docpef < 6000  
+union  
+select docexp, docflu, docorgzon, docpef, zon.* from doc    
+    join zoo on zoopcp = docorgzon  
+    join zon on zoncod = zoozoncod where docflu = 'WE' and docpef < 6000
 
 
 

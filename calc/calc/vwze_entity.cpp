@@ -85,6 +85,50 @@ bool Dod::operator==(const Dod & other) {
     return true;
 }
 
+Doe::Doe() {
+    doecod = 0L;
+    doetip = 0;
+    doefec = tntdb::Date();
+    doeorgzon = "";
+    doeorgpob = "";
+    doedeszon = "";
+    doedespob = "";
+    doeflu = "";
+    doefab = "";
+    doedun = "";
+    doepro = "";
+    doepes = 0.0;
+    doevol = 0.0;
+    doepef = 0.0;
+    doecnt = 0;
+    doepun = 0.0;
+    doetot = 0.0;
+}
+
+Doe::~Doe() {
+}
+
+bool Doe::operator==(const Doe & other) {
+    if (this->doecod != other.doecod) return false;
+    if (this->doetip != other.doetip) return false;
+    if (this->doefec != other.doefec) return false;
+    if (this->doeorgzon != other.doeorgzon) return false;
+    if (this->doeorgpob != other.doeorgpob) return false;
+    if (this->doedeszon != other.doedeszon) return false;
+    if (this->doedespob != other.doedespob) return false;
+    if (this->doeflu != other.doeflu) return false;
+    if (this->doefab != other.doefab) return false;
+    if (this->doedun != other.doedun) return false;
+    if (this->doepro != other.doepro) return false;
+    if (this->doepes != other.doepes) return false;
+    if (this->doevol != other.doevol) return false;
+    if (this->doepef != other.doepef) return false;
+    if (this->doecnt != other.doecnt) return false;
+    if (this->doepun != other.doepun) return false;
+    if (this->doetot != other.doetot) return false;
+    return true;
+}
+
 Pro::Pro() {
     produn = "";
     proraz = "";
