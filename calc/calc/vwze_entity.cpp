@@ -143,6 +143,44 @@ bool Pro::operator==(const Pro & other) {
     return true;
 }
 
+Rfc::Rfc() {
+    rfccod = 0L;
+    rfcrul = "";
+    rfcmin = 0.0;
+    rfckmt = 0;
+    rfczon = "";
+}
+
+Rfc::~Rfc() {
+}
+
+bool Rfc::operator==(const Rfc & other) {
+    if (this->rfccod != other.rfccod) return false;
+    if (this->rfcrul != other.rfcrul) return false;
+    if (this->rfcmin != other.rfcmin) return false;
+    if (this->rfckmt != other.rfckmt) return false;
+    if (this->rfczon != other.rfczon) return false;
+    return true;
+}
+
+Rfd::Rfd() {
+    rfdcod = 0L;
+    rfdrfccod = 0L;
+    rfdmax = 0.0;
+    rfdpun = 0.0;
+}
+
+Rfd::~Rfd() {
+}
+
+bool Rfd::operator==(const Rfd & other) {
+    if (this->rfdcod != other.rfdcod) return false;
+    if (this->rfdrfccod != other.rfdrfccod) return false;
+    if (this->rfdmax != other.rfdmax) return false;
+    if (this->rfdpun != other.rfdpun) return false;
+    return true;
+}
+
 Zon::Zon() {
     zoncod = "";
     zondes = "";

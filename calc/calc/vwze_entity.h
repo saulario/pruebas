@@ -90,6 +90,31 @@ namespace vwze {
         private:
         };
 
+        struct Rfc {
+        public:
+            long rfccod; /*  */
+            std::string rfcrul; /*  */
+            double rfcmin; /*  */
+            int rfckmt; /*  */
+            std::string rfczon; /*  */
+            Rfc();
+            ~Rfc();
+            bool operator==(const Rfc &);
+        private:
+        };
+
+        struct Rfd {
+        public:
+            long rfdcod; /*  */
+            long rfdrfccod; /*  */
+            double rfdmax; /*  */
+            double rfdpun; /*  */
+            Rfd();
+            ~Rfd();
+            bool operator==(const Rfd &);
+        private:
+        };
+
         struct Zon {
         public:
             std::string zoncod; /*  */

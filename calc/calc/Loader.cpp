@@ -13,6 +13,7 @@
 
 #include "Loader.h"
 #include "vwze_dao.h"
+#include "ParserTarifa.h"
 
 log4cxx::LoggerPtr Loader::logger = log4cxx::Logger::getLogger("Loader");
 
@@ -37,9 +38,14 @@ Loader::~Loader() {
 
 void Loader::cargarExpediciones(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
+    
+    if (true | false) {
+        std::exception e;
+        throw e;
+    }
 
     borrarDatos();
-    cargarDatos();
+    cargarMaps();
 
     //std::ifstream infile("vwze.csv");
     std::ifstream infile("vwze.csv");
@@ -61,8 +67,33 @@ void Loader::cargarExpediciones(void) {
     LOG4CXX_INFO(logger, "<----- Fin");
 }
 
+void Loader::cargarTarifas(void) {
+    LOG4CXX_INFO(logger, "-----> Inicio");    
+
+    std::ifstream infile("proveedor_cc.csv");
+    
+    ParserTarifa pt(con);
+    pt.borrarTarifas();
+    
+    std::string line = "";
+    std::getline(infile, line);
+    while (!infile.eof()) {
+        pt.insertarReglaProveedor(line);
+        std::getline(infile, line);
+    }
+
+    infile.close();
+    
+    LOG4CXX_INFO(logger, "<----- Fin");    
+}
+
 void Loader::calcularAgregados(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
+    
+    if (true | false) {
+        std::exception e;
+        throw e;
+    }    
       
     doecod = 0;
     tntdb::Result result = con.prepare("select max(doecod) doecod from doe").select();
@@ -70,12 +101,11 @@ void Loader::calcularAgregados(void) {
         doecod = row.getInt64("doecod");
         break;
     }
-    
-
-//    calcularAgregadosWA1();
-//    calcularAgregadosWA2();
-//    calcularAgregadosWE1();
-//    calcularAgregadosWE2();
+   
+    calcularAgregadosWA1();
+    calcularAgregadosWA2();
+    calcularAgregadosWE1();
+    calcularAgregadosWE2();
     calcularManipulaciones();
 
     
@@ -295,7 +325,7 @@ void Loader::borrarDatos(void) {
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
-void Loader::cargarDatos(void) {
+void Loader::cargarMaps(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
     // inicializando códigos

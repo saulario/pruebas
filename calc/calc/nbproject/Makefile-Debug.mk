@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Loader.o \
+	${OBJECTDIR}/ParserTarifa.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/vwze_dao.o \
 	${OBJECTDIR}/vwze_entity.o
@@ -69,6 +70,11 @@ ${OBJECTDIR}/Loader.o: Loader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Loader.o Loader.cpp
+
+${OBJECTDIR}/ParserTarifa.o: ParserTarifa.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParserTarifa.o ParserTarifa.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

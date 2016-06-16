@@ -159,6 +159,31 @@ create table doe (
     primary key (doecod)
 );
 
+/*
+ * reglas de facturación
+ */
+
+drop table if exists rfd;
+drop table if exists rfc;
+create table rfc (
+    rfccod      bigint not null default '0',
+    rfcrul      varchar(40) not null default '',
+    rfcmin      decimal(13,2) not null default '0.00',
+    rfckmt      integer not null default '0',
+    rfczon      varchar(10) not null default '',
+    primary key(rfccod)
+);
+
+create table rfd (
+    rfdcod      bigint not null default '0',
+    rfdrfccod   bigint not null default '0',
+    rfdmax      decimal(13,2) not null default '0',
+    rfdpun      decimal(13,2) not null default '0.00',
+    primary key(rfdcod),
+    constraint fk_rfd_rfc foreign key (rfdrfccod) references rfc(rfccod)
+);
+
+
 /* 
  * Consultas para agregación
  *

@@ -92,6 +92,38 @@ namespace vwze {
             vwze::entity::Pro * update(tntdb::Connection &, vwze::entity::Pro *);
         };
 
+        class RfcDAO : public CommonDAO {
+        private:
+            static RfcDAO * dao;
+            static boost::mutex mtx;
+            void loadColumns(tntdb::Row &, vwze::entity::Rfc *);
+            void setColumns(tntdb::Statement &, const vwze::entity::Rfc *);
+        public:
+            ~RfcDAO();
+            static RfcDAO * getInstance(void);
+            vwze::entity::Rfc * insert(tntdb::Connection &, vwze::entity::Rfc *);
+            std::list<vwze::entity::Rfc *> query(tntdb::Connection &, tntdb::Statement &);
+            vwze::entity::Rfc * read(tntdb::Connection &, const long &);
+            tntdb::Statement::size_type remove(tntdb::Connection &, const long &);
+            vwze::entity::Rfc * update(tntdb::Connection &, vwze::entity::Rfc *);
+        };
+
+        class RfdDAO : public CommonDAO {
+        private:
+            static RfdDAO * dao;
+            static boost::mutex mtx;
+            void loadColumns(tntdb::Row &, vwze::entity::Rfd *);
+            void setColumns(tntdb::Statement &, const vwze::entity::Rfd *);
+        public:
+            ~RfdDAO();
+            static RfdDAO * getInstance(void);
+            vwze::entity::Rfd * insert(tntdb::Connection &, vwze::entity::Rfd *);
+            std::list<vwze::entity::Rfd *> query(tntdb::Connection &, tntdb::Statement &);
+            vwze::entity::Rfd * read(tntdb::Connection &, const long &);
+            tntdb::Statement::size_type remove(tntdb::Connection &, const long &);
+            vwze::entity::Rfd * update(tntdb::Connection &, vwze::entity::Rfd *);
+        };
+
         class ZonDAO : public CommonDAO {
         private:
             static ZonDAO * dao;

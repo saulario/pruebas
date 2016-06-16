@@ -13,6 +13,7 @@ public:
     virtual ~Loader();
 
     void cargarExpediciones(void);
+    void cargarTarifas(void);
     void calcularAgregados(void);
 
 private:
@@ -33,7 +34,7 @@ private:
     void calcularAgregadosWE2(void);
     void calcularManipulaciones(void);
     
-    void cargarDatos(void);
+    void cargarMaps(void);
     void insertarDocumento(vwze::entity::Doc *);
     void insertarDocumentosWA(vwze::entity::Doc *);
     void insertarDocumentosWE(vwze::entity::Doc *);
