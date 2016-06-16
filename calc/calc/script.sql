@@ -14,9 +14,9 @@ create table zon (
     primary key (zoncod)
 );
 
-insert into zon values ('DE38','ZONA 1 Hannover', 0, 0);
-insert into zon values ('DE74','ZONA 2 Ilsfeld' , 0, 0);
-insert into zon values ('DE59','ZONA 3 Bonnen'  , 0, 0);
+insert into zon values ('DE38','ZONA 1 Hannover', 2.796, 0);
+insert into zon values ('DE74','ZONA 2 Ilsfeld' , 2.644, 0);
+insert into zon values ('DE59','ZONA 3 Bonnen'  , 2.625, 0);
 
 create table zoo (
     zoocod      bigint not null default '0',
@@ -177,7 +177,8 @@ create table rfc (
 create table rfd (
     rfdcod      bigint not null default '0',
     rfdrfccod   bigint not null default '0',
-    rfdmax      decimal(13,2) not null default '0',
+    rfdmin      decimal(13,2) not null default '0.00',
+    rfdmef      decimal(13,2) not null default '0.00',
     rfdpun      decimal(13,2) not null default '0.00',
     primary key(rfdcod),
     constraint fk_rfd_rfc foreign key (rfdrfccod) references rfc(rfccod)

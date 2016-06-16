@@ -4,7 +4,7 @@
 #include <tntdb/error.h>
 #include "vwze_dao.h"
 using namespace vwze::dao;
-
+        
 void CommonDAO::createQueries(void) {
     insertQuery = "insert into " + table + "(" + columns + ")"
             " values("
@@ -61,41 +61,37 @@ void CommonDAO::createQueries(void) {
         updateQuery += f + "=:" + f + "PK";
     }
 }
-
 std::string CommonDAO::getInsertQuery(void) {
     return insertQuery;
 }
-
 std::string CommonDAO::getReadQuery(void) {
     return readQuery;
 }
-
 std::string CommonDAO::getRemoveQuery(void) {
     return removeQuery;
 }
-
 std::string CommonDAO::getUpdateQuery(void) {
     return updateQuery;
 }
-
 std::string CommonDAO::getColumns(void) {
     return columns;
 }
-
 std::string CommonDAO::getTable(void) {
     return table;
 }
 
-
+        
 DocDAO * DocDAO::dao = NULL;
 boost::mutex DocDAO::mtx;
 
+        
 DocDAO::~DocDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 DocDAO * DocDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -103,14 +99,15 @@ DocDAO * DocDAO::getInstance(void) {
         dao->table = "doc";
         dao->keyColumns = "doccod";
         dao->columns = "doccod,docrel,docexp,docfec"
-                ",docorgzon,docorgpob,docdeszon,docdespob,docflu"
-                ",docfab,docdun,docpro,dockcc,docpes"
-                ",docvol,docpef";
+",docorgzon,docorgpob,docdeszon,docdespob,docflu"
+",docfab,docdun,docpro,dockcc,docpes"
+",docvol,docpef";
         dao->createQueries();
     }
     return dao;
 }
 
+        
 vwze::entity::Doc * DocDAO::insert(tntdb::Connection & con, vwze::entity::Doc * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -118,6 +115,7 @@ vwze::entity::Doc * DocDAO::insert(tntdb::Connection & con, vwze::entity::Doc * 
     return e;
 }
 
+        
 std::list<vwze::entity::Doc *> DocDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Doc *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -137,14 +135,13 @@ vwze::entity::Doc * DocDAO::read(tntdb::Connection & con, const long & doccod) {
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Doc;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type DocDAO::remove(tntdb::Connection & con, const long & doccod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("doccodPK", doccod);
+        stmt.set("doccodPK", doccod);
     return stmt.execute();
 }
 
@@ -195,16 +192,18 @@ void DocDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doc * e) {
     stmt.setDouble("docpef", e->docpef);
 }
 
-
+        
 DodDAO * DodDAO::dao = NULL;
 boost::mutex DodDAO::mtx;
 
+        
 DodDAO::~DodDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 DodDAO * DodDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -212,14 +211,15 @@ DodDAO * DodDAO::getInstance(void) {
         dao->table = "dod";
         dao->keyColumns = "dodcod";
         dao->columns = "dodcod,dodrel,dodexp,dodtip"
-                ",dodfec,dodorgzon,dodorgpob,doddeszon,doddespob"
-                ",dodflu,dodfab,doddun,dodpro,dodpes"
-                ",dodvol,dodpef";
+",dodfec,dodorgzon,dodorgpob,doddeszon,doddespob"
+",dodflu,dodfab,doddun,dodpro,dodpes"
+",dodvol,dodpef";
         dao->createQueries();
     }
     return dao;
 }
 
+        
 vwze::entity::Dod * DodDAO::insert(tntdb::Connection & con, vwze::entity::Dod * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -227,6 +227,7 @@ vwze::entity::Dod * DodDAO::insert(tntdb::Connection & con, vwze::entity::Dod * 
     return e;
 }
 
+        
 std::list<vwze::entity::Dod *> DodDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Dod *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -246,14 +247,13 @@ vwze::entity::Dod * DodDAO::read(tntdb::Connection & con, const long & dodcod) {
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Dod;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type DodDAO::remove(tntdb::Connection & con, const long & dodcod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("dodcodPK", dodcod);
+        stmt.set("dodcodPK", dodcod);
     return stmt.execute();
 }
 
@@ -304,16 +304,18 @@ void DodDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Dod * e) {
     stmt.setDouble("dodpef", e->dodpef);
 }
 
-
+        
 DoeDAO * DoeDAO::dao = NULL;
 boost::mutex DoeDAO::mtx;
 
+        
 DoeDAO::~DoeDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 DoeDAO * DoeDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -321,14 +323,15 @@ DoeDAO * DoeDAO::getInstance(void) {
         dao->table = "doe";
         dao->keyColumns = "doecod";
         dao->columns = "doecod,doetip,doefec,doeorgzon"
-                ",doeorgpob,doedeszon,doedespob,doeflu,doeexp"
-                ",doedun,doepro,doepes,doevol,doepef"
-                ",doecnt,doepun,doetot";
+",doeorgpob,doedeszon,doedespob,doeflu,doeexp"
+",doedun,doepro,doepes,doevol,doepef"
+",doecnt,doepun,doetot";
         dao->createQueries();
     }
     return dao;
 }
 
+        
 vwze::entity::Doe * DoeDAO::insert(tntdb::Connection & con, vwze::entity::Doe * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -336,6 +339,7 @@ vwze::entity::Doe * DoeDAO::insert(tntdb::Connection & con, vwze::entity::Doe * 
     return e;
 }
 
+        
 std::list<vwze::entity::Doe *> DoeDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Doe *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -355,14 +359,13 @@ vwze::entity::Doe * DoeDAO::read(tntdb::Connection & con, const long & doecod) {
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Doe;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type DoeDAO::remove(tntdb::Connection & con, const long & doecod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("doecodPK", doecod);
+        stmt.set("doecodPK", doecod);
     return stmt.execute();
 }
 
@@ -415,16 +418,18 @@ void DoeDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doe * e) {
     stmt.setDouble("doetot", e->doetot);
 }
 
-
+        
 ProDAO * ProDAO::dao = NULL;
 boost::mutex ProDAO::mtx;
 
+        
 ProDAO::~ProDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 ProDAO * ProDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -437,6 +442,7 @@ ProDAO * ProDAO::getInstance(void) {
     return dao;
 }
 
+        
 vwze::entity::Pro * ProDAO::insert(tntdb::Connection & con, vwze::entity::Pro * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -444,6 +450,7 @@ vwze::entity::Pro * ProDAO::insert(tntdb::Connection & con, vwze::entity::Pro * 
     return e;
 }
 
+        
 std::list<vwze::entity::Pro *> ProDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Pro *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -463,14 +470,13 @@ vwze::entity::Pro * ProDAO::read(tntdb::Connection & con, const std::string & pr
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Pro;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type ProDAO::remove(tntdb::Connection & con, const std::string & produn) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("produnPK", produn);
+        stmt.set("produnPK", produn);
     return stmt.execute();
 }
 
@@ -493,16 +499,18 @@ void ProDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Pro * e) {
     stmt.setString("proraz", e->proraz);
 }
 
-
+        
 RfcDAO * RfcDAO::dao = NULL;
 boost::mutex RfcDAO::mtx;
 
+        
 RfcDAO::~RfcDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 RfcDAO * RfcDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -510,12 +518,13 @@ RfcDAO * RfcDAO::getInstance(void) {
         dao->table = "rfc";
         dao->keyColumns = "rfccod";
         dao->columns = "rfccod,rfcrul,rfcmin,rfckmt"
-                ",rfczon";
+",rfczon";
         dao->createQueries();
     }
     return dao;
 }
 
+        
 vwze::entity::Rfc * RfcDAO::insert(tntdb::Connection & con, vwze::entity::Rfc * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -523,6 +532,7 @@ vwze::entity::Rfc * RfcDAO::insert(tntdb::Connection & con, vwze::entity::Rfc * 
     return e;
 }
 
+        
 std::list<vwze::entity::Rfc *> RfcDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Rfc *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -542,14 +552,13 @@ vwze::entity::Rfc * RfcDAO::read(tntdb::Connection & con, const long & rfccod) {
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Rfc;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type RfcDAO::remove(tntdb::Connection & con, const long & rfccod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("rfccodPK", rfccod);
+        stmt.set("rfccodPK", rfccod);
     return stmt.execute();
 }
 
@@ -578,28 +587,32 @@ void RfcDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Rfc * e) {
     stmt.setString("rfczon", e->rfczon);
 }
 
-
+        
 RfdDAO * RfdDAO::dao = NULL;
 boost::mutex RfdDAO::mtx;
 
+        
 RfdDAO::~RfdDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 RfdDAO * RfdDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
         dao = new RfdDAO();
         dao->table = "rfd";
         dao->keyColumns = "rfdcod";
-        dao->columns = "rfdcod,rfdrfccod,rfdmax,rfdpun";
+        dao->columns = "rfdcod,rfdrfccod,rfdmin,rfdmef"
+",rfdpun";
         dao->createQueries();
     }
     return dao;
 }
 
+        
 vwze::entity::Rfd * RfdDAO::insert(tntdb::Connection & con, vwze::entity::Rfd * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -607,6 +620,7 @@ vwze::entity::Rfd * RfdDAO::insert(tntdb::Connection & con, vwze::entity::Rfd * 
     return e;
 }
 
+        
 std::list<vwze::entity::Rfd *> RfdDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Rfd *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -626,14 +640,13 @@ vwze::entity::Rfd * RfdDAO::read(tntdb::Connection & con, const long & rfdcod) {
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Rfd;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type RfdDAO::remove(tntdb::Connection & con, const long & rfdcod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("rfdcodPK", rfdcod);
+        stmt.set("rfdcodPK", rfdcod);
     return stmt.execute();
 }
 
@@ -649,27 +662,31 @@ void RfdDAO::loadColumns(tntdb::Row & row, vwze::entity::Rfd * e) {
     int index = 0;
     e->rfdcod = row.getInt64(index++);
     e->rfdrfccod = row.getInt64(index++);
-    e->rfdmax = row.getDecimal(index++).getDouble();
+    e->rfdmin = row.getDecimal(index++).getDouble();
+    e->rfdmef = row.getDecimal(index++).getDouble();
     e->rfdpun = row.getDecimal(index++).getDouble();
 }
 
 void RfdDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Rfd * e) {
     stmt.setInt64("rfdcod", e->rfdcod);
     stmt.setInt64("rfdrfccod", e->rfdrfccod);
-    stmt.setDouble("rfdmax", e->rfdmax);
+    stmt.setDouble("rfdmin", e->rfdmin);
+    stmt.setDouble("rfdmef", e->rfdmef);
     stmt.setDouble("rfdpun", e->rfdpun);
 }
 
-
+        
 ZonDAO * ZonDAO::dao = NULL;
 boost::mutex ZonDAO::mtx;
 
+        
 ZonDAO::~ZonDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 ZonDAO * ZonDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -682,6 +699,7 @@ ZonDAO * ZonDAO::getInstance(void) {
     return dao;
 }
 
+        
 vwze::entity::Zon * ZonDAO::insert(tntdb::Connection & con, vwze::entity::Zon * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -689,6 +707,7 @@ vwze::entity::Zon * ZonDAO::insert(tntdb::Connection & con, vwze::entity::Zon * 
     return e;
 }
 
+        
 std::list<vwze::entity::Zon *> ZonDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Zon *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -708,14 +727,13 @@ vwze::entity::Zon * ZonDAO::read(tntdb::Connection & con, const std::string & zo
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Zon;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type ZonDAO::remove(tntdb::Connection & con, const std::string & zoncod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("zoncodPK", zoncod);
+        stmt.set("zoncodPK", zoncod);
     return stmt.execute();
 }
 
@@ -742,16 +760,18 @@ void ZonDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Zon * e) {
     stmt.setDouble("zontte", e->zontte);
 }
 
-
+        
 ZooDAO * ZooDAO::dao = NULL;
 boost::mutex ZooDAO::mtx;
 
+        
 ZooDAO::~ZooDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
+        
 ZooDAO * ZooDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
@@ -764,6 +784,7 @@ ZooDAO * ZooDAO::getInstance(void) {
     return dao;
 }
 
+        
 vwze::entity::Zoo * ZooDAO::insert(tntdb::Connection & con, vwze::entity::Zoo * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
@@ -771,6 +792,7 @@ vwze::entity::Zoo * ZooDAO::insert(tntdb::Connection & con, vwze::entity::Zoo * 
     return e;
 }
 
+        
 std::list<vwze::entity::Zoo *> ZooDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
     std::list<vwze::entity::Zoo *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
@@ -790,14 +812,13 @@ vwze::entity::Zoo * ZooDAO::read(tntdb::Connection & con, const long & zoocod) {
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Zoo;
         loadColumns(row, e);
-    } catch (tntdb::NotFound) {
+    } catch(tntdb::NotFound) {
     }
     return e;
 }
-
 tntdb::Statement::size_type ZooDAO::remove(tntdb::Connection & con, const long & zoocod) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("zoocodPK", zoocod);
+        stmt.set("zoocodPK", zoocod);
     return stmt.execute();
 }
 

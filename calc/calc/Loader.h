@@ -4,6 +4,7 @@
 #include <tntdb/connection.h>
 #include <tntdb/date.h>
 
+#include "ParserTarifa.h"
 #include "vwze_entity.h"
 
 class Loader {
@@ -35,6 +36,10 @@ private:
     void calcularManipulaciones(void);
     
     void cargarMaps(void);
+    
+    void cargarTarifasPlanta(ParserTarifa &);
+    void cargarTarifasProveedor(ParserTarifa &);
+    
     void insertarDocumento(vwze::entity::Doc *);
     void insertarDocumentosWA(vwze::entity::Doc *);
     void insertarDocumentosWE(vwze::entity::Doc *);

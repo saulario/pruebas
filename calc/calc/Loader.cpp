@@ -67,13 +67,42 @@ void Loader::cargarExpediciones(void) {
     LOG4CXX_INFO(logger, "<----- Fin");
 }
 
+
 void Loader::cargarTarifas(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");    
 
-    std::ifstream infile("proveedor_cc.csv");
-    
     ParserTarifa pt(con);
     pt.borrarTarifas();
+    
+    cargarTarifasProveedor(pt);
+    cargarTarifasPlanta(pt);
+    
+    LOG4CXX_INFO(logger, "<----- Fin");    
+}
+
+void Loader::cargarTarifasPlanta(ParserTarifa & pt) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");    
+
+    std::ifstream infile("cc_plantas.csv");
+    
+    std::string line = "";
+    std::getline(infile, line); // descarta textos
+    std::getline(infile, line);
+    while (!infile.eof()) {
+        pt.insertarReglaPlanta(line);
+        std::getline(infile, line);
+    }
+
+    infile.close();
+    
+    LOG4CXX_TRACE(logger, "<----- Fin");    
+}
+
+
+void Loader::cargarTarifasProveedor(ParserTarifa & pt) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");    
+
+    std::ifstream infile("proveedor_cc.csv");
     
     std::string line = "";
     std::getline(infile, line);
@@ -84,7 +113,7 @@ void Loader::cargarTarifas(void) {
 
     infile.close();
     
-    LOG4CXX_INFO(logger, "<----- Fin");    
+    LOG4CXX_TRACE(logger, "<----- Fin");    
 }
 
 void Loader::calcularAgregados(void) {
