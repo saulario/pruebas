@@ -36,7 +36,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Loader.o \
+	${OBJECTDIR}/Math.o \
 	${OBJECTDIR}/ParserTarifa.o \
+	${OBJECTDIR}/Tarificador.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/vwze_dao.o \
 	${OBJECTDIR}/vwze_entity.o
@@ -71,10 +73,20 @@ ${OBJECTDIR}/Loader.o: Loader.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Loader.o Loader.cpp
 
+${OBJECTDIR}/Math.o: Math.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Math.o Math.cpp
+
 ${OBJECTDIR}/ParserTarifa.o: ParserTarifa.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParserTarifa.o ParserTarifa.cpp
+
+${OBJECTDIR}/Tarificador.o: Tarificador.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tarificador.o Tarificador.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

@@ -7,12 +7,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/saulario/src/pruebas/calc/calc/Loader.h</file>
-            <file>file:/home/saulario/src/pruebas/calc/calc/Loader.cpp</file>
-            <file>file:/home/saulario/src/pruebas/calc/calc/script.sql</file>
-            <file>file:/home/saulario/src/pruebas/calc/calc/ParserTarifa.cpp</file>
+            <file>file:/home/saulario/src/pruebas/calc/calc/Tarificador.cpp</file>
+            <file>file:/home/saulario/src/pruebas/calc/calc/Math.cpp</file>
             <file>file:/home/saulario/src/pruebas/calc/calc/main.cpp</file>
             <file>file:/home/saulario/src/pruebas/calc/calc/ParserTarifa.h</file>
+            <file>file:/home/saulario/src/pruebas/calc/calc/Math.h</file>
+            <file>file:/home/saulario/src/pruebas/calc/calc/Tarificador.h</file>
         </group>
     </open-files>
 </project-private>
