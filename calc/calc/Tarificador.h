@@ -18,8 +18,9 @@ private:
     tntdb::Connection con;    
     tntdb::Statement stmtRegla;
 
+    std::map<unsigned long, vwze::entity::Rfc *> rfcMap;
     std::map<std::string, vwze::entity::Zon *> zonMap;
-    
+
     void borrarImportes(int);
     void cargarEntorno(void);
     

@@ -15,9 +15,12 @@ Tarificador::Tarificador(tntdb::Connection & con_) : con(con_) {
 
 Tarificador::~Tarificador() {
 
-    for (auto p : zonMap) {
+    for (auto p : rfcMap) {
         delete p.second;
     }
+    for (auto p : zonMap) {
+        delete p.second;
+    }    
 
 }
 
@@ -46,6 +49,13 @@ void Tarificador::cargarEntorno(void) {
     for (auto zon : zonList) {
         zonMap.insert(std::pair<std::string, vwze::entity::Zon *>(zon->zoncod, zon));
     }
+    
+    stmt = con.prepare("select * from rfc");
+    std::list<vwze::entity::Rfc *> rfcList = vwze::dao::RfcDAO::getInstance()->query(con, stmt);
+    for (auto rfc : rfcList) {
+        rfcMap.insert(std::pair<unsigned long, vwze::entity::Rfc *>(rfc->rfccod, rfc));
+    }
+    
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
@@ -53,7 +63,7 @@ void Tarificador::tarificar(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     cargarEntorno();
-    //    tarificarCC();
+    //tarificarCC();
     tarificarTipo(-2);
 
     LOG4CXX_INFO(logger, "<----- Fin");
@@ -94,9 +104,16 @@ void Tarificador::tarificarTipo(int tipo) {
             if (rfd) {
                 doe->doepun = rfd->rfdpun;
                 doe->doetot = Math::round(doe->doepun * doe->doepef / 100.0, 2);
+                // comprobación de máximo
                 if (rfd->rfdmef && doe->doetot > rfd->rfdmef) {
                     doe->doepun = 0;
                     doe->doetot = rfd->rfdmef;
+                }
+                // comprobacón de mínimo
+                vwze::entity::Rfc * rfc = rfcMap.find(rfd->rfdrfccod)->second;
+                if (rfc->rfcmin && doe->doetot < rfc->rfcmin) {
+                    doe->doepun = 0;
+                    doe->doetot = rfc->rfcmin;
                 }
                 delete rfd;
                 vwze::dao::DoeDAO::getInstance()->update(con, doe);

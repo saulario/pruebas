@@ -119,11 +119,6 @@ void Loader::cargarTarifasProveedor(ParserTarifa & pt) {
 void Loader::calcularAgregados(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
     
-    if (true | false) {
-        std::exception e;
-        throw e;
-    }    
-      
     doecod = 0;
     tntdb::Result result = con.prepare("select max(doecod) doecod from doe").select();
     for (auto row : result) {
@@ -303,6 +298,10 @@ void Loader::calcularAgregadosWE2(void) {
 
 void Loader::calcularManipulaciones(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
+    
+    if (true | false ) {
+        return;
+    }
 
     con.prepare("delete from doe where doetip = 0").execute();
     
