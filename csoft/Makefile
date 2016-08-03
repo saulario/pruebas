@@ -69,10 +69,10 @@ am__make_running_with_option = \
   test $$has_opt = yes
 am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
-pkgdatadir = $(datadir)/cosft
-pkgincludedir = $(includedir)/cosft
-pkglibdir = $(libdir)/cosft
-pkglibexecdir = $(libexecdir)/cosft
+pkgdatadir = $(datadir)/csoft
+pkgincludedir = $(includedir)/csoft
+pkglibdir = $(libdir)/csoft
+pkglibexecdir = $(libexecdir)/csoft
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -154,7 +154,7 @@ CTAGS = ctags
 CSCOPE = cscope
 DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/Makefile.in AUTHORS COPYING ChangeLog \
-	INSTALL NEWS README install-sh missing
+	INSTALL NEWS README compile depcomp install-sh missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -204,26 +204,37 @@ AUTOCONF = ${SHELL} /home/saulario/src/pruebas/csoft/missing autoconf
 AUTOHEADER = ${SHELL} /home/saulario/src/pruebas/csoft/missing autoheader
 AUTOMAKE = ${SHELL} /home/saulario/src/pruebas/csoft/missing automake-1.15
 AWK = gawk
+CC = gcc
+CCDEPMODE = depmode=gcc3
+CFLAGS = -g -O2
+CPPFLAGS = 
+CXX = g++
+CXXDEPMODE = depmode=gcc3
+CXXFLAGS = -g -O2
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"cosft\" -DPACKAGE_TARNAME=\"cosft\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"cosft\ 1.0\" -DPACKAGE_BUGREPORT=\"Saúl\ Correas\ \<saul.correas@gmail.com\>\" -DPACKAGE_URL=\"\" -DPACKAGE=\"cosft\" -DVERSION=\"1.0\"
+DEFS = -DPACKAGE_NAME=\"csoft\" -DPACKAGE_TARNAME=\"csoft\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"csoft\ 1.0\" -DPACKAGE_BUGREPORT=\"Saúl\ Correas\ \<saul.correas@gmail.com\>\" -DPACKAGE_URL=\"\" -DPACKAGE=\"csoft\" -DVERSION=\"1.0\"
+DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
+EXEEXT = 
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
+LDFLAGS = 
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /home/saulario/src/pruebas/csoft/missing makeinfo
 MKDIR_P = /bin/mkdir -p
-PACKAGE = cosft
+OBJEXT = o
+PACKAGE = csoft
 PACKAGE_BUGREPORT = Saúl Correas <saul.correas@gmail.com>
-PACKAGE_NAME = cosft
-PACKAGE_STRING = cosft 1.0
-PACKAGE_TARNAME = cosft
+PACKAGE_NAME = csoft
+PACKAGE_STRING = csoft 1.0
+PACKAGE_TARNAME = csoft
 PACKAGE_URL = 
 PACKAGE_VERSION = 1.0
 PATH_SEPARATOR = :
@@ -235,7 +246,11 @@ abs_builddir = /home/saulario/src/pruebas/csoft
 abs_srcdir = /home/saulario/src/pruebas/csoft
 abs_top_builddir = /home/saulario/src/pruebas/csoft
 abs_top_srcdir = /home/saulario/src/pruebas/csoft
+ac_ct_CC = gcc
+ac_ct_CXX = g++
+am__include = include
 am__leading_dot = .
+am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
