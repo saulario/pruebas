@@ -9,6 +9,7 @@ public:
     virtual ~ParserTarifa();
     
     void borrarTarifas(void);
+    void establecerNumeradores(void);
     void insertarReglaPlanta(const std::string &);
     void insertarReglaProveedor(const std::string &);
     

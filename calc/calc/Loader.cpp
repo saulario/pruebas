@@ -72,9 +72,10 @@ void Loader::cargarTarifas(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");    
 
     ParserTarifa pt(con);
-    pt.borrarTarifas();
+//    pt.borrarTarifas();
+    pt.establecerNumeradores();
     
-    cargarTarifasProveedor(pt);
+//    cargarTarifasProveedor(pt);
     cargarTarifasPlanta(pt);
     
     LOG4CXX_INFO(logger, "<----- Fin");    
@@ -83,10 +84,10 @@ void Loader::cargarTarifas(void) {
 void Loader::cargarTarifasPlanta(ParserTarifa & pt) {
     LOG4CXX_TRACE(logger, "-----> Inicio");    
 
-    std::ifstream infile("cc_plantas.csv");
+    std::ifstream infile("cc_plantas_v4.csv");
     
     std::string line = "";
-    std::getline(infile, line); // descarta textos
+    //std::getline(infile, line); // descarta textos
     std::getline(infile, line);
     while (!infile.eof()) {
         pt.insertarReglaPlanta(line);
@@ -102,7 +103,7 @@ void Loader::cargarTarifasPlanta(ParserTarifa & pt) {
 void Loader::cargarTarifasProveedor(ParserTarifa & pt) {
     LOG4CXX_TRACE(logger, "-----> Inicio");    
 
-    std::ifstream infile("proveedor_cc.csv");
+    std::ifstream infile("proveedor_cc_v4.csv");
     
     std::string line = "";
     std::getline(infile, line);

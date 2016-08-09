@@ -28,6 +28,24 @@ void ParserTarifa::borrarTarifas(void) {
     LOG4CXX_INFO(logger, "<----- Fin");
 }
 
+void ParserTarifa::establecerNumeradores(void) {
+    LOG4CXX_INFO(logger, "-----> Inicio");
+    
+    rfccod = 0;
+    tntdb::Result result = con.prepare("select max(rfccod) rfccod from rfc").select();
+    for (tntdb::Row r : result) {
+        rfccod = r.getUnsignedLong("rfccod");
+    }
+
+    rfdcod = 0;
+    result = con.prepare("select max(rfdcod) rfdcod from rfd").select();
+    for (tntdb::Row r : result) {
+        rfdcod = r.getUnsignedLong("rfdcod");
+    }
+    
+    LOG4CXX_INFO(logger, "<----- Fin");
+}
+
 void ParserTarifa::insertarReglaPlanta(const std::string & linea) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
