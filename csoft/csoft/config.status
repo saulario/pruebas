@@ -431,7 +431,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/saulario/src/pruebas/csoft'
+ac_pwd='/home/saulario/src/pruebas/csoft/csoft'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -637,12 +637,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]=""
-S["install_sh"]="${SHELL} /home/saulario/src/pruebas/csoft/install-sh"
-S["MAKEINFO"]="${SHELL} /home/saulario/src/pruebas/csoft/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/saulario/src/pruebas/csoft/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/saulario/src/pruebas/csoft/missing automake-1.15"
-S["AUTOCONF"]="${SHELL} /home/saulario/src/pruebas/csoft/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/saulario/src/pruebas/csoft/missing aclocal-1.15"
+S["install_sh"]="${SHELL} /home/saulario/src/pruebas/csoft/csoft/install-sh"
+S["MAKEINFO"]="${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing automake-1.15"
+S["AUTOCONF"]="${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing aclocal-1.15"
 S["VERSION"]="1.0"
 S["PACKAGE"]="csoft"
 S["CYGPATH_W"]="echo"
