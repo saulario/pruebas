@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="cargoPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <!--<provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+    <non-jta-data-source>java:comp/env/jdbc/cargoDS</non-jta-data-source>
+    <class>org.fl.jpa.Usu</class>
+    <class>org.fl.jpa.Tta</class>
+    <class>org.fl.jpa.Tea</class>
+    <class>org.fl.jpa.Cyp</class>
+    <class>org.fl.jpa.Seq</class>
+    <class>org.fl.jpa.Teo</class>
+    <class>org.fl.jpa.Cto</class>
+    <class>org.fl.jpa.Emp</class>
+    <class>org.fl.jpa.Tca</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <!--<property name="hibernate.connection.datasource" value="java:/comp/env/jdbc/cargoDS"/>-->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <!--
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/cargo"/>
+            <property name="javax.persistence.jdbc.user" value="cargouser"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.password" value="cargopasswd"/>
+            -->
+    </properties>
+  </persistence-unit>
+</persistence>

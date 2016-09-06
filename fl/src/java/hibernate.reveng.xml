@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="cargo"/>
+  <table-filter match-name="tea"/>
+  <table-filter match-name="usu"/>
+  <table-filter match-name="seq"/>
+  <table-filter match-name="cyp"/>
+  <table-filter match-name="cto"/>
+  <table-filter match-name="tca"/>
+  <table-filter match-name="emp"/>
+  <table-filter match-name="tta"/>
+  <table-filter match-name="teo"/>
+</hibernate-reverse-engineering>
