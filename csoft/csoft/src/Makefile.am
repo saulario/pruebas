@@ -1,2 +1,2 @@
 bin_PROGRAMS = csoft
-csoft_SOURCES = main.c
+csoft_SOURCES = main.cpp

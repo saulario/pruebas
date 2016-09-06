@@ -1,6 +1,6 @@
 AC_AUTOCONF_VERSION
 AC_INIT([csoft], [1.0], [Saúl Correas <saul.correas@gmail.com>])
-AC_CONFIG_SRCDIR([src/main.c])
+AC_CONFIG_SRCDIR([src/main.cpp])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_FILES([Makefile src/Makefile])
