@@ -98,9 +98,11 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_csoft_OBJECTS = main.$(OBJEXT)
+am_csoft_OBJECTS = csoft-main.$(OBJEXT)
 csoft_OBJECTS = $(am_csoft_OBJECTS)
-csoft_LDADD = $(LDADD)
+csoft_DEPENDENCIES =
+csoft_LINK = $(CXXLD) $(csoft_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
@@ -117,6 +119,10 @@ DEFAULT_INCLUDES = -I.
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_$(V))
@@ -248,6 +254,8 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 csoft_SOURCES = main.cpp
+csoft_CXXFLAGS = --std=c++14 -Wpedantic
+csoft_LDADD = -lboost_log -lboost_log_setup
 all: all-am
 
 .SUFFIXES:
@@ -326,7 +334,7 @@ clean-binPROGRAMS:
 
 csoft$(EXEEXT): $(csoft_OBJECTS) $(csoft_DEPENDENCIES) $(EXTRA_csoft_DEPENDENCIES) 
 	@rm -f csoft$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(csoft_OBJECTS) $(csoft_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(csoft_LINK) $(csoft_OBJECTS) $(csoft_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -334,7 +342,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/csoft-main.Po
 
 .cpp.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -349,6 +357,20 @@ include ./$(DEPDIR)/main.Po
 #	$(AM_V_CXX)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+csoft-main.o: main.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-main.o -MD -MP -MF $(DEPDIR)/csoft-main.Tpo -c -o csoft-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-main.Tpo $(DEPDIR)/csoft-main.Po
+#	$(AM_V_CXX)source='main.cpp' object='csoft-main.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+
+csoft-main.obj: main.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-main.obj -MD -MP -MF $(DEPDIR)/csoft-main.Tpo -c -o csoft-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-main.Tpo $(DEPDIR)/csoft-main.Po
+#	$(AM_V_CXX)source='main.cpp' object='csoft-main.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
