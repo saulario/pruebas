@@ -204,13 +204,13 @@ AUTOCONF = ${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing autoconf
 AUTOHEADER = ${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing autoheader
 AUTOMAKE = ${SHELL} /home/saulario/src/pruebas/csoft/csoft/missing automake-1.15
 AWK = gawk
-CC = /usr/bin/gcc
+CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g3 -gdwarf-2
+CFLAGS = -g -O2
 CPPFLAGS = 
-CXX = /usr/bin/g++
+CXX = g++
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g3 -gdwarf-2
+CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DPACKAGE_NAME=\"csoft\" -DPACKAGE_TARNAME=\"csoft\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"csoft\ 1.0\" -DPACKAGE_BUGREPORT=\"Saúl\ Correas\ \<saul.correas@gmail.com\>\" -DPACKAGE_URL=\"\" -DPACKAGE=\"csoft\" -DVERSION=\"1.0\"
 DEPDIR = .deps
@@ -246,8 +246,8 @@ abs_builddir = /home/saulario/src/pruebas/csoft/csoft
 abs_srcdir = /home/saulario/src/pruebas/csoft/csoft
 abs_top_builddir = /home/saulario/src/pruebas/csoft/csoft
 abs_top_srcdir = /home/saulario/src/pruebas/csoft/csoft
-ac_ct_CC = /usr/bin/gcc
-ac_ct_CXX = 
+ac_ct_CC = gcc
+ac_ct_CXX = g++
 am__include = include
 am__leading_dot = .
 am__quote = 
