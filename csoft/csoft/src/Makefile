@@ -98,7 +98,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_csoft_OBJECTS = csoft-main.$(OBJEXT)
+am_csoft_OBJECTS = csoft-main.$(OBJEXT) csoft-Csoft.$(OBJEXT) \
+	csoft-Worker1.$(OBJEXT) csoft-Worker2.$(OBJEXT)
 csoft_OBJECTS = $(am_csoft_OBJECTS)
 csoft_DEPENDENCIES =
 csoft_LINK = $(CXXLD) $(csoft_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
@@ -253,7 +254,11 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-csoft_SOURCES = main.cpp
+csoft_SOURCES = main.cpp \
+		Csoft.cpp \
+		mod1/Worker1.cpp \
+		mod2/Worker2.cpp
+
 csoft_CXXFLAGS = --std=c++14 -Wpedantic -DBOOST_LOG_DYN_LINK
 csoft_LDADD = -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread
 all: all-am
@@ -342,6 +347,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/csoft-Csoft.Po
+include ./$(DEPDIR)/csoft-Worker1.Po
+include ./$(DEPDIR)/csoft-Worker2.Po
 include ./$(DEPDIR)/csoft-main.Po
 
 .cpp.o:
@@ -371,6 +379,48 @@ csoft-main.obj: main.cpp
 #	$(AM_V_CXX)source='main.cpp' object='csoft-main.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+
+csoft-Csoft.o: Csoft.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-Csoft.o -MD -MP -MF $(DEPDIR)/csoft-Csoft.Tpo -c -o csoft-Csoft.o `test -f 'Csoft.cpp' || echo '$(srcdir)/'`Csoft.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-Csoft.Tpo $(DEPDIR)/csoft-Csoft.Po
+#	$(AM_V_CXX)source='Csoft.cpp' object='csoft-Csoft.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-Csoft.o `test -f 'Csoft.cpp' || echo '$(srcdir)/'`Csoft.cpp
+
+csoft-Csoft.obj: Csoft.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-Csoft.obj -MD -MP -MF $(DEPDIR)/csoft-Csoft.Tpo -c -o csoft-Csoft.obj `if test -f 'Csoft.cpp'; then $(CYGPATH_W) 'Csoft.cpp'; else $(CYGPATH_W) '$(srcdir)/Csoft.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-Csoft.Tpo $(DEPDIR)/csoft-Csoft.Po
+#	$(AM_V_CXX)source='Csoft.cpp' object='csoft-Csoft.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-Csoft.obj `if test -f 'Csoft.cpp'; then $(CYGPATH_W) 'Csoft.cpp'; else $(CYGPATH_W) '$(srcdir)/Csoft.cpp'; fi`
+
+csoft-Worker1.o: mod1/Worker1.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-Worker1.o -MD -MP -MF $(DEPDIR)/csoft-Worker1.Tpo -c -o csoft-Worker1.o `test -f 'mod1/Worker1.cpp' || echo '$(srcdir)/'`mod1/Worker1.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-Worker1.Tpo $(DEPDIR)/csoft-Worker1.Po
+#	$(AM_V_CXX)source='mod1/Worker1.cpp' object='csoft-Worker1.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-Worker1.o `test -f 'mod1/Worker1.cpp' || echo '$(srcdir)/'`mod1/Worker1.cpp
+
+csoft-Worker1.obj: mod1/Worker1.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-Worker1.obj -MD -MP -MF $(DEPDIR)/csoft-Worker1.Tpo -c -o csoft-Worker1.obj `if test -f 'mod1/Worker1.cpp'; then $(CYGPATH_W) 'mod1/Worker1.cpp'; else $(CYGPATH_W) '$(srcdir)/mod1/Worker1.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-Worker1.Tpo $(DEPDIR)/csoft-Worker1.Po
+#	$(AM_V_CXX)source='mod1/Worker1.cpp' object='csoft-Worker1.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-Worker1.obj `if test -f 'mod1/Worker1.cpp'; then $(CYGPATH_W) 'mod1/Worker1.cpp'; else $(CYGPATH_W) '$(srcdir)/mod1/Worker1.cpp'; fi`
+
+csoft-Worker2.o: mod2/Worker2.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-Worker2.o -MD -MP -MF $(DEPDIR)/csoft-Worker2.Tpo -c -o csoft-Worker2.o `test -f 'mod2/Worker2.cpp' || echo '$(srcdir)/'`mod2/Worker2.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-Worker2.Tpo $(DEPDIR)/csoft-Worker2.Po
+#	$(AM_V_CXX)source='mod2/Worker2.cpp' object='csoft-Worker2.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-Worker2.o `test -f 'mod2/Worker2.cpp' || echo '$(srcdir)/'`mod2/Worker2.cpp
+
+csoft-Worker2.obj: mod2/Worker2.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -MT csoft-Worker2.obj -MD -MP -MF $(DEPDIR)/csoft-Worker2.Tpo -c -o csoft-Worker2.obj `if test -f 'mod2/Worker2.cpp'; then $(CYGPATH_W) 'mod2/Worker2.cpp'; else $(CYGPATH_W) '$(srcdir)/mod2/Worker2.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/csoft-Worker2.Tpo $(DEPDIR)/csoft-Worker2.Po
+#	$(AM_V_CXX)source='mod2/Worker2.cpp' object='csoft-Worker2.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(csoft_CXXFLAGS) $(CXXFLAGS) -c -o csoft-Worker2.obj `if test -f 'mod2/Worker2.cpp'; then $(CYGPATH_W) 'mod2/Worker2.cpp'; else $(CYGPATH_W) '$(srcdir)/mod2/Worker2.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
