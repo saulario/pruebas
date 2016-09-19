@@ -20,7 +20,7 @@ Worker2::~Worker2() {
 }
 
 void Worker2::doIt(void) {
-    BOOST_LOG_SEV(lg, boost::log::trivial::info) << ">>> Begin";
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "---> Begin";
 
-    BOOST_LOG_SEV(lg, boost::log::trivial::info) << "<<< End";    
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "<--- End";    
 }

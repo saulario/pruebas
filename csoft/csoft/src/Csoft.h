@@ -23,7 +23,7 @@ namespace csoft {
 
     private:
         boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
-        static void launch(const Csoft *, unsigned int);
+        static void launch(const Csoft *, const unsigned int);
     };
 
 }

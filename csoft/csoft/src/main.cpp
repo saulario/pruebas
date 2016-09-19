@@ -6,6 +6,8 @@
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/from_stream.hpp>
+#include <fstream>
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,13 +17,14 @@
 
 void init_log(void) {
     
-    
+//    std::ifstream file("logger.ini");
+//    boost::log::init_from_stream(file);    
     
     boost::log::add_file_log(
             boost::log::keywords::file_name = "/usr/local/log/csoft_%N.log",
             boost::log::keywords::rotation_size = 1024 * 1024 * 10,
             boost::log::keywords::time_based_rotation = boost::log::sinks::file::rotation_at_time_point(0, 0, 0),
-            boost::log::keywords::format = "[%TimeStamp%][%ThreadID%][%Class%][%Method%]: %Message%"
+            boost::log::keywords::format = "[%TimeStamp%][%ThreadID%]: %Message%"
             );
     
     boost::log::core::get()->set_filter(
@@ -34,21 +37,21 @@ void init_log(void) {
 boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
 
 void signal_handler(int signo) {
-    BOOST_LOG_SEV(lg, boost::log::trivial::trace) << "-----> Inicio";
+    BOOST_LOG_SEV(lg, boost::log::trivial::trace) << ">>>" << __PRETTY_FUNCTION__;
     BOOST_LOG_SEV(lg, boost::log::trivial::trace) << "\t(signo): " << signo;
     printf("Signal %d pulsada", signo);
     exit(signo);
-    BOOST_LOG_SEV(lg, boost::log::trivial::trace) << "<----- Fin";
+    BOOST_LOG_SEV(lg, boost::log::trivial::trace) << "<<<" << __PRETTY_FUNCTION__;
 }
 
 int main(int argc, char **argv) {
-    
+   
     init_log();
     boost::log::add_common_attributes();
     
 
     
-    BOOST_LOG_SEV(lg, boost::log::trivial::info) << "-----> Inicio";
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "---> Begin";
     
     BOOST_LOG_SEV(lg, boost::log::trivial::trace) << "\ttrace";
     BOOST_LOG_SEV(lg, boost::log::trivial::debug) << "\tdebug";
@@ -83,13 +86,14 @@ int main(int argc, char **argv) {
 
 
     csoft::Csoft csoft;
-    csoft.doIt(argc, argv);
+    int retval = csoft.doIt(argc, argv);
+
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << "\t(HOME): " << getenv("HOME");
 
 
 
-
-
-    BOOST_LOG_SEV(lg, boost::log::trivial::info) << "<----- Fin";
-    return EXIT_SUCCESS;
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "<--- End (retval): " << retval;
+    boost::log::core::get()->remove_all_sinks();
+    return retval;
 }
 

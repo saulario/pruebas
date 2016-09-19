@@ -37,7 +37,7 @@ void lanzar(int job) {
 }
 
 int Csoft::doIt(int argc, char **argv) {
-    BOOST_LOG_SEV(lg, boost::log::trivial::info) << "-----> Begin";
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "---> Begin";
 
     std::thread t1(Csoft::launch, this, 1);
     std::thread t2(Csoft::launch, this, 2);
@@ -45,10 +45,11 @@ int Csoft::doIt(int argc, char **argv) {
     t1.join();
     t2.join();
 
-    BOOST_LOG_SEV(lg, boost::log::trivial::info) << "<----- End";
+    BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "<--- End";
+    return EXIT_SUCCESS;
 }
 
-void Csoft::launch(const Csoft * csoft, unsigned int i) {
+void Csoft::launch(const Csoft * csoft, const unsigned int i) {
     switch (i) {
         case 1:
         {
