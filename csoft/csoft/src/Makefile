@@ -94,6 +94,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
+CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
@@ -116,7 +117,7 @@ AM_V_at = $(am__v_at_$(V))
 am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
 am__v_at_0 = @
 am__v_at_1 = 
-DEFAULT_INCLUDES = -I.
+DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
@@ -180,7 +181,7 @@ CXX = g++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"csoft\" -DPACKAGE_TARNAME=\"csoft\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"csoft\ 1.0\" -DPACKAGE_BUGREPORT=\"Saúl\ Correas\ \<saul.correas@gmail.com\>\" -DPACKAGE_URL=\"\" -DPACKAGE=\"csoft\" -DVERSION=\"1.0\"
+DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
@@ -259,6 +260,7 @@ csoft_SOURCES = main.cpp \
 		mod1/Worker1.cpp \
 		mod2/Worker2.cpp
 
+AM_CPPFLAGS = -DDATADIR=\"$(datadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" -DDBDIR=\"$(prefix)/db\"
 csoft_CXXFLAGS = --std=c++14 -Wpedantic -DBOOST_LOG_DYN_LINK
 csoft_LDADD = -lboost_log -lboost_log_setup -lboost_thread -lboost_system -lpthread
 all: all-am

@@ -15,23 +15,34 @@
 
 #include "Csoft.h"
 
+#ifndef DBDIR
+#define DBDIR "."
+#endif
+#ifndef SYSCONFDIR
+#define SYSCONFDIR "."
+#endif
+
+
 void init_log(void) {
     
-//    std::ifstream file("logger.ini");
-//    boost::log::init_from_stream(file);    
+    std::string logger_ini(SYSCONFDIR);
+    logger_ini += "/logger.ini";
     
-    boost::log::add_file_log(
-            boost::log::keywords::file_name = "/usr/local/log/csoft_%N.log",
-            boost::log::keywords::rotation_size = 1024 * 1024 * 10,
-            boost::log::keywords::time_based_rotation = boost::log::sinks::file::rotation_at_time_point(0, 0, 0),
-            boost::log::keywords::format = "[%TimeStamp%][%ThreadID%]: %Message%"
-            );
+    std::ifstream file(logger_ini, std::ifstream::in);
+    boost::log::init_from_stream(file);    
     
-    boost::log::core::get()->set_filter(
-            boost::log::trivial::severity >= boost::log::trivial::info
-            );
-    
-    boost::shared_ptr<boost::log::core> core = boost::log::core::get();
+//    boost::log::add_file_log(
+//            boost::log::keywords::file_name = "/usr/local/log/csoft_%N.log",
+//            boost::log::keywords::rotation_size = 1024 * 1024 * 10,
+//            boost::log::keywords::time_based_rotation = boost::log::sinks::file::rotation_at_time_point(0, 0, 0),
+//            boost::log::keywords::format = "[%TimeStamp%][%ThreadID%]: %Message%"
+//            );
+//    
+//    boost::log::core::get()->set_filter(
+//            boost::log::trivial::severity >= boost::log::trivial::info
+//            );
+//    
+//    boost::shared_ptr<boost::log::core> core = boost::log::core::get();
 }
 
 boost::log::sources::severity_logger<boost::log::trivial::severity_level> lg;
@@ -52,7 +63,7 @@ int main(int argc, char **argv) {
 
     
     BOOST_LOG_SEV(lg, boost::log::trivial::info) << __PRETTY_FUNCTION__ << "---> Begin";
-    
+
     BOOST_LOG_SEV(lg, boost::log::trivial::trace) << "\ttrace";
     BOOST_LOG_SEV(lg, boost::log::trivial::debug) << "\tdebug";
     BOOST_LOG_SEV(lg, boost::log::trivial::info) << "\tinfo";
