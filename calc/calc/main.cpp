@@ -24,12 +24,12 @@ int main(int argc, char** argv) {
 
     try {
         Loader l(con);
-//        l.cargarExpediciones();
+        l.cargarExpediciones();
 //        l.calcularAgregados();
-        l.cargarTarifas();
-
-        Tarificador t(con);
-        t.tarificar();
+//        l.cargarTarifas();
+//
+//        Tarificador t(con);
+//        t.tarificar();
 
     } catch (std::exception &e) {
         LOG4CXX_ERROR(logger, std::string(e.what()));
