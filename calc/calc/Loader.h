@@ -16,6 +16,8 @@ public:
     void cargarExpediciones(void);
     void cargarTarifas(void);
     void calcularAgregados(void);
+    
+    void reconstruirDocumentos(void);    
 
 private:
     static log4cxx::LoggerPtr logger;
@@ -48,7 +50,7 @@ private:
     double parsearDouble(const std::string &);
     
     std::string getKccCodigo(const std::string &);
-    std::string getKccDescripcion(const std::string &);
+    std::string getKccDescripcion(const std::string &);    
 
 };
 
