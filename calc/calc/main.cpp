@@ -20,12 +20,12 @@ int main(int argc, char** argv) {
     log4cxx::PropertyConfigurator::configure("log4cxx.properties");
     LOG4CXX_INFO(logger, "-----> Inicio");
 
-    tntdb::Connection con = tntdb::connect("mysql:db=vwze_backup;user=vwze;passwd=vwzexx");
+    tntdb::Connection con = tntdb::connect("mysql:db=vwze;user=vwze;passwd=vwzexx");
 
     try {
         Loader l(con);
 //        l.cargarExpediciones();
-//        l.calcularAgregados();
+        l.calcularAgregados();
 //        l.cargarTarifas();
 //        l.reconstruirDocumentos();
 //
