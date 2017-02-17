@@ -19,7 +19,8 @@
 AR              = ar
 CC              = gcc
 CFLAGS          = -g -Wall
-CINCLUDES	= -I ../../opensource/include/libxml2
+#CINCLUDES	= -I ../../opensource/include/libxml2
+CINCLUDES	= -I /usr/include/libxml2
 
 LLRPDEF         = ../../Definitions/Core/llrp-1x0-def.xml
 

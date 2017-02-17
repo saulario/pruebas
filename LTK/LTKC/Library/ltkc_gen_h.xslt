@@ -439,7 +439,7 @@ LLRP_<xsl:value-of select='$BaseName'/>_isAllowedIn (
 <xsl:template name='StructDeclOneField'
               xml:space='preserve'>
   <xsl:param name='StructName'/><xsl:param name='FieldType'/><xsl:param name='MemberName'/><xsl:param name='BaseName'/>
-    <xsl:value-of select='$FieldType'/> <xsl:value-of select='$MemberName'/>;
+    <xsl:value-of select='$FieldType'/><xsl:text> </xsl:text><xsl:value-of select='$MemberName'/>;
 </xsl:template>
 
 
