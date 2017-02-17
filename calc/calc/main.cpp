@@ -25,9 +25,10 @@ int main(int argc, char** argv) {
     try {
         Loader l(con);
 //        l.cargarExpediciones();
-//        l.calcularAgregados();
-        l.cargarTarifas();
-
+        l.calcularAgregados();
+//        l.cargarTarifas();
+//        l.reconstruirDocumentos();
+//
         Tarificador t(con);
         t.tarificar();
 
