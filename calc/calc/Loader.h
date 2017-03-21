@@ -35,6 +35,17 @@ private:
     void calcularAgregadosWA2(void);
     void calcularAgregadosWE1(void);
     void calcularAgregadosWE2(void);
+    
+    // camionizando
+    void calcularAgregadosWE2_camion(void);
+    
+    // con criterios VW
+    void calcularAgregadosWA1_VW(void);
+    void calcularAgregadosWA2_VW(void);
+    void calcularAgregadosWE1_VW(void);
+    void calcularAgregadosWE2_VW(void);
+    
+    
     void calcularManipulaciones(void);
     
     void cargarMaps(void);

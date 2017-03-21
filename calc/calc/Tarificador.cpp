@@ -20,7 +20,7 @@ Tarificador::~Tarificador() {
     }
     for (auto p : zonMap) {
         delete p.second;
-    }    
+    }
 
 }
 
@@ -34,28 +34,28 @@ void Tarificador::borrarImportes(int doetip) {
 
 void Tarificador::cargarEntorno(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    
+
     // esta stmt se crea por ganar tiempo
-    
+
     stmtRegla = con.prepare(" select rfd.* from rfc join rfd on rfdrfccod = rfccod "
             " where "
             "   rfcrul = :rfcrul "
             "   and rfdmin < :rfcmin "
             " order by rfdmin desc "
             " limit 1");
-    
+
     tntdb::Statement stmt = con.prepare("select * from zon");
     std::list<vwze::entity::Zon*> zonList = vwze::dao::ZonDAO::getInstance()->query(con, stmt);
     for (auto zon : zonList) {
         zonMap.insert(std::pair<std::string, vwze::entity::Zon *>(zon->zoncod, zon));
     }
-    
+
     stmt = con.prepare("select * from rfc");
     std::list<vwze::entity::Rfc *> rfcList = vwze::dao::RfcDAO::getInstance()->query(con, stmt);
     for (auto rfc : rfcList) {
         rfcMap.insert(std::pair<unsigned long, vwze::entity::Rfc *>(rfc->rfccod, rfc));
     }
-    
+
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
@@ -63,11 +63,11 @@ void Tarificador::tarificar(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     cargarEntorno();
-//    tarificarCC();
+    //    tarificarCC();
 //    tarificarTipo(1);
-//    tarificarTipo(2);
+    tarificarTipo(2);
 //    tarificarTipo(-1);
-    tarificarTipo(-2);
+//    tarificarTipo(-2);
 
     LOG4CXX_INFO(logger, "<----- Fin");
 }
@@ -97,7 +97,7 @@ void Tarificador::tarificarCC(void) {
 
 void Tarificador::tarificarTipo(int tipo) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    
+
     tntdb::Statement stmt = con.prepare("select * from doe where doetip = :doetip");
     stmt.setInt("doetip", tipo);
     auto doeList = vwze::dao::DoeDAO::getInstance()->query(con, stmt);
@@ -125,25 +125,25 @@ void Tarificador::tarificarTipo(int tipo) {
         delete doe;
     }
 
-    LOG4CXX_TRACE(logger, "<----- Fin");    
+    LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
 vwze::entity::Rfd * Tarificador::localizarRegla(const vwze::entity::Doe * doe) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
-    
+
     std::string rfcrul = boost::lexical_cast<std::string, int>(doe->doetip)
             + ":" + doe->doeorgzon + ":" + doe->doedeszon;
-    
+
     vwze::entity::Rfd * rfd = NULL;
-    
+
     stmtRegla.setString("rfcrul", rfcrul);
     stmtRegla.setDouble("rfcmin", doe->doepef);
     auto rfdList = vwze::dao::RfdDAO::getInstance()->query(con, stmtRegla);
     if (!rfdList.empty()) {
         rfd = rfdList.front();
     }
-    
-    LOG4CXX_TRACE(logger, "<----- Fin");    
+
+    LOG4CXX_TRACE(logger, "<----- Fin");
     return rfd;
 }
 
