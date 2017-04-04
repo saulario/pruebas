@@ -3,6 +3,7 @@
 
 #include <bson.h>
 #include <mongoc.h>
+#include "MyConnectionHandler.h"
 
 #include "messaging/MessageTypes.h"
 
@@ -29,10 +30,23 @@ void imprime(const std::string v, const T &t) {
     std::cerr << std::endl;
 }
 
+int main(int argc, char **argv) {
+    
+    MyConnectionHandler h;
+    AMQP::Connection c(&h, AMQP::Login("openriot", "1111111"), "/openriot");
+    AMQP::Channel ch(&c);
+    
+    ch.declareExchange("amq.topic", AMQP::topic);
+    
+    
+    
+    return EXIT_SUCCESS;
+}
+
 /*
  * 
  */
-int main(int argc, char** argv) {
+int mainnn(int argc, char** argv) {
 
     mongoc_init();
 

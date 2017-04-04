@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/c9fb4c15/MyConnectionHandler.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/messaging/MessageTypes.o \
 	${OBJECTDIR}/messaging/SegmentTypes.o
@@ -54,7 +55,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lmongoc-1.0 -lbson-1.0
+LDLIBSOPTIONS=-lmongoc-1.0 -lbson-1.0 -lamqpcpp
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -63,6 +64,11 @@ LDLIBSOPTIONS=-lmongoc-1.0 -lbson-1.0
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/prueba1: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/prueba1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/_ext/c9fb4c15/MyConnectionHandler.o: /home/saulario/src/pruebas/IoT/prueba1/MyConnectionHandler.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/c9fb4c15
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/libbson-1.0 -I/usr/include/libmongoc-1.0 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/c9fb4c15/MyConnectionHandler.o /home/saulario/src/pruebas/IoT/prueba1/MyConnectionHandler.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
