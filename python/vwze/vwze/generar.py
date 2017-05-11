@@ -17,6 +17,7 @@ def generar_we(sesion, doc):
 def todo(sesion):
     borrar_dods(sesion)
     for doc in sesion.query(Doc).limit(1000).all():
+        print doc.docexp
         if ("WA" == doc.docflu):
             generar_wa(sesion, doc)
         elif ("WE" == doc.docflu):
