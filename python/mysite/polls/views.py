@@ -35,7 +35,7 @@ def index(request):
 
 
 def index1(request):
-    return render(request, 'polls/index1.html')
+    return render(request, 'polls/index2.html')
 
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
