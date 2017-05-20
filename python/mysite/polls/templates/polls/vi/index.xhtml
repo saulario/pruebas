@@ -1,0 +1,52 @@
+{% extends "../t_main.xhtml" %}
+
+{% block title %}CARGO-TMS{% endblock %}
+{% block menu %}
+
+<p-menubar>
+
+    <p-submenu value="Archivo">
+        <p-submenu value="New" icon="fa-plus">
+            <p-menuitem value="Project"></p-menuitem>
+            <p-menuitem value="Other"></p-menuitem>
+        </p-submenu>
+        <p-menuitem value="Open"></p-menuitem>
+        <p-menuitem value="Quit"></p-menuitem>
+    </p-submenu>
+    
+    <p-submenu value="Expediciones">
+        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
+        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
+    </p-submenu>
+    
+    <p-submenu value="Operaciones">
+        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
+        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
+    </p-submenu>
+    
+    <p-submenu value="Hubs">
+        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
+        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
+    </p-submenu>
+    
+    <p-submenu value="Flota">
+        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
+        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
+    </p-submenu>
+    
+    <p-submenu value="Favoritos">
+        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
+        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
+    </p-submenu>
+
+    <p-submenu value="Ayuda">
+        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
+        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
+    </p-submenu>
+    
+</p-menubar>
+
+
+{% endblock %}
+{% block body %}{% endblock %}
+{% block footer %}{% endblock %}
