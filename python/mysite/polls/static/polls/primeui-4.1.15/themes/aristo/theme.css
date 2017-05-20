@@ -34,16 +34,16 @@ a {
 .ui-widget
 {
     font-family: Roboto, Arial,sans-serif;
-    font-size: 15px;
+    font-size: 14px;
 }
 .ui-widget .ui-widget
 {
-    font-size: 1em;
+    font-size: 14px;
 }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
 {
     font-family: Roboto, Arial,sans-serif;
-    font-size: 1em;
+    font-size: 14px;
 }
 .ui-widget-content
 {
@@ -1007,9 +1007,9 @@ a {
 }
 .ui-corner-all
 {
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
 }
 .ui-round-all
 {
@@ -1234,6 +1234,7 @@ a {
     background: #c4c4c4 linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
     background: #c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
     background: #c4c4c4 -moz-linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+    padding: 0px;
 }
 
 *html .ui-menu .ui-menu-list {

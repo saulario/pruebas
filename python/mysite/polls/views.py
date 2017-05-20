@@ -1,13 +1,51 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth import authenticate, login, logout
+
 from django.http import HttpResponse, HttpResponseRedirect
-from django.http import Http404
+#from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render, reverse
+from django.shortcuts import render
+from django.shortcuts import reverse
 from django.views import generic
 
 from .models import Question, Choice
+
+
+def index(request):
+    context = {}
+    return render(request, 'polls/index.xhtml', context)
+
+    
+def login(request):
+    
+    for key in request.POST:
+        #print key, ' => ', request.POST[key]
+        print key 
+    
+    
+    
+    username = request.POST['us']
+    password = request.POST['cl']
+    
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+    context = {}
+    return render(request, 'polls/index.xhtml')
+
+def logout(request):
+    logout(request)
+    
+    context = {}
+    return render(request, 'polls/index.xhtml', context)
+
+
+
+
+
+
 
 
 class IndexView(generic.ListView):
@@ -26,7 +64,10 @@ class ResultsView(generic.DetailView):
     template_name = 'polls/results.html'
 
 
-def index(request):
+
+
+
+def index3(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
     context = {
         'latest_question_list': latest_question_list,
