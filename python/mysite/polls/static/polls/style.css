@@ -1,0 +1,31 @@
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+
+body {
+	font-family: 'Roboto', sans-serif
+}
+
+a {
+	font-family: 'Roboto', sans-serif;
+	font-size: 18px;
+}
+
+input {
+	font-family: 'Roboto', sans-serif;
+	font-size: 15px;
+}
+
+
+/* tamaños */
+
+.sz_min { font-size: 10px }
+.sz_med { font-size: 20px }
+.sz_big { font-size: 30px }
+.sz_hug { font-size: 100px }
+
+/* colores */
+
+.cl_label { color: cornflowerblue!important }
+.cl_caja { color: blue }
+
+.border { border: 1px solid black; overflow: auto }

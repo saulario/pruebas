@@ -1,0 +1,36 @@
+{% load static %}
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Roboto:300');	
+	</style>
+	
+	<link rel="stylesheet" type="text/css" href="{% static 'polls/font-awesome-4.7.0/css/font-awesome.css' %}"></link>
+	<link rel="stylesheet" type="text/css" href="{% static 'polls/jquery-ui-1.12.1/jquery-ui.css' %}"></link>
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/primeui-4.1.15/primeui.min.css' %}"></link>	
+	
+    <script type="text/javascript" src="{% static 'polls/jquery-3.2.1/dist/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'polls/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+    <script type="text/javascript" src="{% static 'polls/primeui-4.1.15/primeui.min.js' %}"></script>	
+    
+    <!-- <script type="text/javascript" src="{% static 'polls/primeui-4.1.15/plugins/plugins-all.js' %}"></script> -->
+    
+    <script type="text/javascript" src="{% static 'polls/x-tag-core.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'polls/primeui-4.1.15/primeelements.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'polls/primeui-4.1.15/themes/aristo/theme.css' %}"></link>    
+	
+	<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<div class="header" style="height: 7%">
+{% block header %}
+	<img id="img1" src="{% static 'polls/images/wedge7.jpg' %}" alt="logo" style="height: 100%"></img>
+{% endblock %}
+</div>
+<div class="menu" style="height: 25px">{% block menu %}{% endblock %}</div>
+<div class="body" style="overflow: auto; width: 100%; height: 80%">{% block body %}{% endblock %}</div>
+<div class="footer" style="overflow: auto; width: 100%; height: 5%">{% block footer %}{% endblock %}</div>
+</body>
+</html>

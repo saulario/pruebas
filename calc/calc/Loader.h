@@ -16,6 +16,8 @@ public:
     void cargarExpediciones(void);
     void cargarTarifas(void);
     void calcularAgregados(void);
+    
+    void reconstruirDocumentos(void);    
 
 private:
     static log4cxx::LoggerPtr logger;
@@ -33,7 +35,20 @@ private:
     void calcularAgregadosWA2(void);
     void calcularAgregadosWE1(void);
     void calcularAgregadosWE2(void);
+    
+    // camionizando
+    void calcularAgregadosWA2_camion(void);
+    void calcularAgregadosWE2_camion(void);
+    
+    // con criterios VW
+    void calcularAgregadosWA1_VW(void);
+    void calcularAgregadosWA2_VW(void);
+    void calcularAgregadosWE1_VW(void);
+    void calcularAgregadosWE2_VW(void);
+    
+    
     void calcularManipulaciones(void);
+    void calcularManipulacionesAgregadas(void);
     
     void cargarMaps(void);
     
@@ -48,7 +63,7 @@ private:
     double parsearDouble(const std::string &);
     
     std::string getKccCodigo(const std::string &);
-    std::string getKccDescripcion(const std::string &);
+    std::string getKccDescripcion(const std::string &);    
 
 };
 
