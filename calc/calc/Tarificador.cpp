@@ -37,11 +37,11 @@ void Tarificador::cargarEntorno(void) {
 
     // esta stmt se crea por ganar tiempo
 
-    stmtRegla = con.prepare(" select rfd.* from rfc join rfd on rfdrfccod = rfccod "
+    stmtRegla = con.prepare(" select rfd.* from rfc join rfd on rfd.rfdrfccod = rfc.rfccod "
             " where "
-            "   rfcrul = :rfcrul "
-            "   and rfdmin < :rfcmin "
-            " order by rfdmin desc "
+            "       rfc.rfcrul = :rfcrul "
+            "   and rfd.rfdmin < :rfcmin "
+            " order by rfd.rfdmin desc "
             " limit 1");
 
     tntdb::Statement stmt = con.prepare("select * from zon");
@@ -64,10 +64,12 @@ void Tarificador::tarificar(void) {
 
     cargarEntorno();
     //    tarificarCC();
-//    tarificarTipo(1);
+    tarificarTipo(1);
     tarificarTipo(2);
-//    tarificarTipo(-1);
+    tarificarTipo(-1);
     tarificarTipo(-2);
+    tarificarTipo(3);
+    tarificarTipo(-3);
 
     LOG4CXX_INFO(logger, "<----- Fin");
 }
@@ -128,6 +130,47 @@ void Tarificador::tarificarTipo(int tipo) {
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
+//vwze::entity::Rfd * Tarificador::localizarRegla(const vwze::entity::Doe * doe) {
+//    LOG4CXX_TRACE(logger, "-----> Inicio");
+//
+//    std::string rfcrul = boost::lexical_cast<std::string, int>(doe->doetip)
+//            + ":" + doe->doeorgzon + ":" + doe->doedeszon;
+//
+//    int rfccod = 0;
+//    tntdb::Result result = con.prepare("select rfccod from rfc where rfcrul = :rfcrul limit 1")
+//            .setString("rfcrul", rfcrul)
+//            .select();
+//    for (auto row : result) {
+//        rfccod = row.getInt64("doecod");
+//        break;
+//    }
+//    if (rfccod == 0) {
+//        return NULL;
+//    }
+//
+//    vwze::entity::Rfd * rfd = NULL;
+//    
+//    tntdb::Statement stmt = con.prepare("select " 
+//            + vwze::dao::RfdDAO::getInstance()->getColumns() +
+//            " from " 
+//            + vwze::dao::RfdDAO::getInstance()->getTable() +
+//            " where "
+//            " rfdrfccod = :rfdrfccod "
+//            " and rfdmin < :rfdmin "
+//            " order by rfdmin desc "
+//            " limit 1")
+//            .setInt("rfdrfccod", rfccod)
+//            .setDouble("rfdmin", doe->doepef);
+//    
+//    auto rfdList = vwze::dao::RfdDAO::getInstance()->query(con, stmt);
+//    if (!rfdList.empty()) {
+//        rfd = rfdList.front();
+//    }
+//
+//    LOG4CXX_TRACE(logger, "<----- Fin");
+//    return rfd;
+//}
+
 vwze::entity::Rfd * Tarificador::localizarRegla(const vwze::entity::Doe * doe) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
@@ -146,4 +189,5 @@ vwze::entity::Rfd * Tarificador::localizarRegla(const vwze::entity::Doe * doe) {
     LOG4CXX_TRACE(logger, "<----- Fin");
     return rfd;
 }
+
 
