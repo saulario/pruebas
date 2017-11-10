@@ -27,18 +27,18 @@ int main(int argc, char** argv) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     tntdb::Connection con = tntdb::connect("mysql:db=vwze_1711_z3e4;user=vwze;passwd=vwzexx");
+    //tntdb::Connection con = tntdb::connect("mysql:host=dessys02.sese.com;db=vwze_1705;user=vwze;passwd=vwzexx");
+
+    //corregirDocumentos(con);
 
     try {
-        
-//        ParserTarifa pt(con);
-//        pt.cargarTarifaDirectos("/home/saulario/VWZE/1711_definitivo/TARIFA_DIRECTOS.csv");
-//        pt.cargarTarifaCapilar("/home/saulario/VWZE/1711_definitivo/TARIFA_CAPILAR.csv");
 
-        
-//        Loader l(con);
-////        l.reconstruirDocumentos();
+        Loader l(con);
+        //                l.cargarExpediciones();
 //        l.calcularAgregados();
-
+//        l.cargarTarifas();
+//        l.reconstruirDocumentos();
+        //
         Tarificador t(con);
         t.tarificar();
 

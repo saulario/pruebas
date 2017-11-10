@@ -96,9 +96,9 @@ void Loader::calcularAgregados(int tipo) {
 void Loader::calcularAgregadosWA1(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
     calcularAgregados(-1);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -107,9 +107,9 @@ void Loader::calcularAgregadosWA1(void) {
 void Loader::calcularAgregadosWA2(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
     calcularAgregados(-2);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -122,9 +122,9 @@ void Loader::calcularAgregadosWA2(void) {
 void Loader::calcularDirectosWA(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
     calcularAgregados(-3);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -136,9 +136,9 @@ void Loader::calcularDirectosWA(void) {
 void Loader::calcularAgregadosWE1(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
     calcularAgregados(1);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -150,9 +150,9 @@ void Loader::calcularAgregadosWE1(void) {
 void Loader::calcularAgregadosWE2(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
     calcularAgregados(2);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -165,9 +165,9 @@ void Loader::calcularAgregadosWE2(void) {
 void Loader::calcularDirectosWE(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
     calcularAgregados(3);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -672,9 +672,9 @@ void Loader::reconstruirDocumentos(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
     // protección
-//    if (true | false) {
-//        return;
-//    }
+    //    if (true | false) {
+    //        return;
+    //    }
 
     borrarDatos();
     cargarMaps();
