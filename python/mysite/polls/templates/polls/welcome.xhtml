@@ -1,0 +1,62 @@
+{% load static %}
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.column {
+	float:left;
+}
+
+</style>
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/font-awesome-4.7.0/css/font-awesome.css' %}"></link>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/jquery-ui-1.12.1/jquery-ui.css' %}"></link>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/primeui-4.1.15/primeui.min.css' %}"></link>
+
+<script type="text/javascript" src="{% static 'polls/jquery-3.2.1/dist/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'polls/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+<script type="text/javascript" src="{% static 'polls/primeui-4.1.15/primeui.min.js' %}"></script>
+
+<!-- <script type="text/javascript" src="{% static 'polls/primeui-4.1.15/plugins/plugins-all.js' %}"></script> -->
+
+<script type="text/javascript" src="{% static 'polls/x-tag-core.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'polls/primeui-4.1.15/primeelements.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'polls/primeui-4.1.15/themes/aristo/theme.css' %}"></link>
+
+<title>CARGO-TMS Welcome</title>
+
+
+</head>
+<body>
+
+	<div id="container" style="width:100%">
+ 	
+		<div id="header" class="header" style="height:7%">
+			<img id="img1" src="{% static 'polls/images/wedge7.jpg' %}" alt="logo" style="height:100%"></img>
+		</div>
+ 
+		<div id="enlaces" class="column links">
+			<p-panel>
+			<ul>
+				<li><a href="vi" target="_blank">Área de transporte</a></li>
+				<li><a href="vc" target="_blank">Área de clientes</a></li>
+				<li><a href="vp" target="_blank">Área de colaboradores</a></li>
+				<li><a href="vd" target="_blank">Área de conductores</a></li>
+			</ul>
+			</p-panel>
+		</div>
+	
+		<div id="enlaces" class="column links">
+			<p-panel>
+			<ul>
+				<li><a href="logout">Logout</a></li>
+			</ul>
+			</p-panel>
+		</div>
+
+
+	</div>
+</html>
