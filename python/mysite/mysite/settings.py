@@ -25,7 +25,7 @@ SECRET_KEY = '-jsj8ifjgdym5tveze-$u6mmwtl^^_)g*pe*yg1o8mf)0yrp05'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.250']
 
 
 # Application definition
@@ -121,3 +121,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 
+#
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+#            'format': '%(levelname)s %(asctime)s %(module)s.%(funcName)s %(process)d %(thread)d %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s.%(funcName)s %(thread)d %(message)s'
+        },
+    },    
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/usr/local/mysite/log/polls.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'polls': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+    }
+}

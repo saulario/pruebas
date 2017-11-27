@@ -34,15 +34,19 @@ a {
 .ui-widget
 {
     font-family: Roboto, Arial,sans-serif;
+    /* font-size: 1em; */
     font-size: 14px;
 }
 .ui-widget .ui-widget
 {
+    /* font-size: 1em; */
     font-size: 14px;
+
 }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button, .ui-widget label 
 {
     font-family: Roboto, Arial,sans-serif;
+    /* font-size: 1em; */
     font-size: 14px;
 }
 .ui-widget-content
@@ -85,7 +89,7 @@ a {
     background: #c4c4c4 linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
     background: #c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
     background: #c4c4c4 -moz-linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0)); /*    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#DDFFFFFF, endColorstr=#00FFFFFF);     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#DDFFFFFF, endColorstr=#00FFFFFF)"; */
-    font-weight: bold;
+    /* font-weight: bold; */
     color: #4f4f4f;
     text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
 }
@@ -108,7 +112,7 @@ a {
     background: #85b2cb linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0));
     background: #85b2cb -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0)));
     background: #85b2cb -moz-linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0)); /*    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCFFFFFF, endColorstr=#00FFFFFF);     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#CCFFFFFF, endColorstr=#00FFFFFF)"; */
-    font-weight: bold;
+    /* font-weight: bold; */
     color: #313131;
     -moz-box-shadow: 0 0 5px #85b2cb;
     -webkit-box-shadow: 0px 0px 8px #85b2cb;
@@ -132,7 +136,7 @@ a {
     background: #85b2cb linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.4));
     background: #85b2cb -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,0.4)));
     background: #85b2cb -moz-linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.4)); /*    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF, endColorstr=#CCFFFFFF);     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF, endColorstr=#CCFFFFFF)"; */
-    font-weight: bold;
+    /* font-weight: bold; */
     color: #1C4257;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
 }

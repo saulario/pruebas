@@ -8,16 +8,16 @@ import generar
 
 from model import *
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
-    engine = create_engine("mysql://vwze:1111@localhost/vwze")
-    Session = sessionmaker(bind = engine)
-    sesion = Session()
+#    engine = create_engine("mysql://vwze:1111@localhost/vwze")
+#    Session = sessionmaker(bind = engine)
+#    sesion = Session()
     
-    t = datetime.now()
-    generar.todo(sesion)
+#    t = datetime.now()
+#    generar.todo(sesion)
     #calcular.todo(sesion)    
-    print datetime.now() - t
+#    print datetime.now() - t
     
-    sesion.close()
+#    sesion.close()
     

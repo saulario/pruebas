@@ -1,43 +1,93 @@
-{% extends "./t_main.xhtml" %}
+{% load static %}
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 
-{% block title %}CARGO{% endblock %}
-{% block menu %}
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
-<p-menubar>
-    <p-submenu value="File" icon="fa-file-o">
-        <p-submenu value="New" icon="fa-plus">
-            <p-menuitem value="Project"></p-menuitem>
-            <p-menuitem value="Other"></p-menuitem>
-        </p-submenu>
-        <p-menuitem value="Open"></p-menuitem>
-        <p-menuitem value="Quit"></p-menuitem>
-    </p-submenu>
-    <p-submenu value="Edit" icon="fa-edit">
-        <p-menuitem value="Undo" icon="fa-mail-forward"></p-menuitem>
-        <p-menuitem value="Redo" icon="fa-mail-reply"></p-menuitem>
-    </p-submenu>
-    <p-submenu value="Help" icon="fa-question">
-        <p-menuitem value="Contents"></p-menuitem>
-        <p-submenu value="Search" icon="fa-search">
-            <p-submenu value="Text">
-                <p-menuitem value="Workspace"></p-menuitem>
-            </p-submenu>
-            <p-menuitem value="File"></p-menuitem>
-        </p-submenu>
-    </p-submenu>
-    <p-submenu value="Action" icon="fa-gear">
-        <p-submenu value="Edit" icon="fa-refresh">
-            <p-menuitem value="Save" icon="fa-save"></p-menuitem>
-            <p-menuitem value="Update" icon="fa-save"></p-menuitem>
-        </p-submenu>
-        <p-submenu value="Other" icon="fa-phone">
-            <p-menuitem value="Delete" icon="fa-minus"></p-menuitem>
-        </p-submenu>
-    </p-submenu>
-    <p-menuitem value="Quit" icon="fa-close"></p-menuitem>
-</p-menubar>
+.column {
+	float:left;
+}
 
+</style>
 
-{% endblock %}
-{% block body %}{% endblock %}
-{% block footer %}{% endblock %}
+<link rel="stylesheet" type="text/css"
+	href="{% static 'polls/font-awesome-4.7.0/css/font-awesome.css' %}"></link>
+<link rel="stylesheet" type="text/css"
+	href="{% static 'polls/jquery-ui-1.12.1/jquery-ui.css' %}"></link>
+<link rel="stylesheet" type="text/css"
+	href="{% static 'polls/primeui-4.1.15/primeui.min.css' %}"></link>
+
+<script type="text/javascript"
+	src="{% static 'polls/jquery-3.2.1/dist/jquery.js' %}"></script>
+<script type="text/javascript"
+	src="{% static 'polls/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+<script type="text/javascript"
+	src="{% static 'polls/primeui-4.1.15/primeui.min.js' %}"></script>
+
+<!-- <script type="text/javascript" src="{% static 'polls/primeui-4.1.15/plugins/plugins-all.js' %}"></script> -->
+
+<script type="text/javascript"
+	src="{% static 'polls/x-tag-core.min.js' %}"></script>
+<script type="text/javascript"
+	src="{% static 'polls/primeui-4.1.15/primeelements.js' %}"></script>
+<link rel="stylesheet" type="text/css"
+	href="{% static 'polls/primeui-4.1.15/themes/aristo/theme.css' %}"></link>
+
+<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+<!--  	<div id="container" style="width:100%"> -->
+	
+
+		<div id="header" class="header " style="height:7%">
+			{% block header %} 
+			<img id="img1" src="{% static 'polls/images/wedge7.jpg' %}" alt="logo" style="height:100%"></img>
+			{% endblock %}
+		</div>
+	
+		
+		<div id="login" class="column">
+			<p-panel>
+			<form id="f_login" action="login" method="post">
+				{% csrf_token %}
+				<table>
+					<tr>
+						<td><label for="us">Usuario</label></td>
+						<td><input name="us" is="p-inputtext"></input></td>
+					</tr>
+					<tr>
+						<td><label for="cl">Contraseña</label></td>
+						<td><input name="cl" type="password" is="p-password"></input></td>
+					</tr>
+					<tr><td colspan="2"></td></tr>
+					<tr align="center">
+						<td colspan="2" align="center"><button is="p-button" type="submit">Login</button></td>
+					</tr>
+				</table>
+			</form>
+			</p-panel>		
+		</div>
+
+<!-- 
+		<div id="enlaces" class="column links">
+			<p-panel>
+			<ul>
+				<li><a href="vi" target="_blank">Área de transporte</a></li>
+				<li><a href="vc" target="_blank">Área de clientes</a></li>
+				<li><a href="vp" target="_blank">Área de colaboradores</a></li>
+				<li><a href="vd" target="_blank">Área de conductores</a></li>
+			</ul>
+			</p-panel>
+		</div>
+		
+		<div id="eliminar">
+			<p>Username: {{ user.username }}</p>
+			<p>email: {{ user.email }}</p>
+		</div>
+-->		
+
+	<!--  </div> -->
+</html>
