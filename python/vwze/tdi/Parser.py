@@ -1,10 +1,8 @@
-'''
-Created on 27 nov. 2017
+import logging
 
-@author: saulario
-'''
+log = logging.getLogger(__name__)
 
-class ParserGETDRIVERINFO():
+class ParserGETDRIVERINFO(object):
     def __init__(self):
         pass
     
@@ -12,38 +10,46 @@ class ParserGETDRIVERINFO():
         return None
     
 
-class ParserP():
-    '''
+class ParserP(object):
+    """
     classdocs
-    '''   
+    """   
 
     def __init__(self, mascara):
-        '''
+        """
         Constructor
-        '''
+        """
         self._mascara = list(x for x in (mascara))
         self._campos = list(0 for x in range(0, len(self._mascara)))
 
     def parse(self, context, message):
-        self.fields = message.split(',')
+        self.campos = message.split(",")
         self.retval = {}
-        self.retval['medio'] = self.fields[0]
-        self.retval['origen'] = int(self.fields[1])
-        self.retval['mensaje'] = self.fields[2]
+        self.retval["medio"] = self.campos[0]
+        self.retval["origen"] = int(self.campos[1])
+        self.retval["mensaje"] = self.campos[2]
         return self.retval
         
         
-def parser_factory(context, message):
+def parser_factory(context, mensaje):
+    """Instancia el Parser en funcion del tipo de mensaje recibido
+    """
+    log.info("-----> Inicio")
+    log.info("\t(message): %s" % mensaje)
+    
     parser = None
-    fields = message.split(',')
-    tipo = fields[2]
-    if tipo.startswith('TDI*P'):
-        device = int(fields[1])
-        if device in context.get_devices():
-            d = context.get_devices()[device]
-            parser = ParserP(d['MASK'])
-    elif tipo.startswith('TDI*GETDRIVER'):
+    campos = mensaje.split(",")
+    tipo = campos[2]
+    
+    if tipo.startswith("TDI*P"):
+        dispositivo = int(campos[1])
+        if dispositivo in context.get_devices():
+            d = context.get_devices()[dispositivo]
+            parser = ParserP(d["MASK"])
+    elif tipo.startswith("TDI*GETDRIVER"):
         parser = ParserGETDRIVERINFO()
+        
+    log.info("<----- Fin")
     return parser
 
 def parse(context, message):
@@ -52,3 +58,4 @@ def parse(context, message):
     if (parser != None):
         retval = parser.parse(context, message);
     return retval;
+

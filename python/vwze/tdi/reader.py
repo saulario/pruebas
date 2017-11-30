@@ -1,12 +1,19 @@
+import logging
 import pymongo
 
-import devices
-import Parser
+import dispositivos
+import mensajes
+import notificaciones
 
-class Context:
-    def __init__(self):
-        self.client = pymongo.MongoClient('mongodb://localhost')
-        self.db = self.client.get_database('tdi')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(module)s.%(funcName)s %(message)s")
+log = logging.getLogger(__name__)
+
+class Context(object):
+    
+    def __init__(self, mq):
+        self.client = pymongo.MongoClient("mongodb://localhost")
+        self.mq = mq
+        self.db = self.client.get_database(mq)
         self._devices = []
         
     def close(self):
@@ -14,24 +21,24 @@ class Context:
         
     def get_devices(self):
         if len(self._devices) == 0:
-            self._devices = dict((d['ID_MOVIL'], d) for d in self.db.devices.find())
+            self._devices = dict((d["ID_MOVIL"], d) for d in self.db.devices.find())
         return self._devices
         
 
+if __name__ == "__main__":
+    """
+    Main module
+    """
 
-if __name__ == '__main__':
+    log.info("-----> Inicio")
     
-    context = Context()
-    collection = context.db.get_collection('messages')
+    context = Context("SESETEST")
+    context.base = "/home/saulario/tdi"  # directorio base
     
-    ff = open('/home/saulario/tmp/tdi/multipullTarget.txt')
-    for line in ff:
-        data = Parser.parse(context, line)
-        if not data is None:
-            collection.insert_one(data)
-       
-
+    dispositivos.procesar(context)
+    notificaciones.procesar(context)
+    mensajes.procesar(context)
+    
     context.close()
-           
-
     
+    log.info("<----- Fin")
