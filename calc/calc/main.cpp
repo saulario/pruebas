@@ -33,11 +33,16 @@ int main(int argc, char** argv) {
 
     try {
 
-        Loader l(con);
+//        Loader l(con);
         //                l.cargarExpediciones();
 //        l.calcularAgregados();
 //        l.cargarTarifas();
 //        l.reconstruirDocumentos();
+        
+//        ParserTarifa p(con);
+//        p.cargarTarifaCapilar("/home/saulario/VWZE/1711_definitivo/capilar.csv");
+//        p.cargarTarifaDirectos("/home/saulario/VWZE/1711_definitivo/directos.csv");
+        
         //
         Tarificador t(con);
         t.tarificar();
