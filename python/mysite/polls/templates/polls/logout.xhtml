@@ -26,43 +26,25 @@
 <script type="text/javascript" src="{% static 'polls/primeui-4.1.15/primeelements.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'polls/primeui-4.1.15/themes/aristo/theme.css' %}"></link>
 
-<title>Esto es el título del login</title>
+<title>CARGO-TMS Welcome</title>
 
-<style>
-
-
-</style>
 
 </head>
 <body>
-
 
 	<div id="container" style="width:100%">
  	
 		<div id="header" class="header" style="height:7%">
 			<img id="img1" src="{% static 'polls/images/wedge7.jpg' %}" alt="logo" style="height:100%"></img>
 		</div>
-		
-		<div id="login" class="column">
+ 
+
+		<div id="enlaces" class="column links">
 			<p-panel>
-			<form id="f_login" action="login" method="post">
-				{% csrf_token %}
-				<table>
-					<tr>
-						<td><label for="us">Usuario</label></td>
-						<td><input name="us" is="p-inputtext"></input></td>
-					</tr>
-					<tr>
-						<td><label for="cl">Contraseña</label></td>
-						<td><input name="cl" type="password" is="p-password"></input></td>
-					</tr>
-					<tr><td colspan="2"></td></tr>
-					<tr align="center">
-						<td colspan="2" align="center"><button is="p-button" type="submit">Login</button></td>
-					</tr>
-				</table>
-			</form>
-			</p-panel>		
+			<ul>
+				<li><a href="/polls">Pulse aquí para volver a entrar en el sistema</a></li>
+			</ul>
+			</p-panel>
 		</div>
 
 

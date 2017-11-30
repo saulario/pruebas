@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect
 #from django.http import Http404
@@ -12,35 +13,61 @@ from django.views import generic
 
 from .models import Question, Choice
 
+import logging
 
+logger = logging.getLogger(__name__)
+
+#------------------------------------------------
+#
 def index(request):
+    logger.info("-----> Inicio")
     context = {}
-    return render(request, 'polls/index.xhtml', context)
-
-    
-def login(request):
-    
-    for key in request.POST:
-        #print key, ' => ', request.POST[key]
-        print key 
-    
-    
-    
+    ret = render(request, 'polls/index.xhtml', context)
+    logger.info("<----- Fin")
+    return ret
+ 
+#------------------------------------------------
+#   
+def my_login(request):
+    logger.info("-----> Inicio")        
     username = request.POST['us']
     password = request.POST['cl']
+    logger.debug("\t(username): " + username)
     
     user = authenticate(request, username=username, password=password)
+    ret = None
+    
     if user is not None:
         login(request, user)
-    context = {}
-    return render(request, 'polls/index.xhtml')
+        ret = HttpResponseRedirect(reverse('polls:welcome'))
+    else:
+        context = {
+            'user' :user,
+            }
+        ret = HttpResponseRedirect(reverse('polls:index'))
+        
+    logger.info("<----- Fin")
+    return ret    
 
-def logout(request):
+#------------------------------------------------
+#   
+def my_logout(request):
+    logger.info("-----> Inicio")
     logout(request)
-    
     context = {}
-    return render(request, 'polls/index.xhtml', context)
+    ret = render(request, 'polls/logout.xhtml', context)
+    logger.info("<----- Fin")
+    return ret
 
+#------------------------------------------------
+#   
+@login_required(login_url='/polls')
+def welcome(request):
+    logger.info("-----> Inicio")
+    context = {}
+    ret = render(request, 'polls/welcome.xhtml', context)
+    logger.info("<----- Fin")
+    return ret
 
 
 
