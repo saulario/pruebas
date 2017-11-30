@@ -2,27 +2,33 @@ import logging
 
 log = logging.getLogger(__name__)
 
-class ParserGETDRIVERINFO(object):
-    def __init__(self):
-        pass
+class ParserNULL(object):
     
-    def parse(self, context, message):
+    def parse(self, mensaje):
         return None
+
+class ParserGETDRIVERINFO(object):
     
+    def __init(self, context):
+        self._context = context
+    
+    def parse(self, message):
+        return None   
 
 class ParserP(object):
     """
     classdocs
     """   
 
-    def __init__(self, mascara):
+    def __init__(self, context, mascara):
         """
         Constructor
         """
+        self._context = context
         self._mascara = list(x for x in (mascara))
         self._campos = list(0 for x in range(0, len(self._mascara)))
 
-    def parse(self, context, message):
+    def parse(self, message):
         self.campos = message.split(",")
         self.retval = {}
         self.retval["medio"] = self.campos[0]
@@ -45,17 +51,25 @@ def parser_factory(context, mensaje):
         dispositivo = int(campos[1])
         if dispositivo in context.get_devices():
             d = context.get_devices()[dispositivo]
-            parser = ParserP(d["MASK"])
+            parser = ParserP(context, d["MASK"])
+        else:
+            parser = ParserNULL()
     elif tipo.startswith("TDI*GETDRIVER"):
-        parser = ParserGETDRIVERINFO()
+        parser = ParserGETDRIVERINFO(context)
+    else:
+        parser = ParserNULL()
         
     log.info("<----- Fin")
     return parser
 
-def parse(context, message):
-    retval = None
-    parser = parser_factory(context, message);
-    if (parser != None):
-        retval = parser.parse(context, message);
+def parse(context, mensaje):
+    """Parsea el mensaje y devuelve un objeto para insertar en base de datos
+    """
+    log.info("-----> Inicio")
+    log.info("\t(message): %s" % mensaje)
+    
+    retval = parser_factory(context, mensaje).parse(mensaje);
+        
+    log.info("<----- Fin")        
     return retval;
 

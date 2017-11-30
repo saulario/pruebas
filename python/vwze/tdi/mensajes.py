@@ -1,6 +1,7 @@
 import logging
 
-from Parser import *
+import Parser
+
 
 log = logging.getLogger(__name__)
 
@@ -30,6 +31,6 @@ def procesar_mensaje(context, mensaje):
     log.info("-----> Inicio")
     log.info("\t(mensaje): %s " % mensaje)
     
-    parser = parser_factory(context, mensaje)
+    entity = Parser.parse(context, mensaje)
     
     log.info("<----- Fin")
