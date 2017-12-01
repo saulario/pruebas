@@ -77,6 +77,22 @@ public:
     vwze::entity::Doe * update(tntdb::Connection &, vwze::entity::Doe *);
 };
 
+class EltDAO : public CommonDAO {
+private:
+    static EltDAO * dao;
+    static boost::mutex mtx;
+    void loadColumns(tntdb::Row &, vwze::entity::Elt *);
+    void setColumns(tntdb::Statement &, const vwze::entity::Elt *);
+public:
+    ~EltDAO();
+    static EltDAO * getInstance(void);
+    vwze::entity::Elt * insert(tntdb::Connection &, vwze::entity::Elt *);
+    std::list<vwze::entity::Elt *> query(tntdb::Connection &, tntdb::Statement &);
+    vwze::entity::Elt * read(tntdb::Connection &, const int &);
+    tntdb::Statement::size_type remove(tntdb::Connection &, const int &);
+    vwze::entity::Elt * update(tntdb::Connection &, vwze::entity::Elt *);
+};
+
 class FltDAO : public CommonDAO {
 private:
     static FltDAO * dao;

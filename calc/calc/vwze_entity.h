@@ -91,6 +91,16 @@ namespace vwze {
       bool operator == (const Doe &);
     private:
     };
+    struct Elt {
+    public:
+      int eltcod; /*  */
+      std::string eltorg; /* Valor en doc */
+      std::string eltdes; /* Valor en rfc */
+      Elt();
+      ~Elt();
+      bool operator == (const Elt &);
+    private:
+    };
     struct Flt {
     public:
       std::string fltcod; /*  */
