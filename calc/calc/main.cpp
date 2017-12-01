@@ -26,26 +26,23 @@ int main(int argc, char** argv) {
     log4cxx::PropertyConfigurator::configure("log4cxx.properties");
     LOG4CXX_INFO(logger, "-----> Inicio");
 
-    tntdb::Connection con = tntdb::connect("mysql:db=vwze_1711_z3e4;user=vwze;passwd=vwzexx");
+    tntdb::Connection con = tntdb::connect("mysql:db=vwze_1712;user=vwze;passwd=vwzexx");
     //tntdb::Connection con = tntdb::connect("mysql:host=dessys02.sese.com;db=vwze_1705;user=vwze;passwd=vwzexx");
-
-    //corregirDocumentos(con);
 
     try {
 
-//        Loader l(con);
-        //                l.cargarExpediciones();
+        Loader l(con);
+        //        l.reconstruirDocumentos();
 //        l.calcularAgregados();
-//        l.cargarTarifas();
-//        l.reconstruirDocumentos();
-        
-//        ParserTarifa p(con);
-//        p.cargarTarifaCapilar("/home/saulario/VWZE/1711_definitivo/capilar.csv");
-//        p.cargarTarifaDirectos("/home/saulario/VWZE/1711_definitivo/directos.csv");
-        
+        //        l.cargarTarifas();
+
+        //        ParserTarifa p(con);
+        //        p.cargarTarifaCapilar("/home/saulario/VWZE/1711_definitivo/capilar.csv");
+        //        p.cargarTarifaDirectos("/home/saulario/VWZE/1711_definitivo/directos.csv");
+
         //
-        Tarificador t(con);
-        t.tarificar();
+                Tarificador t(con);
+                t.tarificar();
 
     } catch (std::exception &e) {
         LOG4CXX_ERROR(logger, std::string(e.what()));

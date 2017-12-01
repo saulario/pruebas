@@ -103,9 +103,10 @@ DocDAO * DocDAO::getInstance(void) {
         dao->table = "doc";
         dao->keyColumns = "doccod";
         dao->columns = "doccod,docrel,docexp,docfec"
-                ",docorgzon,docorgpob,docdeszon,docdespob,docflu"
-                ",docfab,docdun,docpro,dockcc,docpes"
-                ",docvol,docpef";
+                ",docorgloc,docorgzon,docorgpcp,docorgpob,docdesloc"
+                ",docdeszon,docdespcp,docdespob,docflu,docfab"
+                ",docdun,docpro,dockcc,docpes,docvol"
+                ",docpef";
         dao->createQueries();
     }
     return dao;
@@ -162,9 +163,13 @@ void DocDAO::loadColumns(tntdb::Row & row, vwze::entity::Doc * e) {
     e->docrel = row.getString(index++);
     e->docexp = row.getString(index++);
     e->docfec = row.getDate(index++);
+    e->docorgloc = row.getString(index++);
     e->docorgzon = row.getString(index++);
+    e->docorgpcp = row.getString(index++);
     e->docorgpob = row.getString(index++);
+    e->docdesloc = row.getString(index++);
     e->docdeszon = row.getString(index++);
+    e->docdespcp = row.getString(index++);
     e->docdespob = row.getString(index++);
     e->docflu = row.getString(index++);
     e->docfab = row.getString(index++);
@@ -181,9 +186,13 @@ void DocDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doc * e) {
     stmt.setString("docrel", e->docrel);
     stmt.setString("docexp", e->docexp);
     stmt.setDate("docfec", e->docfec);
+    stmt.setString("docorgloc", e->docorgloc);
     stmt.setString("docorgzon", e->docorgzon);
+    stmt.setString("docorgpcp", e->docorgpcp);
     stmt.setString("docorgpob", e->docorgpob);
+    stmt.setString("docdesloc", e->docdesloc);
     stmt.setString("docdeszon", e->docdeszon);
+    stmt.setString("docdespcp", e->docdespcp);
     stmt.setString("docdespob", e->docdespob);
     stmt.setString("docflu", e->docflu);
     stmt.setString("docfab", e->docfab);
@@ -212,9 +221,10 @@ DodDAO * DodDAO::getInstance(void) {
         dao->table = "dod";
         dao->keyColumns = "dodcod";
         dao->columns = "dodcod,dodrel,dodexp,dodtip"
-                ",dodfec,dodorgzon,dodorgpob,doddeszon,doddespob"
-                ",dodflu,dodfab,doddun,dodpro,dodpes"
-                ",dodvol,dodpef,dodkey";
+                ",dodfec,dodorgloc,dodorgzon,dodorgpcp,dodorgpob"
+                ",doddesloc,doddeszon,doddespcp,doddespob,dodflu"
+                ",dodfab,doddun,dodpro,dodpes,dodvol"
+                ",dodpef,dodkey";
         dao->createQueries();
     }
     return dao;
@@ -272,9 +282,13 @@ void DodDAO::loadColumns(tntdb::Row & row, vwze::entity::Dod * e) {
     e->dodexp = row.getString(index++);
     e->dodtip = row.getInt(index++);
     e->dodfec = row.getDate(index++);
+    e->dodorgloc = row.getString(index++);
     e->dodorgzon = row.getString(index++);
+    e->dodorgpcp = row.getString(index++);
     e->dodorgpob = row.getString(index++);
+    e->doddesloc = row.getString(index++);
     e->doddeszon = row.getString(index++);
+    e->doddespcp = row.getString(index++);
     e->doddespob = row.getString(index++);
     e->dodflu = row.getString(index++);
     e->dodfab = row.getString(index++);
@@ -292,9 +306,13 @@ void DodDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Dod * e) {
     stmt.setString("dodexp", e->dodexp);
     stmt.setInt("dodtip", e->dodtip);
     stmt.setDate("dodfec", e->dodfec);
+    stmt.setString("dodorgloc", e->dodorgloc);
     stmt.setString("dodorgzon", e->dodorgzon);
+    stmt.setString("dodorgpcp", e->dodorgpcp);
     stmt.setString("dodorgpob", e->dodorgpob);
+    stmt.setString("doddesloc", e->doddesloc);
     stmt.setString("doddeszon", e->doddeszon);
+    stmt.setString("doddespcp", e->doddespcp);
     stmt.setString("doddespob", e->doddespob);
     stmt.setString("dodflu", e->dodflu);
     stmt.setString("dodfab", e->dodfab);
@@ -323,9 +341,10 @@ DoeDAO * DoeDAO::getInstance(void) {
         dao->table = "doe";
         dao->keyColumns = "doecod";
         dao->columns = "doecod,doerel,doetip,doefec"
-                ",doeorgzon,doeorgpob,doedeszon,doedespob,doeflu"
-                ",doeexp,doedun,doepro,doepes,doevol"
-                ",doepef,doecnt,doepun,doetot,doekey";
+                ",doeorgloc,doeorgzon,doeorgpcp,doeorgpob,doedesloc"
+                ",doedeszon,doedespcp,doedespob,doeflu,doeexp"
+                ",doedun,doepro,doepes,doevol,doepef"
+                ",doecnt,doepun,doetot,doekey";
         dao->createQueries();
     }
     return dao;
@@ -382,9 +401,13 @@ void DoeDAO::loadColumns(tntdb::Row & row, vwze::entity::Doe * e) {
     e->doerel = row.getString(index++);
     e->doetip = row.getInt(index++);
     e->doefec = row.getDate(index++);
+    e->doeorgloc = row.getString(index++);
     e->doeorgzon = row.getString(index++);
+    e->doeorgpcp = row.getString(index++);
     e->doeorgpob = row.getString(index++);
+    e->doedesloc = row.getString(index++);
     e->doedeszon = row.getString(index++);
+    e->doedespcp = row.getString(index++);
     e->doedespob = row.getString(index++);
     e->doeflu = row.getString(index++);
     e->doeexp = row.getString(index++);
@@ -404,9 +427,13 @@ void DoeDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doe * e) {
     stmt.setString("doerel", e->doerel);
     stmt.setInt("doetip", e->doetip);
     stmt.setDate("doefec", e->doefec);
+    stmt.setString("doeorgloc", e->doeorgloc);
     stmt.setString("doeorgzon", e->doeorgzon);
+    stmt.setString("doeorgpcp", e->doeorgpcp);
     stmt.setString("doeorgpob", e->doeorgpob);
+    stmt.setString("doedesloc", e->doedesloc);
     stmt.setString("doedeszon", e->doedeszon);
+    stmt.setString("doedespcp", e->doedespcp);
     stmt.setString("doedespob", e->doedespob);
     stmt.setString("doeflu", e->doeflu);
     stmt.setString("doeexp", e->doeexp);
@@ -563,10 +590,10 @@ KostenDAO * KostenDAO::getInstance(void) {
     if (dao == NULL) {
         dao = new KostenDAO();
         dao->table = "kosten";
-        dao->keyColumns = "exped";
-        dao->columns = "exped,relevanz,wewa,gebiet"
-                ",sender,receiver,planta,transportista,escenario"
-                ",menge,kosten,fratch";
+        dao->keyColumns = "auftragsnummer";
+        dao->columns = "auftragsnummer,relevanz,wewa,gebiet"
+                ",sender_lokationsnummer,empfanger_lokationsnummer,werk,transportliste_name,szenarioliste_name"
+                ",sum_menge,sum_kosten,sum_fracht,hl";
         dao->createQueries();
     }
     return dao;
@@ -590,11 +617,11 @@ std::list<vwze::entity::Kosten *> KostenDAO::query(tntdb::Connection & con, tntd
     return es;
 }
 
-vwze::entity::Kosten * KostenDAO::read(tntdb::Connection & con, const std::string & exped) {
+vwze::entity::Kosten * KostenDAO::read(tntdb::Connection & con, const std::string & auftragsnummer) {
     tntdb::Statement stmt = con.prepare(getReadQuery());
     vwze::entity::Kosten * e = NULL;
     try {
-        stmt.set("expedPK", exped);
+        stmt.set("auftragsnummerPK", auftragsnummer);
         tntdb::Row row = stmt.selectRow();
         e = new vwze::entity::Kosten;
         loadColumns(row, e);
@@ -603,65 +630,51 @@ vwze::entity::Kosten * KostenDAO::read(tntdb::Connection & con, const std::strin
     return e;
 }
 
-tntdb::Statement::size_type KostenDAO::remove(tntdb::Connection & con, const std::string & exped) {
+tntdb::Statement::size_type KostenDAO::remove(tntdb::Connection & con, const std::string & auftragsnummer) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("expedPK", exped);
+    stmt.set("auftragsnummerPK", auftragsnummer);
     return stmt.execute();
 }
 
 vwze::entity::Kosten * KostenDAO::update(tntdb::Connection & con, vwze::entity::Kosten * e) {
     tntdb::Statement stmt = con.prepare(getUpdateQuery());
     setColumns(stmt, e);
-    stmt.set("expedPK", e->exped);
+    stmt.set("auftragsnummerPK", e->auftragsnummer);
     stmt.execute();
     return e;
 }
 
 void KostenDAO::loadColumns(tntdb::Row & row, vwze::entity::Kosten * e) {
     int index = 0;
-    e->exped = row.getString(index++);
+    e->auftragsnummer = row.getString(index++);
     e->relevanz = row.getString(index++);
     e->wewa = row.getString(index++);
     e->gebiet = row.getString(index++);
-    e->sender = row.getString(index++);
-    e->receiver = row.getString(index++);
-    e->planta = row.getString(index++);
-    try {
-        e->setTransportista(row.getString(index++));
-    } catch (tntdb::NullValue) {
-        e->setNullTransportista();
-    }
-    try {
-        e->setEscenario(row.getString(index++));
-    } catch (tntdb::NullValue) {
-        e->setNullEscenario();
-    }
-    e->menge = row.getInt(index++);
-    e->kosten = row.getDecimal(index++).getDouble();
-    e->fratch = row.getDecimal(index++).getDouble();
+    e->senderLokationsnummer = row.getString(index++);
+    e->empfangerLokationsnummer = row.getString(index++);
+    e->werk = row.getString(index++);
+    e->transportlisteName = row.getString(index++);
+    e->szenariolisteName = row.getString(index++);
+    e->sumMenge = row.getInt(index++);
+    e->sumKosten = row.getDecimal(index++).getDouble();
+    e->sumFracht = row.getDecimal(index++).getDouble();
+    e->hl = row.getDecimal(index++).getDouble();
 }
 
 void KostenDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Kosten * e) {
-    stmt.setString("exped", e->exped);
+    stmt.setString("auftragsnummer", e->auftragsnummer);
     stmt.setString("relevanz", e->relevanz);
     stmt.setString("wewa", e->wewa);
     stmt.setString("gebiet", e->gebiet);
-    stmt.setString("sender", e->sender);
-    stmt.setString("receiver", e->receiver);
-    stmt.setString("planta", e->planta);
-    if (e->isNullTransportista()) {
-        stmt.setNull("transportista");
-    } else {
-        stmt.setString("transportista", e->getTransportista());
-    }
-    if (e->isNullEscenario()) {
-        stmt.setNull("escenario");
-    } else {
-        stmt.setString("escenario", e->getEscenario());
-    }
-    stmt.setInt("menge", e->menge);
-    stmt.setDouble("kosten", e->kosten);
-    stmt.setDouble("fratch", e->fratch);
+    stmt.setString("sender_lokationsnummer", e->senderLokationsnummer);
+    stmt.setString("empfanger_lokationsnummer", e->empfangerLokationsnummer);
+    stmt.setString("werk", e->werk);
+    stmt.setString("transportliste_name", e->transportlisteName);
+    stmt.setString("szenarioliste_name", e->szenariolisteName);
+    stmt.setInt("sum_menge", e->sumMenge);
+    stmt.setDouble("sum_kosten", e->sumKosten);
+    stmt.setDouble("sum_fracht", e->sumFracht);
+    stmt.setDouble("hl", e->hl);
 }
 
 
@@ -913,42 +926,41 @@ void RfdDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Rfd * e) {
 }
 
 
-TodoDAO * TodoDAO::dao = NULL;
-boost::mutex TodoDAO::mtx;
+SendungsdateDAO * SendungsdateDAO::dao = NULL;
+boost::mutex SendungsdateDAO::mtx;
 
-TodoDAO::~TodoDAO() {
+SendungsdateDAO::~SendungsdateDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
-TodoDAO * TodoDAO::getInstance(void) {
+SendungsdateDAO * SendungsdateDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
-        dao = new TodoDAO();
-        dao->table = "todo";
-        dao->keyColumns = "documento";
-        dao->columns = "documento,relevancia,fecha,orgpais"
-                ",orgcp,orgzon,orgpob,despais,descp"
-                ",deszon,despob,flujo,proveedor,planta"
-                ",peso,volumen,pesofac,ruta,kcc"
-                ",nombreprov";
+        dao = new SendungsdateDAO();
+        dao->table = "sendungsdate";
+        dao->keyColumns = "auftragsnummer";
+        dao->columns = "auftragsnummer,datum,relevanz,sender_lokationsnummer"
+                ",sender_land,sender_plz,sender_ort,empfanger_lokationsnummer,empfanger_land"
+                ",empfanger_plz,empfanger_ort,wewa,werk,routing"
+                ",brutto,volumen,menge";
         dao->createQueries();
     }
     return dao;
 }
 
-vwze::entity::Todo * TodoDAO::insert(tntdb::Connection & con, vwze::entity::Todo * e) {
+vwze::entity::Sendungsdate * SendungsdateDAO::insert(tntdb::Connection & con, vwze::entity::Sendungsdate * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
     stmt.execute();
     return e;
 }
 
-std::list<vwze::entity::Todo *> TodoDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
-    std::list<vwze::entity::Todo *> es;
+std::list<vwze::entity::Sendungsdate *> SendungsdateDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
+    std::list<vwze::entity::Sendungsdate *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
-        vwze::entity::Todo * e = new vwze::entity::Todo;
+        vwze::entity::Sendungsdate * e = new vwze::entity::Sendungsdate;
         tntdb::Row row = *it;
         loadColumns(row, e);
         es.push_back(e);
@@ -956,118 +968,109 @@ std::list<vwze::entity::Todo *> TodoDAO::query(tntdb::Connection & con, tntdb::S
     return es;
 }
 
-vwze::entity::Todo * TodoDAO::read(tntdb::Connection & con, const std::string & documento) {
+vwze::entity::Sendungsdate * SendungsdateDAO::read(tntdb::Connection & con, const std::string & auftragsnummer) {
     tntdb::Statement stmt = con.prepare(getReadQuery());
-    vwze::entity::Todo * e = NULL;
+    vwze::entity::Sendungsdate * e = NULL;
     try {
-        stmt.set("documentoPK", documento);
+        stmt.set("auftragsnummerPK", auftragsnummer);
         tntdb::Row row = stmt.selectRow();
-        e = new vwze::entity::Todo;
+        e = new vwze::entity::Sendungsdate;
         loadColumns(row, e);
     } catch (tntdb::NotFound) {
     }
     return e;
 }
 
-tntdb::Statement::size_type TodoDAO::remove(tntdb::Connection & con, const std::string & documento) {
+tntdb::Statement::size_type SendungsdateDAO::remove(tntdb::Connection & con, const std::string & auftragsnummer) {
     tntdb::Statement stmt = con.prepare(getRemoveQuery());
-    stmt.set("documentoPK", documento);
+    stmt.set("auftragsnummerPK", auftragsnummer);
     return stmt.execute();
 }
 
-vwze::entity::Todo * TodoDAO::update(tntdb::Connection & con, vwze::entity::Todo * e) {
+vwze::entity::Sendungsdate * SendungsdateDAO::update(tntdb::Connection & con, vwze::entity::Sendungsdate * e) {
     tntdb::Statement stmt = con.prepare(getUpdateQuery());
     setColumns(stmt, e);
-    stmt.set("documentoPK", e->documento);
+    stmt.set("auftragsnummerPK", e->auftragsnummer);
     stmt.execute();
     return e;
 }
 
-void TodoDAO::loadColumns(tntdb::Row & row, vwze::entity::Todo * e) {
+void SendungsdateDAO::loadColumns(tntdb::Row & row, vwze::entity::Sendungsdate * e) {
     int index = 0;
-    e->documento = row.getString(index++);
-    e->relevancia = row.getString(index++);
-    e->fecha = row.getDatetime(index++);
-    e->orgpais = row.getString(index++);
-    e->orgcp = row.getString(index++);
-    e->orgzon = row.getString(index++);
-    e->orgpob = row.getString(index++);
-    e->despais = row.getString(index++);
-    e->descp = row.getString(index++);
-    e->deszon = row.getString(index++);
-    e->despob = row.getString(index++);
-    e->flujo = row.getString(index++);
-    e->proveedor = row.getString(index++);
-    e->planta = row.getString(index++);
-    e->peso = row.getInt(index++);
+    e->auftragsnummer = row.getString(index++);
+    e->datum = row.getDatetime(index++);
+    e->relevanz = row.getString(index++);
+    e->senderLokationsnummer = row.getString(index++);
+    e->senderLand = row.getString(index++);
+    e->senderPlz = row.getString(index++);
+    e->senderOrt = row.getString(index++);
+    e->empfangerLokationsnummer = row.getString(index++);
+    e->empfangerLand = row.getString(index++);
+    e->empfangerPlz = row.getString(index++);
+    e->empfangerOrt = row.getString(index++);
+    e->wewa = row.getString(index++);
+    e->werk = row.getString(index++);
+    e->routing = row.getString(index++);
+    e->brutto = row.getDecimal(index++).getDouble();
     e->volumen = row.getDecimal(index++).getDouble();
-    e->pesofac = row.getInt(index++);
-    e->ruta = row.getString(index++);
-    e->kcc = row.getString(index++);
-    e->nombreprov = row.getString(index++);
+    e->menge = row.getInt(index++);
 }
 
-void TodoDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Todo * e) {
-    stmt.setString("documento", e->documento);
-    stmt.setString("relevancia", e->relevancia);
-    stmt.set("fecha", e->fecha.getIso());
-    stmt.setString("orgpais", e->orgpais);
-    stmt.setString("orgcp", e->orgcp);
-    stmt.setString("orgzon", e->orgzon);
-    stmt.setString("orgpob", e->orgpob);
-    stmt.setString("despais", e->despais);
-    stmt.setString("descp", e->descp);
-    stmt.setString("deszon", e->deszon);
-    stmt.setString("despob", e->despob);
-    stmt.setString("flujo", e->flujo);
-    stmt.setString("proveedor", e->proveedor);
-    stmt.setString("planta", e->planta);
-    stmt.setInt("peso", e->peso);
+void SendungsdateDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Sendungsdate * e) {
+    stmt.setString("auftragsnummer", e->auftragsnummer);
+    stmt.set("datum", e->datum.getIso());
+    stmt.setString("relevanz", e->relevanz);
+    stmt.setString("sender_lokationsnummer", e->senderLokationsnummer);
+    stmt.setString("sender_land", e->senderLand);
+    stmt.setString("sender_plz", e->senderPlz);
+    stmt.setString("sender_ort", e->senderOrt);
+    stmt.setString("empfanger_lokationsnummer", e->empfangerLokationsnummer);
+    stmt.setString("empfanger_land", e->empfangerLand);
+    stmt.setString("empfanger_plz", e->empfangerPlz);
+    stmt.setString("empfanger_ort", e->empfangerOrt);
+    stmt.setString("wewa", e->wewa);
+    stmt.setString("werk", e->werk);
+    stmt.setString("routing", e->routing);
+    stmt.setDouble("brutto", e->brutto);
     stmt.setDouble("volumen", e->volumen);
-    stmt.setInt("pesofac", e->pesofac);
-    stmt.setString("ruta", e->ruta);
-    stmt.setString("kcc", e->kcc);
-    stmt.setString("nombreprov", e->nombreprov);
+    stmt.setInt("menge", e->menge);
 }
 
 
-VkostenDAO * VkostenDAO::dao = NULL;
-boost::mutex VkostenDAO::mtx;
+TransportDAO * TransportDAO::dao = NULL;
+boost::mutex TransportDAO::mtx;
 
-VkostenDAO::~VkostenDAO() {
+TransportDAO::~TransportDAO() {
     if (dao != NULL) {
         delete dao;
     }
 }
 
-VkostenDAO * VkostenDAO::getInstance(void) {
+TransportDAO * TransportDAO::getInstance(void) {
     boost::mutex::scoped_lock lock(mtx);
     if (dao == NULL) {
-        dao = new VkostenDAO();
-        dao->table = "vkosten";
-        dao->keyColumns = "";
-        dao->columns = "doccod,docrel,docexp,docfec"
-                ",docorgzon,docorgpob,docdeszon,docdespob,docflu"
-                ",docfab,docdun,docpro,dockcc,docpes"
-                ",docvol,docpef,exped,relevanz,wewa"
-                ",gebiet,sender,receiver,planta,transportista"
-                ",escenario,menge,kosten,fratch";
+        dao = new TransportDAO();
+        dao->table = "transport";
+        dao->keyColumns = "id";
+        dao->columns = "id,auftragsnummer,transport_id,wewa"
+                ",werk,relevanz,gebiet,transportbenne,sender_lokationsnummer"
+                ",empfanger_lokationsnummer,sum_menge";
         dao->createQueries();
     }
     return dao;
 }
 
-vwze::entity::Vkosten * VkostenDAO::insert(tntdb::Connection & con, vwze::entity::Vkosten * e) {
+vwze::entity::Transport * TransportDAO::insert(tntdb::Connection & con, vwze::entity::Transport * e) {
     tntdb::Statement stmt = con.prepare(getInsertQuery());
     setColumns(stmt, e);
     stmt.execute();
     return e;
 }
 
-std::list<vwze::entity::Vkosten *> VkostenDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
-    std::list<vwze::entity::Vkosten *> es;
+std::list<vwze::entity::Transport *> TransportDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
+    std::list<vwze::entity::Transport *> es;
     for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
-        vwze::entity::Vkosten * e = new vwze::entity::Vkosten;
+        vwze::entity::Transport * e = new vwze::entity::Transport;
         tntdb::Row row = *it;
         loadColumns(row, e);
         es.push_back(e);
@@ -1075,83 +1078,60 @@ std::list<vwze::entity::Vkosten *> VkostenDAO::query(tntdb::Connection & con, tn
     return es;
 }
 
-void VkostenDAO::loadColumns(tntdb::Row & row, vwze::entity::Vkosten * e) {
-    int index = 0;
-    e->doccod = row.getInt64(index++);
-    e->docrel = row.getString(index++);
-    e->docexp = row.getString(index++);
-    e->docfec = row.getDate(index++);
-    e->docorgzon = row.getString(index++);
-    e->docorgpob = row.getString(index++);
-    e->docdeszon = row.getString(index++);
-    e->docdespob = row.getString(index++);
-    e->docflu = row.getString(index++);
-    e->docfab = row.getString(index++);
-    e->docdun = row.getString(index++);
-    e->docpro = row.getString(index++);
-    e->dockcc = row.getString(index++);
-    e->docpes = row.getInt(index++);
-    e->docvol = row.getDecimal(index++).getDouble();
-    e->docpef = row.getInt(index++);
-    e->exped = row.getString(index++);
-    e->relevanz = row.getString(index++);
-    e->wewa = row.getString(index++);
-    e->gebiet = row.getString(index++);
-    e->sender = row.getString(index++);
-    e->receiver = row.getString(index++);
-    e->planta = row.getString(index++);
+vwze::entity::Transport * TransportDAO::read(tntdb::Connection & con, const int & id) {
+    tntdb::Statement stmt = con.prepare(getReadQuery());
+    vwze::entity::Transport * e = NULL;
     try {
-        e->setTransportista(row.getString(index++));
-    } catch (tntdb::NullValue) {
-        e->setNullTransportista();
+        stmt.set("idPK", id);
+        tntdb::Row row = stmt.selectRow();
+        e = new vwze::entity::Transport;
+        loadColumns(row, e);
+    } catch (tntdb::NotFound) {
     }
-    try {
-        e->setEscenario(row.getString(index++));
-    } catch (tntdb::NullValue) {
-        e->setNullEscenario();
-    }
-    e->menge = row.getInt(index++);
-    e->kosten = row.getDecimal(index++).getDouble();
-    e->fratch = row.getDecimal(index++).getDouble();
+    return e;
 }
 
-void VkostenDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Vkosten * e) {
-    stmt.setInt64("doccod", e->doccod);
-    stmt.setString("docrel", e->docrel);
-    stmt.setString("docexp", e->docexp);
-    stmt.setDate("docfec", e->docfec);
-    stmt.setString("docorgzon", e->docorgzon);
-    stmt.setString("docorgpob", e->docorgpob);
-    stmt.setString("docdeszon", e->docdeszon);
-    stmt.setString("docdespob", e->docdespob);
-    stmt.setString("docflu", e->docflu);
-    stmt.setString("docfab", e->docfab);
-    stmt.setString("docdun", e->docdun);
-    stmt.setString("docpro", e->docpro);
-    stmt.setString("dockcc", e->dockcc);
-    stmt.setInt("docpes", e->docpes);
-    stmt.setDouble("docvol", e->docvol);
-    stmt.setInt("docpef", e->docpef);
-    stmt.setString("exped", e->exped);
-    stmt.setString("relevanz", e->relevanz);
+tntdb::Statement::size_type TransportDAO::remove(tntdb::Connection & con, const int & id) {
+    tntdb::Statement stmt = con.prepare(getRemoveQuery());
+    stmt.set("idPK", id);
+    return stmt.execute();
+}
+
+vwze::entity::Transport * TransportDAO::update(tntdb::Connection & con, vwze::entity::Transport * e) {
+    tntdb::Statement stmt = con.prepare(getUpdateQuery());
+    setColumns(stmt, e);
+    stmt.set("idPK", e->id);
+    stmt.execute();
+    return e;
+}
+
+void TransportDAO::loadColumns(tntdb::Row & row, vwze::entity::Transport * e) {
+    int index = 0;
+    e->id = row.getInt(index++);
+    e->auftragsnummer = row.getString(index++);
+    e->transportId = row.getInt(index++);
+    e->wewa = row.getString(index++);
+    e->werk = row.getString(index++);
+    e->relevanz = row.getString(index++);
+    e->gebiet = row.getString(index++);
+    e->transportbenne = row.getString(index++);
+    e->senderLokationsnummer = row.getString(index++);
+    e->empfangerLokationsnummer = row.getString(index++);
+    e->sumMenge = row.getInt(index++);
+}
+
+void TransportDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Transport * e) {
+    stmt.setInt("id", e->id);
+    stmt.setString("auftragsnummer", e->auftragsnummer);
+    stmt.setInt("transport_id", e->transportId);
     stmt.setString("wewa", e->wewa);
+    stmt.setString("werk", e->werk);
+    stmt.setString("relevanz", e->relevanz);
     stmt.setString("gebiet", e->gebiet);
-    stmt.setString("sender", e->sender);
-    stmt.setString("receiver", e->receiver);
-    stmt.setString("planta", e->planta);
-    if (e->isNullTransportista()) {
-        stmt.setNull("transportista");
-    } else {
-        stmt.setString("transportista", e->getTransportista());
-    }
-    if (e->isNullEscenario()) {
-        stmt.setNull("escenario");
-    } else {
-        stmt.setString("escenario", e->getEscenario());
-    }
-    stmt.setInt("menge", e->menge);
-    stmt.setDouble("kosten", e->kosten);
-    stmt.setDouble("fratch", e->fratch);
+    stmt.setString("transportbenne", e->transportbenne);
+    stmt.setString("sender_lokationsnummer", e->senderLokationsnummer);
+    stmt.setString("empfanger_lokationsnummer", e->empfangerLokationsnummer);
+    stmt.setInt("sum_menge", e->sumMenge);
 }
 
 

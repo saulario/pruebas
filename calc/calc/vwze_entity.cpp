@@ -6,9 +6,13 @@ Doc::Doc() {
     docrel = "";
     docexp = "";
     docfec = tntdb::Date();
+    docorgloc = "";
     docorgzon = "";
+    docorgpcp = "";
     docorgpob = "";
+    docdesloc = "";
     docdeszon = "";
+    docdespcp = "";
     docdespob = "";
     docflu = "";
     docfab = "";
@@ -28,9 +32,13 @@ bool Doc::operator==(const Doc & other) {
     if (this->docrel != other.docrel) return false;
     if (this->docexp != other.docexp) return false;
     if (this->docfec != other.docfec) return false;
+    if (this->docorgloc != other.docorgloc) return false;
     if (this->docorgzon != other.docorgzon) return false;
+    if (this->docorgpcp != other.docorgpcp) return false;
     if (this->docorgpob != other.docorgpob) return false;
+    if (this->docdesloc != other.docdesloc) return false;
     if (this->docdeszon != other.docdeszon) return false;
+    if (this->docdespcp != other.docdespcp) return false;
     if (this->docdespob != other.docdespob) return false;
     if (this->docflu != other.docflu) return false;
     if (this->docfab != other.docfab) return false;
@@ -49,9 +57,13 @@ Dod::Dod() {
     dodexp = "";
     dodtip = 0;
     dodfec = tntdb::Date();
+    dodorgloc = "";
     dodorgzon = "";
+    dodorgpcp = "";
     dodorgpob = "";
+    doddesloc = "";
     doddeszon = "";
+    doddespcp = "";
     doddespob = "";
     dodflu = "";
     dodfab = "";
@@ -72,9 +84,13 @@ bool Dod::operator==(const Dod & other) {
     if (this->dodexp != other.dodexp) return false;
     if (this->dodtip != other.dodtip) return false;
     if (this->dodfec != other.dodfec) return false;
+    if (this->dodorgloc != other.dodorgloc) return false;
     if (this->dodorgzon != other.dodorgzon) return false;
+    if (this->dodorgpcp != other.dodorgpcp) return false;
     if (this->dodorgpob != other.dodorgpob) return false;
+    if (this->doddesloc != other.doddesloc) return false;
     if (this->doddeszon != other.doddeszon) return false;
+    if (this->doddespcp != other.doddespcp) return false;
     if (this->doddespob != other.doddespob) return false;
     if (this->dodflu != other.dodflu) return false;
     if (this->dodfab != other.dodfab) return false;
@@ -92,9 +108,13 @@ Doe::Doe() {
     doerel = "";
     doetip = 0;
     doefec = tntdb::Date();
+    doeorgloc = "";
     doeorgzon = "";
+    doeorgpcp = "";
     doeorgpob = "";
+    doedesloc = "";
     doedeszon = "";
+    doedespcp = "";
     doedespob = "";
     doeflu = "";
     doeexp = "";
@@ -117,9 +137,13 @@ bool Doe::operator==(const Doe & other) {
     if (this->doerel != other.doerel) return false;
     if (this->doetip != other.doetip) return false;
     if (this->doefec != other.doefec) return false;
+    if (this->doeorgloc != other.doeorgloc) return false;
     if (this->doeorgzon != other.doeorgzon) return false;
+    if (this->doeorgpcp != other.doeorgpcp) return false;
     if (this->doeorgpob != other.doeorgpob) return false;
+    if (this->doedesloc != other.doedesloc) return false;
     if (this->doedeszon != other.doedeszon) return false;
+    if (this->doedespcp != other.doedespcp) return false;
     if (this->doedespob != other.doedespob) return false;
     if (this->doeflu != other.doeflu) return false;
     if (this->doeexp != other.doeexp) return false;
@@ -162,86 +186,38 @@ bool Kcc::operator==(const Kcc & other) {
 }
 
 Kosten::Kosten() {
-    exped = "";
+    auftragsnummer = "";
     relevanz = "";
     wewa = "";
     gebiet = "";
-    sender = "";
-    receiver = "";
-    planta = "";
-    transportista = NULL;
-    escenario = NULL;
-    menge = 0;
-    kosten = 0.0;
-    fratch = 0.0;
+    senderLokationsnummer = "";
+    empfangerLokationsnummer = "";
+    werk = "";
+    transportlisteName = "";
+    szenariolisteName = "";
+    sumMenge = 0;
+    sumKosten = 0.0;
+    sumFracht = 0.0;
+    hl = 0.0;
 }
 
 Kosten::~Kosten() {
-    if (transportista != NULL) {
-        delete transportista;
-    }
-    if (escenario != NULL) {
-        delete escenario;
-    }
-}
-
-std::string Kosten::getTransportista(void) const {
-    return (transportista != NULL ? * transportista : "");
-}
-
-void Kosten::setTransportista(const std::string & transportista_) {
-    if (transportista != NULL) {
-        delete transportista;
-    }
-    transportista = new std::string(transportista_);
-}
-
-bool Kosten::isNullTransportista(void) const {
-    return (transportista == NULL);
-}
-
-void Kosten::setNullTransportista(void) {
-    if (transportista != NULL) {
-        delete transportista;
-    }
-    transportista = NULL;
-}
-
-std::string Kosten::getEscenario(void) const {
-    return (escenario != NULL ? * escenario : "");
-}
-
-void Kosten::setEscenario(const std::string & escenario_) {
-    if (escenario != NULL) {
-        delete escenario;
-    }
-    escenario = new std::string(escenario_);
-}
-
-bool Kosten::isNullEscenario(void) const {
-    return (escenario == NULL);
-}
-
-void Kosten::setNullEscenario(void) {
-    if (escenario != NULL) {
-        delete escenario;
-    }
-    escenario = NULL;
 }
 
 bool Kosten::operator==(const Kosten & other) {
-    if (this->exped != other.exped) return false;
+    if (this->auftragsnummer != other.auftragsnummer) return false;
     if (this->relevanz != other.relevanz) return false;
     if (this->wewa != other.wewa) return false;
     if (this->gebiet != other.gebiet) return false;
-    if (this->sender != other.sender) return false;
-    if (this->receiver != other.receiver) return false;
-    if (this->planta != other.planta) return false;
-    if (this->transportista != other.transportista) return false;
-    if (this->escenario != other.escenario) return false;
-    if (this->menge != other.menge) return false;
-    if (this->kosten != other.kosten) return false;
-    if (this->fratch != other.fratch) return false;
+    if (this->senderLokationsnummer != other.senderLokationsnummer) return false;
+    if (this->empfangerLokationsnummer != other.empfangerLokationsnummer) return false;
+    if (this->werk != other.werk) return false;
+    if (this->transportlisteName != other.transportlisteName) return false;
+    if (this->szenariolisteName != other.szenariolisteName) return false;
+    if (this->sumMenge != other.sumMenge) return false;
+    if (this->sumKosten != other.sumKosten) return false;
+    if (this->sumFracht != other.sumFracht) return false;
+    if (this->hl != other.hl) return false;
     return true;
 }
 
@@ -299,169 +275,79 @@ bool Rfd::operator==(const Rfd & other) {
     return true;
 }
 
-Todo::Todo() {
-    documento = "";
-    relevancia = "";
-    fecha = tntdb::Datetime();
-    orgpais = "";
-    orgcp = "";
-    orgzon = "";
-    orgpob = "";
-    despais = "";
-    descp = "";
-    deszon = "";
-    despob = "";
-    flujo = "";
-    proveedor = "";
-    planta = "";
-    peso = 0;
+Sendungsdate::Sendungsdate() {
+    auftragsnummer = "";
+    datum = tntdb::Datetime();
+    relevanz = "";
+    senderLokationsnummer = "";
+    senderLand = "";
+    senderPlz = "";
+    senderOrt = "";
+    empfangerLokationsnummer = "";
+    empfangerLand = "";
+    empfangerPlz = "";
+    empfangerOrt = "";
+    wewa = "";
+    werk = "";
+    routing = "";
+    brutto = 0.0;
     volumen = 0.0;
-    pesofac = 0;
-    ruta = "";
-    kcc = "";
-    nombreprov = "";
+    menge = 0;
 }
 
-Todo::~Todo() {
+Sendungsdate::~Sendungsdate() {
 }
 
-bool Todo::operator==(const Todo & other) {
-    if (this->documento != other.documento) return false;
-    if (this->relevancia != other.relevancia) return false;
-    if (this->fecha != other.fecha) return false;
-    if (this->orgpais != other.orgpais) return false;
-    if (this->orgcp != other.orgcp) return false;
-    if (this->orgzon != other.orgzon) return false;
-    if (this->orgpob != other.orgpob) return false;
-    if (this->despais != other.despais) return false;
-    if (this->descp != other.descp) return false;
-    if (this->deszon != other.deszon) return false;
-    if (this->despob != other.despob) return false;
-    if (this->flujo != other.flujo) return false;
-    if (this->proveedor != other.proveedor) return false;
-    if (this->planta != other.planta) return false;
-    if (this->peso != other.peso) return false;
+bool Sendungsdate::operator==(const Sendungsdate & other) {
+    if (this->auftragsnummer != other.auftragsnummer) return false;
+    if (this->datum != other.datum) return false;
+    if (this->relevanz != other.relevanz) return false;
+    if (this->senderLokationsnummer != other.senderLokationsnummer) return false;
+    if (this->senderLand != other.senderLand) return false;
+    if (this->senderPlz != other.senderPlz) return false;
+    if (this->senderOrt != other.senderOrt) return false;
+    if (this->empfangerLokationsnummer != other.empfangerLokationsnummer) return false;
+    if (this->empfangerLand != other.empfangerLand) return false;
+    if (this->empfangerPlz != other.empfangerPlz) return false;
+    if (this->empfangerOrt != other.empfangerOrt) return false;
+    if (this->wewa != other.wewa) return false;
+    if (this->werk != other.werk) return false;
+    if (this->routing != other.routing) return false;
+    if (this->brutto != other.brutto) return false;
     if (this->volumen != other.volumen) return false;
-    if (this->pesofac != other.pesofac) return false;
-    if (this->ruta != other.ruta) return false;
-    if (this->kcc != other.kcc) return false;
-    if (this->nombreprov != other.nombreprov) return false;
+    if (this->menge != other.menge) return false;
     return true;
 }
 
-Vkosten::Vkosten() {
-    doccod = 0L;
-    docrel = "";
-    docexp = "";
-    docfec = tntdb::Date();
-    docorgzon = "";
-    docorgpob = "";
-    docdeszon = "";
-    docdespob = "";
-    docflu = "";
-    docfab = "";
-    docdun = "";
-    docpro = "";
-    dockcc = "";
-    docpes = 0;
-    docvol = 0.0;
-    docpef = 0;
-    exped = "";
-    relevanz = "";
+Transport::Transport() {
+    id = 0;
+    auftragsnummer = "";
+    transportId = 0;
     wewa = "";
+    werk = "";
+    relevanz = "";
     gebiet = "";
-    sender = "";
-    receiver = "";
-    planta = "";
-    transportista = NULL;
-    escenario = NULL;
-    menge = 0;
-    kosten = 0.0;
-    fratch = 0.0;
+    transportbenne = "";
+    senderLokationsnummer = "";
+    empfangerLokationsnummer = "";
+    sumMenge = 0;
 }
 
-Vkosten::~Vkosten() {
-    if (transportista != NULL) {
-        delete transportista;
-    }
-    if (escenario != NULL) {
-        delete escenario;
-    }
+Transport::~Transport() {
 }
 
-std::string Vkosten::getTransportista(void) const {
-    return (transportista != NULL ? * transportista : "");
-}
-
-void Vkosten::setTransportista(const std::string & transportista_) {
-    if (transportista != NULL) {
-        delete transportista;
-    }
-    transportista = new std::string(transportista_);
-}
-
-bool Vkosten::isNullTransportista(void) const {
-    return (transportista == NULL);
-}
-
-void Vkosten::setNullTransportista(void) {
-    if (transportista != NULL) {
-        delete transportista;
-    }
-    transportista = NULL;
-}
-
-std::string Vkosten::getEscenario(void) const {
-    return (escenario != NULL ? * escenario : "");
-}
-
-void Vkosten::setEscenario(const std::string & escenario_) {
-    if (escenario != NULL) {
-        delete escenario;
-    }
-    escenario = new std::string(escenario_);
-}
-
-bool Vkosten::isNullEscenario(void) const {
-    return (escenario == NULL);
-}
-
-void Vkosten::setNullEscenario(void) {
-    if (escenario != NULL) {
-        delete escenario;
-    }
-    escenario = NULL;
-}
-
-bool Vkosten::operator==(const Vkosten & other) {
-    if (this->doccod != other.doccod) return false;
-    if (this->docrel != other.docrel) return false;
-    if (this->docexp != other.docexp) return false;
-    if (this->docfec != other.docfec) return false;
-    if (this->docorgzon != other.docorgzon) return false;
-    if (this->docorgpob != other.docorgpob) return false;
-    if (this->docdeszon != other.docdeszon) return false;
-    if (this->docdespob != other.docdespob) return false;
-    if (this->docflu != other.docflu) return false;
-    if (this->docfab != other.docfab) return false;
-    if (this->docdun != other.docdun) return false;
-    if (this->docpro != other.docpro) return false;
-    if (this->dockcc != other.dockcc) return false;
-    if (this->docpes != other.docpes) return false;
-    if (this->docvol != other.docvol) return false;
-    if (this->docpef != other.docpef) return false;
-    if (this->exped != other.exped) return false;
-    if (this->relevanz != other.relevanz) return false;
+bool Transport::operator==(const Transport & other) {
+    if (this->id != other.id) return false;
+    if (this->auftragsnummer != other.auftragsnummer) return false;
+    if (this->transportId != other.transportId) return false;
     if (this->wewa != other.wewa) return false;
+    if (this->werk != other.werk) return false;
+    if (this->relevanz != other.relevanz) return false;
     if (this->gebiet != other.gebiet) return false;
-    if (this->sender != other.sender) return false;
-    if (this->receiver != other.receiver) return false;
-    if (this->planta != other.planta) return false;
-    if (this->transportista != other.transportista) return false;
-    if (this->escenario != other.escenario) return false;
-    if (this->menge != other.menge) return false;
-    if (this->kosten != other.kosten) return false;
-    if (this->fratch != other.fratch) return false;
+    if (this->transportbenne != other.transportbenne) return false;
+    if (this->senderLokationsnummer != other.senderLokationsnummer) return false;
+    if (this->empfangerLokationsnummer != other.empfangerLokationsnummer) return false;
+    if (this->sumMenge != other.sumMenge) return false;
     return true;
 }
 

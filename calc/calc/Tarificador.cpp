@@ -65,11 +65,11 @@ void Tarificador::tarificar(void) {
     cargarEntorno();
     //    tarificarCC();
     tarificarTipo(1);
-    tarificarTipo(2);
+//    tarificarTipo(2);
     tarificarTipo(-1);
-    tarificarTipo(-2);
-    tarificarTipo(3);
-    tarificarTipo(-3);
+//    tarificarTipo(-2);
+//    tarificarTipo(3);
+//    tarificarTipo(-3);
 
     LOG4CXX_INFO(logger, "<----- Fin");
 }
