@@ -449,6 +449,86 @@ void DoeDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Doe * e) {
 }
 
 
+EltDAO * EltDAO::dao = NULL;
+boost::mutex EltDAO::mtx;
+
+EltDAO::~EltDAO() {
+    if (dao != NULL) {
+        delete dao;
+    }
+}
+
+EltDAO * EltDAO::getInstance(void) {
+    boost::mutex::scoped_lock lock(mtx);
+    if (dao == NULL) {
+        dao = new EltDAO();
+        dao->table = "elt";
+        dao->keyColumns = "eltcod";
+        dao->columns = "eltcod,eltorg,eltdes";
+        dao->createQueries();
+    }
+    return dao;
+}
+
+vwze::entity::Elt * EltDAO::insert(tntdb::Connection & con, vwze::entity::Elt * e) {
+    tntdb::Statement stmt = con.prepare(getInsertQuery());
+    setColumns(stmt, e);
+    stmt.execute();
+    return e;
+}
+
+std::list<vwze::entity::Elt *> EltDAO::query(tntdb::Connection & con, tntdb::Statement & stmt) {
+    std::list<vwze::entity::Elt *> es;
+    for (tntdb::Statement::const_iterator it = stmt.begin(); it != stmt.end(); ++it) {
+        vwze::entity::Elt * e = new vwze::entity::Elt;
+        tntdb::Row row = *it;
+        loadColumns(row, e);
+        es.push_back(e);
+    }
+    return es;
+}
+
+vwze::entity::Elt * EltDAO::read(tntdb::Connection & con, const int & eltcod) {
+    tntdb::Statement stmt = con.prepare(getReadQuery());
+    vwze::entity::Elt * e = NULL;
+    try {
+        stmt.set("eltcodPK", eltcod);
+        tntdb::Row row = stmt.selectRow();
+        e = new vwze::entity::Elt;
+        loadColumns(row, e);
+    } catch (tntdb::NotFound) {
+    }
+    return e;
+}
+
+tntdb::Statement::size_type EltDAO::remove(tntdb::Connection & con, const int & eltcod) {
+    tntdb::Statement stmt = con.prepare(getRemoveQuery());
+    stmt.set("eltcodPK", eltcod);
+    return stmt.execute();
+}
+
+vwze::entity::Elt * EltDAO::update(tntdb::Connection & con, vwze::entity::Elt * e) {
+    tntdb::Statement stmt = con.prepare(getUpdateQuery());
+    setColumns(stmt, e);
+    stmt.set("eltcodPK", e->eltcod);
+    stmt.execute();
+    return e;
+}
+
+void EltDAO::loadColumns(tntdb::Row & row, vwze::entity::Elt * e) {
+    int index = 0;
+    e->eltcod = row.getInt(index++);
+    e->eltorg = row.getString(index++);
+    e->eltdes = row.getString(index++);
+}
+
+void EltDAO::setColumns(tntdb::Statement & stmt, const vwze::entity::Elt * e) {
+    stmt.setInt("eltcod", e->eltcod);
+    stmt.setString("eltorg", e->eltorg);
+    stmt.setString("eltdes", e->eltdes);
+}
+
+
 FltDAO * FltDAO::dao = NULL;
 boost::mutex FltDAO::mtx;
 

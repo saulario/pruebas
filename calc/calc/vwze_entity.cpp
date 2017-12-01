@@ -159,6 +159,22 @@ bool Doe::operator==(const Doe & other) {
     return true;
 }
 
+Elt::Elt() {
+    eltcod = 0;
+    eltorg = "";
+    eltdes = "";
+}
+
+Elt::~Elt() {
+}
+
+bool Elt::operator==(const Elt & other) {
+    if (this->eltcod != other.eltcod) return false;
+    if (this->eltorg != other.eltorg) return false;
+    if (this->eltdes != other.eltdes) return false;
+    return true;
+}
+
 Flt::Flt() {
     fltcod = "";
 }

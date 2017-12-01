@@ -18,13 +18,15 @@ private:
     tntdb::Connection con;    
     tntdb::Statement stmtRegla;
 
+    std::map<std::string, vwze::entity::Elt *> eltMap;
     std::map<unsigned long, vwze::entity::Rfc *> rfcMap;
     std::map<std::string, vwze::entity::Zon *> zonMap;
 
     void borrarImportes(int);
     void cargarEntorno(void);
     
-    vwze::entity::Rfd * localizarRegla(const vwze::entity::Doe *);
+    std::string componerRegla(vwze::entity::Doe *);
+    vwze::entity::Rfd * localizarRegla(vwze::entity::Doe *);
     
     void tarificarCC(void);
     void tarificarTipo(int tipo);
