@@ -1,13 +1,28 @@
+#!/usr/bin/python
+#    Copyright (C) from 2017 onwards Saul Correas Subias (saul dot correas at gmail dot com)
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import logging
-
-import Parser
-
+import parser
 
 log = logging.getLogger(__name__)
 
+#
+#
+#
 def procesar(context):
-    """Procesamiento de los mensajes de la cola
-    """
     log.info("-----> Inicio")
     
     fuente = "%s/data/mq_%s.txt" % (context.base, context.mq)
@@ -18,19 +33,28 @@ def procesar(context):
         log.warn("<----- No se ha encontrado archivo de mensajes, saliendo...")
         return  
     
-    for mensaje in mensajes:
-        procesar_mensaje(context, mensaje)
+    for buffer in mensajes:
+        procesar_mensaje(context, buffer)
         
     mensajes.close()  
     
     log.info("<----- Fin")
     
-def procesar_mensaje(context, mensaje):
-    """Procesado de un mensaje _Individual
-    """
+#
+#
+#
+def enviar_mq(context, id):    
+    pass
+#
+#
+#    
+def procesar_mensaje(context, buffer):
     log.info("-----> Inicio")
-    log.info("\t(mensaje): %s " % mensaje)
+    log.info("\t(buffer): %s " % buffer)
     
-    entity = Parser.parse(context, mensaje)
+    mensaje = parser.parse(context, buffer)
+    if not mensaje is None:
+        id = context.db.mensajes.insert_one(mensaje).inserted_id
+        enviar_mq(context, id)
     
     log.info("<----- Fin")
