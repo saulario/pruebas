@@ -63,12 +63,12 @@ def convertir_coordenada_GPS(latitud, longitud):
     
     lon = text2float(longitud)
     if lon is None:
-        log.info("<----- Fin, latitud invalida")
+        log.info("<----- Fin, longitud invalida")
         return retval
 
     retval = {}
     retval["type"] = "Point"
-    retval["coordinates"] = [ lat, lon ]
+    retval["coord"] = [ lat, lon ]
     
     log.info("<----- Fin")
     return retval

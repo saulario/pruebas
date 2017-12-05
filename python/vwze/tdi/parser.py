@@ -74,44 +74,101 @@ class ParserP(object):
         self._dispositivo = dispositivo
         self._mascara = list(x for x in (dispositivo["MASK"]))
         
+    def _get_datos_gps(self, mensaje):
+        if not "GPSData" in mensaje:
+            mensaje["GPSData"] = {}
+        return mensaje["GPSData"]
+    
+    def _get_datos_temperatura(self, mensaje):
+        if not "TEMPData" in mensaje:
+            self._td = {}
+            self._td["probes"] = []
+            mensaje["TEMPData"] = self._td
+        return mensaje["TEMPData"]
+        
     def _eliminar_campos(self, cc):
         cc.pop(0)
         cc.pop(0) 
         
-    def _bit01(self, mm, campos, mensaje):
-        current = int(mm.pop(0))
-        if (not current):
+    def _01_identificador(self, mm, campos, mensaje):
+        self._current = int(mm[0])
+        if (not self._current):
             return
         campos.pop(0)
          
-    def _bit02(self, mm, campos, mensaje):
-        current = int(mm.pop(0))
-        if (not current):
+    def _02_fecha_hora(self, mm, campos, mensaje):
+        self._current = int(mm[1])
+        if (not self._current):
             return
         self._aux = ("%s %s" % (campos.pop(0), campos.pop(0)))
         mensaje["dateTime"] = datetime.datetime.strptime(self._aux, "%d/%m/%Y %H:%M:%S")
         
-    def _bit03(self, mm, campos, mensaje):
-        current = int(mm.pop(0))
-        if (not current):
+    def _03_fecha_hora1(self, mm, campos, mensaje):
+        self._current = int(mm[2])
+        if (not self._current):
             return
         self._aux = ("%s %s" % (campos.pop(0), campos.pop(0)))
         mensaje["dateTime1"] = datetime.datetime.strptime(self._aux, "%d/%m/%Y %H:%M:%S")
 
-    def _bit04(self, mm, campos, mensaje):
-        current = int(mm.pop(0))
-        if (not current):
+    def _04_datos_gps(self, mm, campos, mensaje):
+        self._current = int(mm[3])
+        if (not self._current):
             return
-        self._datosGPS = {}
-        
+        self._datosGPS = self._get_datos_gps(mensaje)
         self._datosGPS["position"] = gis.convertir_coordenada_GPS(campos.pop(0), campos.pop(0))
         self._datosGPS["altitude"] = float(campos.pop(0))
         self._datosGPS["speed"] = float(campos.pop(0))
         self._datosGPS["bearing"] = int(campos.pop(0))
         self._datosGPS["satellites"] = int(campos.pop(0))
-        self._datosGPS["kilometers"] = float(campos.pop(0))
-        self._datosGPS["digitalInputs"] = int(campos.pop(0), 16)
-        mensaje["GPSData"] = self._datosGPS
+
+    def _05_pt100_internas(self, mm, campos, mensaje):
+        self._current = int(mm[38])
+        if (not self._current):
+            return       
+        self._datos_temperatura = self._get_datos_temperatura(mensaje)
+        self._probes = list(float(campos.pop(0)) for i in range(3 + int(mm[49])))
+        self._datos_temperatura.append(self._probes)
+        
+    def _06_pt100_externas(self, mm, campos, mensaje):
+        self._current = int(mm[4])
+        if (not self._current):
+            return
+        self._datos_temperatura = self._get_datos_temperatura(mensaje)        
+        self._probes = list(float(campos.pop(0)) for i in range(3))
+        self._datos_temperatura.append(self._probes)        
+        
+    def _07_entradas_analogicas(self, mm, campos, mensaje):
+        self._current = int(mm[5])
+        if (not self._current):
+            return
+        mensaje["analogicInput"] = list(float(campos.pop(0)) for i in range(int(campos.pop(0))))
+        
+    def _08_transcan(self, mm, campos, mensaje):
+        self._current = int(mm[20])
+        if (not self._current):
+            return        
+        self._datos_temperatura = self._get_datos_temperatura(mensaje)        
+        self._probes = list(float(campos.pop(0)) for i in range(campos.pop(0)))
+        self._datos_temperatura.append(self._probes)
+        
+    def _09_euroscan(self, mm, campos, mensaje):
+        self._current = int(mm[31])
+        if (not self._current):
+            return        
+        self._datos_temperatura = self._get_datos_temperatura(mensaje)        
+        self._probes = list(float(campos.pop(0)) for i in range(5))
+        self._datos_temperatura.append(self._probes)
+                
+    def _10_datacold(self, mm, campos, mensaje):
+        self._current = int(mm[32])
+        if (not self._current):
+            return        
+        self._datos_temperatura = self._get_datos_temperatura(mensaje)        
+        self._probes = list(float(campos.pop(0)) for i in range(4))
+        self._datos_temperatura.append(self._probes)        
+        self._alarmas_sondas = campos.pop(0)        # ignorado
+        self._entradas_digitales = campos.pop(0)    # ignorado
+        self._alarmas_eedd = campos.pop(0)          # ignorado
 
     def parse(self, buffer):
         self._campos = buffer.split(",")
@@ -122,14 +179,18 @@ class ParserP(object):
         
         self._mm = self._mascara       
         self._eliminar_campos(self._campos)
-        self._bit01(self._mm, self._campos, self._mensaje)
-        self._bit02(self._mm, self._campos, self._mensaje)
-        self._bit03(self._mm, self._campos, self._mensaje)
-        self._bit04(self._mm, self._campos, self._mensaje)
         
+        self._01_identificador(self._mm, self._campos, self._mensaje)
+        self._02_fecha_hora(self._mm, self._campos, self._mensaje)
+        self._03_fecha_hora1(self._mm, self._campos, self._mensaje)
+        self._04_datos_gps(self._mm, self._campos, self._mensaje)
+        self._05_pt100_internas(self._mm, self._campos, self._mensaje) 
         
-        
-        
+        self._06_pt100_externas(self._mm, self._campos, self._mensaje)
+        self._07_entradas_analogicas(self._mm, self._campos, self._mensaje)
+        self._08_transcan(self._mm, self._campos, self._mensaje)
+        self._09_euroscan(self._mm, self._campos, self._mensaje)
+        self._10_datacold(self._mm, self._campos, self._mensaje)
         
         return self._mensaje
         
