@@ -36,9 +36,9 @@ int main(int argc, char** argv) {
 //        l.calcularAgregados();
         //        l.cargarTarifas();
 
-        //        ParserTarifa p(con);
+                ParserTarifa p(con);
         //        p.cargarTarifaCapilar("/home/saulario/VWZE/1711_definitivo/capilar.csv");
-        //        p.cargarTarifaDirectos("/home/saulario/VWZE/1711_definitivo/directos.csv");
+//                p.cargarTarifaDirectos("/home/saulario/VWZE/1712/171115_DIREKT.csv");
 
         //
                 Tarificador t(con);
