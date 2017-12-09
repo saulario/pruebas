@@ -1,6 +1,3 @@
-//#include <boost/algorithm/string/classification.hpp>
-//#include <boost/algorithm/string/predicate.hpp>
-//#include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -148,13 +145,13 @@ void ParserTarifa::cargarTarifaDirectos(const std::string & fichero) {
         rfc->rfccod = ++rfccod;
         rfc->rfcrul = linea2[0];
         rfc->rfcmin = 0;            // no hay mínimo, se supone que siempre > 8000
-        vwze::dao::RfcDAO::getInstance()->insert(con, rfc);
+//        vwze::dao::RfcDAO::getInstance()->insert(con, rfc);
 
         double mef = 0;
         for (int i = 9; i >= 1; i--) {
             vwze::entity::Rfd * rfd = new vwze::entity::Rfd;
             rfd->rfdcod = ++rfdcod;
-            rfd->rfdrfccod = rfc->rfccod;
+            rfd->rfdrfccod = boost::lexical_cast<int, std::string>(linea2[0]);
             rfd->rfdmin = parse(linea1[i]);
             rfd->rfdpun = parse(linea2[i]);
             rfd->rfdmef = mef;
