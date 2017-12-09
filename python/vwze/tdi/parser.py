@@ -51,7 +51,7 @@ class ParserGETDRIVERINFO(object):
     TDI*GETDRIVERINFO
     """
     
-    def __init(self, context):
+    def __init__(self, context):
         self._context = context
     
     def parse(self, message):
@@ -127,7 +127,8 @@ class ParserP(object):
             return       
         self._datos_temperatura = self._get_datos_temperatura(mensaje)
         self._probes = list(float(campos.pop(0)) for i in range(3 + int(mm[49])))
-        self._datos_temperatura.append(self._probes)
+        for t in self._probes:
+            self._datos_temperatura["probes"].append(t)
         
     def _06_pt100_externas(self, mm, campos, mensaje):
         self._current = int(mm[4])
@@ -135,7 +136,8 @@ class ParserP(object):
             return
         self._datos_temperatura = self._get_datos_temperatura(mensaje)        
         self._probes = list(float(campos.pop(0)) for i in range(3))
-        self._datos_temperatura.append(self._probes)        
+        for t in self._probes:
+            self._datos_temperatura["probes"].append(t)        
         
     def _07_entradas_analogicas(self, mm, campos, mensaje):
         self._current = int(mm[5])
@@ -149,7 +151,8 @@ class ParserP(object):
             return        
         self._datos_temperatura = self._get_datos_temperatura(mensaje)        
         self._probes = list(float(campos.pop(0)) for i in range(campos.pop(0)))
-        self._datos_temperatura.append(self._probes)
+        for t in self._probes:
+            self._datos_temperatura["probes"].append(t)
         
     def _09_euroscan(self, mm, campos, mensaje):
         self._current = int(mm[31])
@@ -157,7 +160,8 @@ class ParserP(object):
             return        
         self._datos_temperatura = self._get_datos_temperatura(mensaje)        
         self._probes = list(float(campos.pop(0)) for i in range(5))
-        self._datos_temperatura.append(self._probes)
+        for t in self._probes:
+            self._datos_temperatura["probes"].append(t)
                 
     def _10_datacold(self, mm, campos, mensaje):
         self._current = int(mm[32])
@@ -165,11 +169,49 @@ class ParserP(object):
             return        
         self._datos_temperatura = self._get_datos_temperatura(mensaje)        
         self._probes = list(float(campos.pop(0)) for i in range(4))
-        self._datos_temperatura.append(self._probes)        
+        for t in self._probes:
+            self._datos_temperatura["probes"].append(t)
         self._alarmas_sondas = campos.pop(0)        # ignorado
         self._entradas_digitales = campos.pop(0)    # ignorado
         self._alarmas_eedd = campos.pop(0)          # ignorado
+        
+    def _fromTouchprintToCelsius(self, t):
+        self._temp = float(t) / 10
+        self._temp = round(((self._temp -32) / 1.8), 1)
+        if self._temp < -1000:
+            self._temp = None
+        return self._temp
 
+    def _11_touchprint(self, mm, campos, mensaje):
+        self._current = int(mm[44])
+        if (not self._current):
+            return        
+        self._datos_temperatura = self._get_datos_temperatura(mensaje)
+        self._probes = list(self._fromTouchprintToCelsius(campos.pop(0)) for i in range(6))
+        for t in self._probes:
+            self._datos_temperatura["probes"].append(t)
+        
+    def _12_digitales(self, mm, campos, mensaje):
+        self._current = int(mm[32])
+        if (not self._current):
+            return   
+             
+    def _13_ibox(self, mm, campos, mensaje):
+        self._current = int(mm[32])
+        if (not self._current):
+            return        
+             
+    def _14_carrier(self, mm, campos, mensaje):
+        self._current = int(mm[32])
+        if (not self._current):
+            return        
+
+    def _15_das(self, mm, campos, mensaje):
+        self._current = int(mm[32])
+        if (not self._current):
+            return        
+
+    # 11110000001000101001000000000000000000000100111000
     def parse(self, buffer):
         self._campos = buffer.split(",")
         self._mensaje = {}
@@ -191,6 +233,12 @@ class ParserP(object):
         self._08_transcan(self._mm, self._campos, self._mensaje)
         self._09_euroscan(self._mm, self._campos, self._mensaje)
         self._10_datacold(self._mm, self._campos, self._mensaje)
+        
+        self._11_touchprint(self._mm, self._campos, self._mensaje)
+        self._12_digitales(self._mm, self._campos, self._mensaje)
+        self._13_ibox(self._mm, self._campos, self._mensaje)
+        self._14_carrier(self._mm, self._campos, self._mensaje)
+        self._15_das(self._mm, self._campos, self._mensaje)
         
         return self._mensaje
         
