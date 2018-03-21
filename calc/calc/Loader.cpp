@@ -62,13 +62,29 @@ void Loader::calcularAgregados(int tipo) {
     con.prepare("delete from doe where doetip = :doetip")
             .setInt("doetip", tipo)
             .execute();
+    
+    tntdb::Statement stmtZonas;
+    switch (tipo) {
+        case -3:
+        case -2:
+            stmtZonas = con.prepare("select dodorgloc, doddeszon from dod where dodkey = :dodkey limit 1");
+            break;
+        case -1: 
+        case 1:
+            stmtZonas = con.prepare("select dodorgzon, doddeszon from dod where dodkey = :dodkey limit 1");
+            break;
+        case 2:
+        case 3:
+            stmtZonas = con.prepare("select dodorgzon, doddesloc from dod where dodkey = :dodkey limit 1");
+            break;
+    }
 
-    std::string sql = "select dodkey, dodfec, dodflu, dodorgzon, doddeszon "
+    std::string sql = "select dodkey, dodfec, dodflu "
             ", sum(dodpes) p, sum(dodvol) v, count(dodcod) c "
             " from dod "
             " where "
             "   dodtip = :dodtip "
-            " group by dodkey, dodfec, dodflu, dodorgzon, doddeszon";
+            " group by dodkey, dodfec, dodflu";
 
     tntdb::Result r = con.prepare(sql).setInt("dodtip", tipo).select();
     for (auto row : r) {
@@ -78,12 +94,17 @@ void Loader::calcularAgregados(int tipo) {
         doe->doetip = tipo;
         doe->doefec = row.getDate("dodfec");
         doe->doeflu = row.getString("dodflu");
-        doe->doeorgzon = row.getString("dodorgzon");
-        doe->doedeszon = row.getString("doddeszon");
 
         doe->doepes = row.getDouble("p");
         doe->doevol = row.getDouble("v");
         doe->doecnt = row.getInt64("c");
+        
+        stmtZonas.setString("dodkey", doe->doekey);
+        tntdb::Result rs = stmtZonas.select();
+        for (auto r : rs) {
+            doe->doeorgzon = r.getString(0);
+            doe->doedeszon = r.getString(1);
+        }
 
         double pef = doe->doevol * 250;
         doe->doepef = doe->doepes > pef ? doe->doepes : pef;
@@ -96,9 +117,9 @@ void Loader::calcularAgregados(int tipo) {
 void Loader::calcularAgregadosWA1(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-    //    if (true | false) {
-    //        return;
-    //    }
+        if (true | false) {
+            return;
+        }
     calcularAgregados(-1);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
@@ -115,10 +136,6 @@ void Loader::calcularAgregadosWA2(void) {
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
-/**
- * Agrega para directos WA
- * 
- */
 void Loader::calcularDirectosWA(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
@@ -130,9 +147,6 @@ void Loader::calcularDirectosWA(void) {
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
-/**
- * Recogidas de proveedor a CC
- */
 void Loader::calcularAgregadosWE1(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
@@ -144,9 +158,6 @@ void Loader::calcularAgregadosWE1(void) {
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
-/**
- * Entregas de CC a planta
- */
 void Loader::calcularAgregadosWE2(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
@@ -179,8 +190,8 @@ void Loader::calcularDirectosWE(void) {
 void Loader::borrarDatos(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-    con.prepare("delete from dod").execute();
-    con.prepare("delete from doe").execute();
+    con.prepare("truncate dod").execute();
+    con.prepare("truncate doe").execute();
 
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
@@ -221,28 +232,53 @@ void Loader::cargarMaps(void) {
 
     // previsión de directos en todos los sentidos
     const char * sql = R"foo(select concat(docflu, ':', docfec, ':',
-	docdun, ':', 
-        if (dockcc <> '', concat(dockcc, "_", kccnom), concat(docdeszon, "_", docdespob)),':', 
+        docorgloc, ':', 
+        docdesloc,':', 
         docrel) codigo, 
         round(sum(docpef)) sum_menge, round(sum(docvol * 250)) menge_calculado, 
         round(sum(docpes)) peso_total, count(docexp) documentos 
-        from doc left join kcc on kcccod = dockcc
+        from doc
         where 
-            docflu = 'we' 
+            docflu = 'WE' 
         group by codigo
         having (menge_calculado > 8000 or peso_total > 8000)
         union
     select concat(docflu, ':', docfec, ':', 
-        if (dockcc <> '', concat(dockcc, "_", kccnom), concat(docorgzon, "_", docorgpob)),':', 
-        docdun, ':', 
+        docorgloc, ':',
+        docdesloc, ':', 
         docrel) codigo, 
         round(sum(docpef)) sum_menge, round(sum(docvol * 250)) menge_calculado,
         round(sum(docpes)) peso_total, count(docexp) documentos   
-        from doc left join kcc on kcccod = dockcc
+        from doc
         where 
-            docflu = 'wa' 
+            docflu = 'WA' 
         group by codigo 
         having (menge_calculado > 8000 or peso_total > 8000))foo";
+
+    //    const char * sql = R"foo(select concat(docflu, ':', docfec, ':',
+    //	docdun, ':', 
+    //        if (dockcc <> '', concat(dockcc, "_", kccnom), concat(docdeszon, "_", docdespob)),':', 
+    //        docrel) codigo, 
+    //        round(sum(docpef)) sum_menge, round(sum(docvol * 250)) menge_calculado, 
+    //        round(sum(docpes)) peso_total, count(docexp) documentos 
+    //        from doc left join kcc on kcccod = dockcc
+    //        where 
+    //            docflu = 'we' 
+    //        group by codigo
+    //        having (menge_calculado > 8000 or peso_total > 8000)
+    //        union
+    //    select concat(docflu, ':', docfec, ':', 
+    //        if (dockcc <> '', concat(dockcc, "_", kccnom), concat(docorgzon, "_", docorgpob)),':', 
+    //        docdun, ':', 
+    //        docrel) codigo, 
+    //        round(sum(docpef)) sum_menge, round(sum(docvol * 250)) menge_calculado,
+    //        round(sum(docpes)) peso_total, count(docexp) documentos   
+    //        from doc left join kcc on kcccod = dockcc
+    //        where 
+    //            docflu = 'wa' 
+    //        group by codigo 
+    //        having (menge_calculado > 8000 or peso_total > 8000))foo";    
+
     stmt = con.prepare(sql);
     for (tntdb::Row row : stmt.select()) {
         std::string codigo = row.getString("codigo");
@@ -273,15 +309,15 @@ void Loader::insertarDirecto(const vwze::entity::Doc * doc, const std::string & 
     dod->dodtip = dodtip;
 
     // excepciones KCC
-    if (!doc->dockcc.empty()) {
-        if (dodtip == 3) {
-            dod->doddeszon = doc->dockcc;
-            dod->doddespob = getKccDescripcion(doc->dockcc);
-        } else if (dodtip == -3) {
-            dod->dodorgzon = doc->dockcc;
-            dod->dodorgpob = getKccDescripcion(doc->dockcc);
-        }
-    }
+    //    if (!doc->dockcc.empty()) {
+    //        if (dodtip == 3) {
+    //            dod->doddeszon = doc->dockcc;
+    //            dod->doddespob = getKccDescripcion(doc->dockcc);
+    //        } else if (dodtip == -3) {
+    //            dod->dodorgzon = doc->dockcc;
+    //            dod->dodorgpob = getKccDescripcion(doc->dockcc);
+    //        }
+    //    }
 
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
     delete dod;
@@ -321,39 +357,25 @@ void Loader::insertarDocumentosWA(const vwze::entity::Doc * doc) {
 
     vwze::entity::Zon * zon = zonMap.find(doc->docdeszon)->second;
 
-    vwze::entity::Dod * dod = new vwze::entity::Dod;
+    vwze::entity::Dod * dod = getInstance(doc);
 
-    dod->dodrel = doc->docrel;
-    dod->dodexp = doc->docexp;
-    dod->dodfec = doc->docfec;
-
-    dod->dodflu = doc->docflu;
-    dod->dodfab = doc->docfab;
-    dod->doddun = doc->docdun;
-    dod->dodpro = doc->docpro;
-    dod->dodpes = doc->docpes;
-    dod->dodvol = doc->docvol;
-    dod->dodpef = doc->docpef;
-
-    dod->dodorgzon = doc->docorgzon;
-    dod->dodorgpob = doc->docorgpob;
-    if (!doc->dockcc.empty()) {
-        dod->dodorgzon = doc->dockcc;
-        dod->dodorgpob = getKccDescripcion(doc->dockcc);
-    }
-
+    dod->doddesloc = zon->zondes;
     dod->doddeszon = zon->zoncod;
+    dod->doddespcp = zon->zoncod;
     dod->doddespob = zon->zondes;
 
     dod->dodcod = ++dodcod;
     dod->dodtip = -2;
     dod->dodkey = getCodigoWA(dod);
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
+    
+    delete dod;
+    dod = getInstance(doc);
 
+    dod->dodorgloc = zon->zondes;
     dod->dodorgzon = zon->zoncod;
+    dod->dodorgpcp = zon->zoncod;
     dod->dodorgpob = zon->zondes;
-    dod->doddeszon = doc->docdeszon;
-    dod->doddespob = doc->docdespob;
 
     dod->dodcod = ++dodcod;
     dod->dodtip = -1;
@@ -400,23 +422,10 @@ void Loader::insertarDocumentosWE(const vwze::entity::Doc * doc) {
     }
     vwze::entity::Zon * zon = zonMap.find(doc->docorgzon)->second;
 
-    vwze::entity::Dod * dod = new vwze::entity::Dod;
-
-    dod->dodrel = doc->docrel;
-    dod->dodexp = doc->docexp;
-    dod->dodfec = doc->docfec;
-
-    dod->dodflu = doc->docflu;
-    dod->dodfab = doc->docfab;
-    dod->doddun = doc->docdun;
-    dod->dodpro = doc->docpro;
-    dod->dodpes = doc->docpes;
-    dod->dodvol = doc->docvol;
-    dod->dodpef = doc->docpef;
-
-    dod->dodorgzon = doc->docorgzon;
-    dod->dodorgpob = doc->docorgpob;
+    vwze::entity::Dod * dod = getInstance(doc);
+    dod->doddesloc = zon->zondes;
     dod->doddeszon = zon->zoncod;
+    dod->doddespcp = zon->zoncod;
     dod->doddespob = zon->zondes;
 
     dod->dodcod = ++dodcod;
@@ -424,15 +433,18 @@ void Loader::insertarDocumentosWE(const vwze::entity::Doc * doc) {
     dod->dodkey = getCodigoWE(dod);
 
     vwze::dao::DodDAO::getInstance()->insert(con, dod);
-
+    
+    delete dod;
+    dod = getInstance(doc);
+    dod->dodorgloc = zon->zondes;
     dod->dodorgzon = zon->zoncod;
+    dod->dodorgpcp = zon->zoncod;
     dod->dodorgpob = zon->zondes;
-    dod->doddeszon = doc->docdeszon;
-    dod->doddespob = doc->docdespob;
-    if (!doc->dockcc.empty()) {
-        dod->doddeszon = doc->dockcc;
-        dod->doddespob = getKccDescripcion(doc->dockcc);
-    }
+
+    //    if (!doc->dockcc.empty()) {
+    //        dod->doddeszon = doc->dockcc;
+    //        dod->doddespob = getKccDescripcion(doc->dockcc);
+    //    }
 
     dod->dodcod = ++dodcod;
     dod->dodtip = 2;
@@ -485,18 +497,12 @@ double Loader::parsearDouble(const std::string & p) {
  */
 inline std::string Loader::getCodigoWA(const vwze::entity::Doc * doc) {
 
-    std::string aux = "";
-    if (!doc->dockcc.empty()) {
-        aux = doc->dockcc + "_" + kccMap.find(doc->dockcc)->second->kccnom;
-    } else {
-        aux = doc->docorgzon + "_" + doc->docorgpob;
-    }
 
     std::stringstream ss;
     ss << doc->docflu
             << ":" << doc->docfec.getIso()
-            << ":" << aux
-            << ":" << doc->docdun
+            << ":" << doc->docorgloc
+            << ":" << doc->docdesloc
             << ":" << doc->docrel
             ;
     return ss.str();
@@ -511,25 +517,12 @@ inline std::string Loader::getCodigoWA(const vwze::entity::Doc * doc) {
 inline std::string Loader::getCodigoWA(const vwze::entity::Dod * dod) {
 
     std::stringstream ss;
-    switch (dod->dodtip) {
-        case -1:
-            ss << dod->dodflu
-                    << ":" << dod->dodfec.getIso()
-                    << ":" << dod->dodorgzon + "_" + dod->dodorgpob
-                    << ":" << dod->doddun
-                    << ":" << dod->dodrel
-                    ;
-            break;
-        case -2:
-            ss << dod->dodflu
-                    << ":" << dod->dodfec.getIso()
-                    << ":" << dod->dodorgzon + "_" + dod->dodorgpob
-                    << ":" << dod->doddeszon + "_" + dod->doddespob
-                    << ":" << dod->dodrel
-                    ;
-            break;
-    }
-
+    ss << dod->dodflu
+            << ":" << dod->dodfec.getIso()
+            << ":" << dod->dodorgloc
+            << ":" << dod->doddesloc
+            << ":" << dod->dodrel
+            ;
     return ss.str();
 }
 
@@ -541,18 +534,11 @@ inline std::string Loader::getCodigoWA(const vwze::entity::Dod * dod) {
  */
 inline std::string Loader::getCodigoWE(const vwze::entity::Doc * doc) {
 
-    std::string aux = "";
-    if (!doc->dockcc.empty()) {
-        aux = doc->dockcc + "_" + kccMap.find(doc->dockcc)->second->kccnom;
-    } else {
-        aux = doc->docdeszon + "_" + doc->docdespob;
-    }
-
     std::stringstream ss;
     ss << doc->docflu
             << ":" << doc->docfec.getIso()
-            << ":" << doc->docdun
-            << ":" << aux
+            << ":" << doc->docorgloc
+            << ":" << doc->docdesloc
             << ":" << doc->docrel
             ;
     return ss.str();
@@ -567,26 +553,14 @@ inline std::string Loader::getCodigoWE(const vwze::entity::Doc * doc) {
 inline std::string Loader::getCodigoWE(const vwze::entity::Dod * dod) {
 
     std::stringstream ss;
-    switch (dod->dodtip) {
-        case 1:
-            ss << dod->dodflu
-                    << ":" << dod->dodfec.getIso()
-                    << ":" << dod->doddun
-                    << ":" << dod->doddeszon + "_" + dod->doddespob
-                    << ":" << dod->dodrel
-                    ;
-            break;
-        case 2:
-            ss << dod->dodflu
-                    << ":" << dod->dodfec.getIso()
-                    << ":" << dod->dodorgzon + "_" + dod->dodorgpob
-                    << ":" << dod->doddeszon + "_" + dod->doddespob
-                    << ":" << dod->dodrel
-                    ;
-            break;
-    }
-
+    ss << dod->dodflu
+            << ":" << dod->dodfec.getIso()
+            << ":" << dod->dodorgloc
+            << ":" << dod->doddesloc
+            << ":" << dod->dodrel
+            ;
     return ss.str();
+
 }
 
 /**
@@ -604,9 +578,13 @@ vwze::entity::Dod * Loader::getInstance(const vwze::entity::Doc * doc) {
     dod->dodfec = doc->docfec;
     dod->dodtip = 0;
 
+    dod->dodorgloc = doc->docorgloc;
     dod->dodorgzon = doc->docorgzon;
+    dod->dodorgpcp = doc->docorgpcp;
     dod->dodorgpob = doc->docorgpob;
+    dod->doddesloc = doc->docdesloc;
     dod->doddeszon = doc->docdeszon;
+    dod->doddespcp = doc->docdespcp;
     dod->doddespob = doc->docdespob;
 
     dod->dodflu = doc->docflu;
