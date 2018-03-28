@@ -76,6 +76,9 @@ void ParserTarifa::cargarTarifaCapilar(const std::string & fichero) {
     std::vector<std::string> linea1;
     std::vector<std::string> linea2;
     std::string linea = "";
+    
+    rfccod = 50000;
+    rfdcod = 50000;
 
     std::getline(infile, linea);
     boost::algorithm::split(linea1, linea, boost::algorithm::is_any_of(";"));
@@ -136,6 +139,8 @@ void ParserTarifa::cargarTarifaDirectos(const std::string & fichero) {
 
     std::getline(infile, linea);
     boost::algorithm::split(linea1, linea, boost::algorithm::is_any_of(";"));
+    
+    rfdcod = 5000; // ojo con esto
 
     std::getline(infile, linea);
     while (!infile.eof()) {
