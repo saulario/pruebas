@@ -117,9 +117,9 @@ void Loader::calcularAgregados(int tipo) {
 void Loader::calcularAgregadosWA1(void) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-        if (true | false) {
-            return;
-        }
+//        if (true | false) {
+//            return;
+//        }
     calcularAgregados(-1);
 
     LOG4CXX_TRACE(logger, "<----- Fin");
