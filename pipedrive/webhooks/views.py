@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 import base64
 import pprint
@@ -38,6 +39,7 @@ def basic(request):
         
     return response
 
+@csrf_exempt
 def dispatch(request):
     response = None
     if not autorizado(request):
