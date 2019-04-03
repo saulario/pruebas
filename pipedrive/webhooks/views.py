@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 import base64
+import json
 import pprint
 
 def autorizado(request):
@@ -47,7 +48,7 @@ def dispatch(request):
         response.status_code = 401
         response['WWW-Authenticate'] = 'Basic realm=webhooks'
     else:
-        pprint.pprint(request.POST)
+        pprint.pprint(json.loads(request.body.decode('utf-8')))
         response = HttpResponse('OK')
         
     return response
