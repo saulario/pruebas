@@ -15,6 +15,9 @@ Tarificador::Tarificador(tntdb::Connection & con_) : con(con_) {
 
 Tarificador::~Tarificador() {
 
+    for (auto p : eltMap) {
+        delete p.second;
+    }
     for (auto p : rfcMap) {
         delete p.second;
     }
@@ -56,6 +59,12 @@ void Tarificador::cargarEntorno(void) {
         rfcMap.insert(std::pair<unsigned long, vwze::entity::Rfc *>(rfc->rfccod, rfc));
     }
 
+    stmt = con.prepare("select * from elt");
+    std::list<vwze::entity::Elt *> eltList = vwze::dao::EltDAO::getInstance()->query(con, stmt);
+    for (auto elt : eltList) {
+        eltMap.insert(std::pair<std::string, vwze::entity::Elt *>(elt->eltorg, elt));
+    }
+
     LOG4CXX_TRACE(logger, "<----- Fin");
 }
 
@@ -63,7 +72,6 @@ void Tarificador::tarificar(void) {
     LOG4CXX_INFO(logger, "-----> Inicio");
 
     cargarEntorno();
-    //    tarificarCC();
     tarificarTipo(1);
     tarificarTipo(2);
     tarificarTipo(-1);
@@ -171,11 +179,47 @@ void Tarificador::tarificarTipo(int tipo) {
 //    return rfd;
 //}
 
-vwze::entity::Rfd * Tarificador::localizarRegla(const vwze::entity::Doe * doe) {
+std::string Tarificador::componerRegla(vwze::entity::Doe * doe) {
     LOG4CXX_TRACE(logger, "-----> Inicio");
 
-    std::string rfcrul = boost::lexical_cast<std::string, int>(doe->doetip)
-            + ":" + doe->doeorgzon + ":" + doe->doedeszon;
+    std::string orgzon = doe->doeorgzon;
+    std::string deszon = doe->doedeszon;
+
+    // traducción de la zona de facturación
+    if (doe->doetip > 1) {
+        if (eltMap.find(doe->doedeszon) != eltMap.end()) {
+            auto elt = eltMap.find(doe->doedeszon)->second;
+            deszon = elt->eltdes;
+            doe->doedespob = deszon;
+        }
+    } else if (doe->doetip < -1) {
+        if (eltMap.find(doe->doeorgzon) != eltMap.end()) {
+            auto elt = eltMap.find(doe->doeorgzon)->second;
+            orgzon = elt->eltdes;
+            doe->doeorgpob = orgzon;
+        }
+    }
+
+    std::string regla = "";
+
+    if (doe->doetip == -2) {
+        regla = boost::lexical_cast<std::string, int>(abs(doe->doetip))
+                + ":" + deszon + ":" + orgzon;
+    } else {
+        regla = boost::lexical_cast<std::string, int>(doe->doetip)
+                + ":" + orgzon + ":" + deszon;
+    }
+
+    LOG4CXX_TRACE(logger, "<----- Fin");
+    return regla;
+}
+
+vwze::entity::Rfd * Tarificador::localizarRegla(vwze::entity::Doe * doe) {
+    LOG4CXX_TRACE(logger, "-----> Inicio");
+
+    //    std::string rfcrul = boost::lexical_cast<std::string, int>(doe->doetip)
+    //            + ":" + doe->doeorgzon + ":" + doe->doedeszon;
+    std::string rfcrul = componerRegla(doe);
 
     vwze::entity::Rfd * rfd = NULL;
 
